@@ -42,39 +42,33 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (user && account) {
+        console.log(user);
         try {
-          const userFromDatabase = await db.user.findFirst({
-            where: { id: user.id },
+          // todo:
+          // 1. generate long lived token
+          const res = await axios.get(
+            `https://graph.facebook.com/v20.0/oauth/access_token`,
+            {
+              params: {
+                grant_type: "fb_exchange_token",
+                client_id: env.FACEBOOK_CLIENT_ID,
+                client_secret: env.FACEBOOK_CLIENT_SECRET,
+                fb_exchange_token: account.access_token,
+              },
+            },
+          );
+
+          await db.instagramAccount.create({
+            data: {
+              long_lived_token: res.data.access_token as string,
+              instagramId: account.providerAccountId,
+              userId: user.id,
+            },
           });
-          if (userFromDatabase) {
-            // todo:
-            // 1. generate long lived token
-            const res = await axios.get(
-              `https://graph.facebook.com/v20.0/oauth/access_token`,
-              {
-                params: {
-                  grant_type: "fb_exchange_token",
-                  client_id: env.FACEBOOK_CLIENT_ID,
-                  client_secret: env.FACEBOOK_CLIENT_SECRET,
-                  fb_exchange_token: account.access_token,
-                },
-              },
-            );
 
-            console.log("GOT REZ, KRIEJT AKAUNT");
-
-            await db.instagramAccount.create({
-              data: {
-                long_lived_token: res.data.access_token as string,
-                instagramId: account.providerAccountId,
-                userId: userFromDatabase.id,
-              },
-            });
-
-            console.log("akaunt apdejted");
-            // 2. store long lived token on new ig table
-            // 3. store all shitz such as pages and stuff in ig table.
-          }
+          console.log("akaunt apdejted");
+          // 2. store long lived token on new ig table
+          // 3. store all shitz such as pages and stuff in ig table.
         } catch (err) {
           if (err instanceof Error) {
             console.error(err.message);
@@ -100,7 +94,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         params: {
           scope:
-            "instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list,pages_read_engagement",
+            "instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list,pages_read_engagement,business_management",
         },
       },
     }),

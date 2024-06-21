@@ -58,9 +58,11 @@ export default function Home() {
 function AuthShowcase() {
   const { data: sessionData } = useSession();
 
+  const { mutate } = api.cronRouter.job.useMutation();
+
   const { data: secretMessage } = api.post.getSecretMessage.useQuery(
     undefined, // no input
-    { enabled: sessionData?.user !== undefined }
+    { enabled: sessionData?.user !== undefined },
   );
 
   return (
@@ -69,6 +71,14 @@ function AuthShowcase() {
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
+
+      <button
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        onClick={() => mutate({ secret: "123" })}
+      >
+        CRON test
+      </button>
+
       <button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
