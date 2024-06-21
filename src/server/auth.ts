@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import axios from "axios";
 import { type GetServerSidePropsContext } from "next";
 import {
   getServerSession,
@@ -6,7 +7,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
+import FacebookProvider from "next-auth/providers/facebook";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -39,6 +40,50 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
+    async signIn({ user, account }) {
+      if (user && account) {
+        try {
+          const userFromDatabase = await db.user.findFirst({
+            where: { id: user.id },
+          });
+          if (userFromDatabase) {
+            // todo:
+            // 1. generate long lived token
+            const res = await axios.get(
+              `https://graph.facebook.com/v20.0/oauth/access_token`,
+              {
+                params: {
+                  grant_type: "fb_exchange_token",
+                  client_id: env.FACEBOOK_CLIENT_ID,
+                  client_secret: env.FACEBOOK_CLIENT_SECRET,
+                  fb_exchange_token: account.access_token,
+                },
+              },
+            );
+
+            console.log("GOT REZ, KRIEJT AKAUNT");
+
+            await db.instagramAccount.create({
+              data: {
+                long_lived_token: res.data.access_token as string,
+                instagramId: account.providerAccountId,
+                userId: userFromDatabase.id,
+              },
+            });
+
+            console.log("akaunt apdejted");
+            // 2. store long lived token on new ig table
+            // 3. store all shitz such as pages and stuff in ig table.
+          }
+        } catch (err) {
+          if (err instanceof Error) {
+            console.error(err.message);
+          }
+        }
+      }
+
+      return true;
+    },
     session: ({ session, user }) => ({
       ...session,
       user: {
@@ -49,10 +94,17 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    FacebookProvider({
+      clientId: env.FACEBOOK_CLIENT_ID,
+      clientSecret: env.FACEBOOK_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope:
+            "instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list,pages_read_engagement",
+        },
+      },
     }),
+
     /**
      * ...add more providers here.
      *
