@@ -1,0 +1,86 @@
+import { z } from "zod";
+
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { lemonSqueezyApi } from "~/server/lemonsqueezy";
+
+export const subscriptionRouter = createTRPCRouter({
+  getCurrent: protectedProcedure.input(z.object({})).query(async ({ ctx }) => {
+    const user = ctx.session.user;
+    if (!user) {
+      throw Error("No user found");
+    }
+
+    const sub = await ctx.db.subscription.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    return sub;
+  }),
+
+  resumeSubscription: protectedProcedure.mutation(async ({ ctx }) => {
+    const user = ctx.session.user;
+    if (!user) {
+      throw Error("no user");
+    }
+
+    const sub = await ctx.db.subscription.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+    if (!sub) {
+      throw Error("No subscription found");
+    }
+
+    console.log("SUB FOUND", sub.id);
+
+    try {
+      const response = await lemonSqueezyApi.patch(
+        `/subscriptions/${sub.subscriptionId}`,
+        {
+          data: {
+            type: "subscriptions",
+            id: `${sub.subscriptionId}`,
+            attributes: {
+              cancelled: false,
+            },
+          },
+        },
+      );
+
+      console.log(response);
+
+      return true;
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  }),
+
+  cancelSubscription: protectedProcedure.mutation(async ({ ctx }) => {
+    const user = ctx.session.user;
+    if (!user) {
+      throw Error("no user");
+    }
+
+    const sub = await ctx.db.subscription.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+    if (!sub) {
+      throw Error("No subscription found");
+    }
+
+    const response = await lemonSqueezyApi.delete(
+      `/subscriptions/${sub.subscriptionId}`,
+    );
+
+    return true;
+  }),
+
+  getSecretMessage: protectedProcedure.query(() => {
+    return "you can now see this secret message!";
+  }),
+});

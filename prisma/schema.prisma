@@ -57,6 +57,15 @@ model InstagramAccount {
     @@unique([userId])
 }
 
+model Subscription {
+    id             String   @id @default(cuid())
+    userId         String
+    subscriptionId String   @unique
+    status         String
+    expires        DateTime
+    user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Session {
     id           String   @id @default(cuid())
     sessionToken String   @unique
@@ -75,6 +84,7 @@ model User {
     sessions         Session[]
     posts            Post[]
     InstagramAccount InstagramAccount?
+    Subscription     Subscription[]
 }
 
 model VerificationToken {

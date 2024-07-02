@@ -1,6 +1,8 @@
 import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { cronRouter } from "./routers/cron";
+import { paymentRouter } from "./routers/payments";
+import { subscriptionRouter } from "./routers/subscriptions";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +12,8 @@ import { cronRouter } from "./routers/cron";
 export const appRouter = createTRPCRouter({
   post: postRouter,
   cronRouter: cronRouter,
+  payments: paymentRouter,
+  subscriptions: subscriptionRouter,
 });
 
 // export type definition of API

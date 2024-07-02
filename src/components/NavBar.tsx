@@ -12,7 +12,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import classNames from "classnames";
 import { Fragment } from "react";
 import { useBreakpoint } from "~/hooks/media";
-import Button from "./Button";
+import Button from "./generic/Button";
 import Image from "next/image";
 
 const navigation: NavigationItem[] = [

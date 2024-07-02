@@ -23,7 +23,10 @@ export const env = createEnv({
       process.env.VERCEL ? z.string() : z.string().url()
     ),
     FACEBOOK_CLIENT_ID: z.string(),
-    FACEBOOK_CLIENT_SECRET: z.string()
+    FACEBOOK_CLIENT_SECRET: z.string(),
+    LEMONSQUEEZY_API_KEY: z.string(),
+    LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
+    LEMONSQUEEZY_STORE_ID: z.string()
   },
 
   /**
@@ -45,7 +48,10 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
-    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET
+    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
+    LEMONSQUEEZY_API_KEY: process.env.LEMONSQUEEZY_API_KEY,
+    LEMONSQUEEZY_WEBHOOK_SECRET: process.env.LEMONSQUEEZY_WEBHOOK_SECRET,
+    LEMONSQUEEZY_STORE_ID: process.env.LEMONSQUEEZY_STORE_ID
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
