@@ -84,12 +84,12 @@ export interface NavigationItem {
   link: string;
 }
 
-export default function Navbar() {
+export default function Navbar({ ...props }) {
   const { isLargeScreen, isMediumScreen } = useBreakpoint();
   const { data } = useSession();
 
   return (
-    <div className="w-full">
+    <div className="w-full" {...props}>
       <nav className="container relative mx-auto flex flex-wrap items-center justify-between p-8 lg:justify-between xl:px-0">
         {/* Logo  */}
         <Disclosure>
