@@ -1,5 +1,5 @@
 import { signIn, useSession } from "next-auth/react";
-import PricingCard from "~/components/PricingCard";
+import PricingCard from "~/components/pricing/PricingCard";
 import { api } from "~/utils/api";
 
 export default function Pricing() {
@@ -14,7 +14,7 @@ export default function Pricing() {
       checkoutId: "436646",
       benefits: [
         "AI comments",
-        "Guaranteed 2 hour response times",
+        "Guaranteed 1 hour response times",
         "Multi language support",
       ],
     },
@@ -27,7 +27,6 @@ export default function Pricing() {
         "AI comments",
         "Guaranteed 4 hour response times",
         "Multi language support",
-        "Weekend support",
       ],
     },
   ];

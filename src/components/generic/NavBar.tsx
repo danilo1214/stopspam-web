@@ -12,8 +12,9 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import classNames from "classnames";
 import { Fragment } from "react";
 import { useBreakpoint } from "~/hooks/media";
-import Button from "./generic/Button";
+import Button from "./Button";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const navigation: NavigationItem[] = [
   { label: "Home", link: "/" },
@@ -22,6 +23,7 @@ const navigation: NavigationItem[] = [
 ];
 
 const UserMenu = ({ image }: { image?: string | null }) => {
+  const router = useRouter();
   return (
     <Menu as="div" className="relative ml-auto flex items-center">
       <div>
@@ -47,11 +49,11 @@ const UserMenu = ({ image }: { image?: string | null }) => {
       >
         <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <MenuItem>
-            {({ active }) => (
+            {(pageProps) => (
               <button
                 onClick={() => signOut()}
                 className={classNames(
-                  active ? "bg-gray-100" : "",
+                  pageProps.focus ? "bg-gray-100" : "",
                   "block w-full px-4 py-2",
                 )}
               >
@@ -61,7 +63,17 @@ const UserMenu = ({ image }: { image?: string | null }) => {
           </MenuItem>
 
           <MenuItem>
-            <Link href="/account">Account</Link>
+            {(pageProps) => (
+              <button
+                onClick={() => router.push("/account")}
+                className={classNames(
+                  pageProps.focus ? "bg-gray-100" : "",
+                  "block w-full px-4 py-2",
+                )}
+              >
+                Account
+              </button>
+            )}
           </MenuItem>
         </MenuItems>
       </Transition>
@@ -74,7 +86,7 @@ const SignInButton = () => {
     <Button
       label="Get Started"
       onClick={() => signIn()}
-      className="w-full rounded-md bg-sky-600 px-6 py-2 text-center text-white lg:ml-5"
+      className="bg-primary-600 w-full rounded-md px-6 py-2 text-center text-white lg:ml-5"
     />
   );
 };
@@ -97,17 +109,9 @@ export default function Navbar({ ...props }) {
             <>
               <div className="flex w-full  flex-wrap items-center lg:w-auto lg:justify-between">
                 <Link href="/">
-                  <div className="flex items-center space-x-2 text-2xl font-medium text-sky-500 dark:text-gray-100">
-                    <span>
-                      <Image
-                        src="/assets/img/logo.svg"
-                        alt="N"
-                        width="32"
-                        height="32"
-                        className="w-8"
-                      />
-                    </span>
-                    <span>Lazynotes</span>
+                  <div className="text-primary-800 flex items-center space-x-2 text-2xl font-medium dark:text-gray-100">
+                    <span></span>
+                    <span>InstaAdmin</span>
                   </div>
                 </Link>
 
@@ -118,7 +122,7 @@ export default function Navbar({ ...props }) {
                 <DisclosureButton
                   aria-label="Toggle Menu"
                   className={classNames(
-                    "dark:focus:bg-trueGray-700 ml-5 rounded-md px-2 py-1 text-gray-500 hover:text-sky-500 focus:bg-sky-100 focus:text-sky-500 focus:outline-none lg:hidden dark:text-gray-300",
+                    "dark:focus:bg-trueGray-700 focus:bg-primary-100 hover:text-secondary-500 focus:text-secondary-500 ml-5 rounded-md px-2 py-1 text-gray-500 focus:outline-none lg:hidden dark:text-gray-300",
                     !data?.user && "ml-auto",
                   )}
                 >
@@ -147,7 +151,7 @@ export default function Navbar({ ...props }) {
                   <>
                     {navigation.map((item, index) => (
                       <Link key={index} href={item.link}>
-                        <div className="dark:focus:bg-trueGray-700  w-full rounded-md px-4 py-2 text-gray-500 hover:text-sky-500 focus:bg-sky-100 focus:text-sky-500 focus:outline-none dark:text-gray-300">
+                        <div className="dark:focus:bg-trueGray-700  focus:bg-primary-100 hover:text-secondary-500 focus:text-secondary-500 w-full rounded-md px-4 py-2 text-gray-500 focus:outline-none dark:text-gray-300">
                           {item.label}
                         </div>
                       </Link>
@@ -158,7 +162,7 @@ export default function Navbar({ ...props }) {
                     {data?.user && (
                       <Link
                         href="/create"
-                        className="rounded-md bg-sky-600 px-6 py-2 text-center text-white lg:ml-5"
+                        className="bg-secondary-600 rounded-md px-6 py-2 text-center text-white lg:ml-5"
                       >
                         Get notes
                       </Link>
@@ -176,7 +180,7 @@ export default function Navbar({ ...props }) {
               {navigation.map((item, index) => (
                 <li className="nav__item mr-3" key={index}>
                   <Link href={item.link}>
-                    <div className="inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline hover:text-sky-500 focus:bg-sky-100 focus:text-sky-500 focus:outline-none dark:text-gray-200">
+                    <div className="focus:bg-primary-100 hover:text-secondary-500 focus:text-secondary-500 inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline focus:outline-none dark:text-gray-200">
                       {item.label}
                     </div>
                   </Link>
@@ -187,7 +191,7 @@ export default function Navbar({ ...props }) {
             {data?.user && isLargeScreen && (
               <Link
                 href="/create"
-                className="mr-10 rounded-md bg-sky-600 px-6 py-2 text-center text-white"
+                className="bg-primary-600 mr-10 rounded-md px-6 py-2 text-center text-white"
               >
                 Get notes
               </Link>
