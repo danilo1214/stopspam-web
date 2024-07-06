@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { db } from "~/server/db";
 import { lemonSqueezyApi } from "~/server/lemonsqueezy";
 
 export const subscriptionRouter = createTRPCRouter({
@@ -17,6 +18,14 @@ export const subscriptionRouter = createTRPCRouter({
     });
 
     return sub;
+  }),
+
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    const { user } = ctx.session;
+    await db.user.delete({
+      where: { id: user.id },
+    });
+    return { message: "Account deleted successfully" };
   }),
 
   resumeSubscription: protectedProcedure.mutation(async ({ ctx }) => {

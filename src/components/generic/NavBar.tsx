@@ -64,15 +64,15 @@ const UserMenu = ({ image }: { image?: string | null }) => {
 
           <MenuItem>
             {(pageProps) => (
-              <button
-                onClick={() => router.push("/account")}
+              <Link
+                href="/account"
                 className={classNames(
                   pageProps.focus ? "bg-gray-100" : "",
                   "block w-full px-4 py-2",
                 )}
               >
                 Account
-              </button>
+              </Link>
             )}
           </MenuItem>
         </MenuItems>
@@ -83,11 +83,13 @@ const UserMenu = ({ image }: { image?: string | null }) => {
 
 const SignInButton = () => {
   return (
-    <Button
-      label="Get Started"
-      onClick={() => signIn()}
-      className="bg-primary-600 w-full rounded-md px-6 py-2 text-center text-white lg:ml-5"
-    />
+    <div className="relative rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 p-1  transition duration-100 hover:scale-105 hover:from-primary-400 hover:to-secondary-400">
+      <Button
+        label="Get Started"
+        onClick={() => signIn()}
+        className="w-full rounded-full bg-white text-center text-textPrimary-800"
+      />
+    </div>
   );
 };
 
@@ -109,7 +111,7 @@ export default function Navbar({ ...props }) {
             <>
               <div className="flex w-full  flex-wrap items-center lg:w-auto lg:justify-between">
                 <Link href="/">
-                  <div className="text-primary-800 flex items-center space-x-2 text-2xl font-medium dark:text-gray-100">
+                  <div className="flex items-center space-x-2 text-2xl font-medium text-primary-800 dark:text-gray-100">
                     <span></span>
                     <span>InstaAdmin</span>
                   </div>
@@ -122,7 +124,7 @@ export default function Navbar({ ...props }) {
                 <DisclosureButton
                   aria-label="Toggle Menu"
                   className={classNames(
-                    "dark:focus:bg-trueGray-700 focus:bg-primary-100 hover:text-secondary-500 focus:text-secondary-500 ml-5 rounded-md px-2 py-1 text-gray-500 focus:outline-none lg:hidden dark:text-gray-300",
+                    "dark:focus:bg-trueGray-700 ml-5 rounded-md px-2 py-1 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none lg:hidden dark:text-gray-300",
                     !data?.user && "ml-auto",
                   )}
                 >
@@ -151,22 +153,13 @@ export default function Navbar({ ...props }) {
                   <>
                     {navigation.map((item, index) => (
                       <Link key={index} href={item.link}>
-                        <div className="dark:focus:bg-trueGray-700  focus:bg-primary-100 hover:text-secondary-500 focus:text-secondary-500 w-full rounded-md px-4 py-2 text-gray-500 focus:outline-none dark:text-gray-300">
+                        <div className="dark:focus:bg-trueGray-700  w-full rounded-md px-4 py-2 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-300">
                           {item.label}
                         </div>
                       </Link>
                     ))}
 
                     {data?.user ? <></> : <SignInButton />}
-
-                    {data?.user && (
-                      <Link
-                        href="/create"
-                        className="bg-secondary-600 rounded-md px-6 py-2 text-center text-white lg:ml-5"
-                      >
-                        Get notes
-                      </Link>
-                    )}
                   </>
                 </DisclosurePanel>
               </div>
@@ -180,22 +173,13 @@ export default function Navbar({ ...props }) {
               {navigation.map((item, index) => (
                 <li className="nav__item mr-3" key={index}>
                   <Link href={item.link}>
-                    <div className="focus:bg-primary-100 hover:text-secondary-500 focus:text-secondary-500 inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline focus:outline-none dark:text-gray-200">
+                    <div className="inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-200">
                       {item.label}
                     </div>
                   </Link>
                 </li>
               ))}
             </ul>
-
-            {data?.user && isLargeScreen && (
-              <Link
-                href="/create"
-                className="bg-primary-600 mr-10 rounded-md px-6 py-2 text-center text-white"
-              >
-                Get notes
-              </Link>
-            )}
 
             {data?.user && <UserMenu image={data?.user.image} />}
           </div>

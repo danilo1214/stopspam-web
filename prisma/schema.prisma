@@ -52,7 +52,7 @@ model InstagramAccount {
     createdAt        DateTime @default(now())
     userId           String   @default("")
     long_lived_token String?  @db.Text()
-    user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    User             User[]
 
     @@unique([userId])
 }
@@ -75,16 +75,17 @@ model Session {
 }
 
 model User {
-    id               String            @id @default(cuid())
-    name             String?
-    email            String?           @unique
-    emailVerified    DateTime?
-    image            String?
-    accounts         Account[]
-    sessions         Session[]
-    posts            Post[]
-    InstagramAccount InstagramAccount?
-    Subscription     Subscription[]
+    id                 String            @id @default(cuid())
+    name               String?
+    email              String?           @unique
+    emailVerified      DateTime?
+    image              String?
+    accounts           Account[]
+    sessions           Session[]
+    posts              Post[]
+    InstagramAccount   InstagramAccount? @relation(fields: [instagramAccountId], references: [id])
+    Subscription       Subscription[]
+    instagramAccountId Int?
 }
 
 model VerificationToken {
