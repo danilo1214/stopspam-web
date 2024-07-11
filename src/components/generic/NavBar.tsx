@@ -86,7 +86,7 @@ const SignInButton = () => {
     <div className="relative rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 p-1  transition duration-100 hover:scale-105 hover:from-primary-400 hover:to-secondary-400">
       <Button
         label="Get Started"
-        onClick={() => signIn()}
+        onClick={() => signIn("facebook")}
         className="w-full rounded-full bg-white text-center text-textPrimary-800"
       />
     </div>
@@ -112,8 +112,15 @@ export default function Navbar({ ...props }) {
               <div className="flex w-full  flex-wrap items-center lg:w-auto lg:justify-between">
                 <Link href="/">
                   <div className="flex items-center space-x-2 text-2xl font-medium text-primary-800 dark:text-gray-100">
-                    <span></span>
-                    <span>InstaAdmin</span>
+                    <span>
+                      <Image
+                        alt="logo"
+                        width={50}
+                        height={50}
+                        src="/logo.png"
+                      />
+                    </span>
+                    <span>Reply Master</span>
                   </div>
                 </Link>
 

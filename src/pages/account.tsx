@@ -1,18 +1,28 @@
 // pages/account.tsx
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import {
+  TrashIcon,
+  XMarkIcon,
+  ArrowPathRoundedSquareIcon,
+} from "@heroicons/react/24/outline";
 import Button from "~/components/generic/Button";
 import { CTABanner } from "~/components/pricing/SubscriptionBanner";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { getServerSession } from "next-auth";
+import { authOptions } from "~/server/auth";
+import { AccessDenied } from "~/components/generic/AccessDenied";
+import { Badge } from "~/components/generic/Badge";
+import classNames from "classnames";
 
 export default function AccountPage() {
+  const utils = api.useUtils();
   const router = useRouter();
   const subscriptionApi = api.subscriptions;
 
-  const { data: user } = useSession();
+  const { data: user, status } = useSession();
 
   const { data: subscription, isLoading: isSubscriptionLoading } =
     subscriptionApi.getCurrent.useQuery({});
@@ -25,6 +35,10 @@ export default function AccountPage() {
 
   const { mutate: deleteAccount } = subscriptionApi.deleteAccount.useMutation();
 
+  if (status === "unauthenticated") {
+    return <AccessDenied />;
+  }
+
   const handleDeleteAccount = async () => {
     await deleteAccount();
     router.replace("/");
@@ -34,13 +48,20 @@ export default function AccountPage() {
     if (subscription?.status === "active") {
       cancelSub(undefined, {
         onSuccess: () => {
-          alert("Subscription canceled");
+          setTimeout(() => {
+            utils.subscriptions.getCurrent.invalidate();
+          }, 1000);
+          toast("Subscription canceled");
         },
       });
     } else {
       resumeSub(undefined, {
         onSuccess: () => {
-          alert("Subscription resumed");
+          utils.subscriptions.getCurrent.invalidate();
+          toast("Subscription resumed");
+          setTimeout(() => {
+            utils.subscriptions.getCurrent.invalidate();
+          }, 1000);
         },
       });
     }
@@ -53,9 +74,12 @@ export default function AccountPage() {
   return (
     <div className="mt-10 flex items-center justify-center ">
       <div className="w-full max-w-xl rounded-lg bg-white p-8 shadow-lg">
-        <div className="mb-10">
-          <CTABanner />
-        </div>
+        {(!subscription && !isSubscriptionLoading) ||
+          (subscription?.status === "cancelled" && (
+            <div className="mb-10">
+              <CTABanner />
+            </div>
+          ))}
         <div className="mb-6 flex flex-col items-center">
           <img
             src={user?.user.image ?? ""} // Replace with actual path to profile picture
@@ -66,40 +90,67 @@ export default function AccountPage() {
         </div>
         {subscription ? (
           <div className="mb-6 mt-10 text-center">
-            <p className="text-gray-700">
-              Subscription Status:{" "}
-              <span className="font-semibold">{subscription?.status}</span>{" "}
+            <div className="text-gray-700">
+              Subscription{" "}
+              <Badge
+                label={subscription.status}
+                type={subscription.status === "active" ? "success" : "error"}
+              />{" "}
               until{" "}
               <span className="font-semibold">
                 {subscription?.expires.toDateString()}
               </span>
-            </p>
+            </div>
           </div>
         ) : (
           <></>
         )}
         <div className="mt-10 flex flex-col space-y-4">
+          {subscription && (
+            <Button
+              label={
+                subscription.status === "active"
+                  ? "Cancel Subscription"
+                  : "Resume Subscription"
+              }
+              icon={
+                subscription.status === "active" ? (
+                  <XMarkIcon className="size-5 font-light text-textPrimary-100" />
+                ) : (
+                  <ArrowPathRoundedSquareIcon className="size-5 font-light text-textPrimary-100" />
+                )
+              }
+              onClick={handleSubscriptionToggle}
+              className={classNames(
+                "transform rounded-lg  bg-primary-600 px-4 py-2 text-lg text-textPrimary-100 shadow-md transition duration-200 ease-in-out hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50",
+                subscription.status === "active" && " bg-secondary-600",
+              )}
+              disabled={isCancelLoading || isResumeLoading}
+            ></Button>
+          )}
           <Button
             icon={
               <TrashIcon className="size-5 font-light text-secondary-400" />
             }
             label="Delete account"
             onClick={handleDeleteAccount}
-            className="transform  rounded-lg  px-6 py-2 text-lg text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
+            className="transform  rounded-lg  px-4 py-2 text-lg text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
           />
-          {subscription && (
-            <button
-              onClick={handleSubscriptionToggle}
-              className="transform rounded-lg  px-6 py-2 text-lg text-primary-600 shadow-md transition duration-200 ease-in-out hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={isCancelLoading || isResumeLoading}
-            >
-              {subscription.status === "active"
-                ? "Cancel Subscription"
-                : "Resume Subscription"}
-            </button>
-          )}
         </div>
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const { req, res } = context;
+  if (req && res) {
+    return {
+      props: {
+        session: await getServerSession(req, res, authOptions),
+      },
+    };
+  }
+
+  return {};
 }

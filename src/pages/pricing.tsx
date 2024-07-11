@@ -34,7 +34,9 @@ export default function Pricing() {
   const buyProduct = async (productId: string) => {
     const newWindow = window.open("about:blank", "_blank")!;
     if (!data?.user) {
-      await signIn("google", { callbackUrl: "http://localhost:3000/pricing" });
+      await signIn("facebook", {
+        callbackUrl: "http://localhost:3000/pricing",
+      });
       return;
     }
     paymentApi.mutate(

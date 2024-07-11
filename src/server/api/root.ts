@@ -3,6 +3,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { cronRouter } from "./routers/cron";
 import { paymentRouter } from "./routers/payments";
 import { subscriptionRouter } from "./routers/subscriptions";
+import { instagramRouter } from "~/server/api/routers/instagram";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   cronRouter: cronRouter,
   payments: paymentRouter,
   subscriptions: subscriptionRouter,
+  instagram: instagramRouter,
 });
 
 // export type definition of API

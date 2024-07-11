@@ -44,8 +44,7 @@ export const authOptions: NextAuthOptions = {
       if (user && account) {
         console.log(user);
         try {
-          // todo:
-          // 1. generate long lived token
+          // generate long lived token
           const res = await axios.get(
             `https://graph.facebook.com/v20.0/oauth/access_token`,
             {
@@ -58,7 +57,7 @@ export const authOptions: NextAuthOptions = {
             },
           );
 
-          await db.instagramAccount.create({
+          const instagramAccount = await db.instagramAccount.create({
             data: {
               long_lived_token: res.data.access_token as string,
               instagramId: account.providerAccountId,
@@ -66,7 +65,6 @@ export const authOptions: NextAuthOptions = {
             },
           });
 
-          console.log("akaunt apdejted");
           // 2. store long lived token on new ig table
           // 3. store all shitz such as pages and stuff in ig table.
         } catch (err) {
