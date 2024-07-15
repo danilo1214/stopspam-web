@@ -10,10 +10,6 @@ export default function Home() {
   const { data: subscription, isLoading: isSubscriptionLoading } =
     api.subscriptions.getCurrent.useQuery({});
 
-  const { data: pages } = api.instagram.getAccounts.useQuery();
-
-  console.log(pages);
-
   const channels = [
     { name: "Luna Sneakers", platform: "Instagram", locked: false },
     { name: "LunaSneakersOfficial", platform: "Instagram", locked: false },
@@ -38,7 +34,7 @@ export default function Home() {
               <CTABanner />
             </div>
           ))}
-        <AccountList channels={channels} />
+        <AccountList />
       </main>
     </>
   );

@@ -8,40 +8,42 @@ export const cronRouter = createTRPCRouter({
     .input(z.object({ secret: z.string() }))
     .mutation(async ({ input }) => {
       if (input.secret === "123") {
-        //ok
-
-        const instaAccounts = await db.instagramAccount.findMany();
-        for (const account of instaAccounts) {
-          console.log("geting");
-          const res = await axios.get(
-            `https://graph.facebook.com/v20.0/me/accounts?access_token=${account.long_lived_token}`,
-          );
-
-          console.log(res.data);
-
-          const pages = res.data.data as any[];
+        const facebookAccounts = await db.instagramAccount.findMany();
+        for (const account of facebookAccounts) {
+          const pages = await db.instagramPage.findMany({
+            where: {
+              instagramAccountId: account.id,
+            },
+          });
 
           for (const page of pages) {
-            console.log(page.name);
-            const accRes = await axios.get(
-              `https://graph.facebook.com/v20.0/${page.id}`,
+            const mediaRes = await axios.get(
+              `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
               {
                 params: {
-                  fields: "instagram_business_account",
+                  fields: "caption,comments",
                   access_token: account.long_lived_token,
                 },
               },
             );
 
-            const pageData = accRes.data;
-
-            if (pageData.instagram_business_account?.id) {
-              console.log(`media for ${page.id}`);
-              const media = await axios.get(
-                `https://graph.facebook.com/v20.0/${pageData.instagram_business_account.id}/media?access_token=${account.long_lived_token}`,
-              );
-
-              console.log(media.data);
+            // Only reply comment last 5 posts
+            const posts = mediaRes.data.data.slice(0, 5);
+            for (const post of posts) {
+              const comments:
+                | { timestamp: string; text: string; id: string }[]
+                | undefined = post.comments?.data;
+              if (comments && comments.length > 0) {
+                for (const comment of comments) {
+                  console.log(`Creating a job`, {
+                    comment,
+                    instagramPageId: page.instagramId,
+                    desc: page.biography,
+                    token: account.long_lived_token,
+                    profileDescription: page.userDescription,
+                  });
+                }
+              }
             }
           }
         }

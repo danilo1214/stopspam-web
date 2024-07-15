@@ -47,14 +47,30 @@ model Account {
 }
 
 model InstagramAccount {
-    id               Int      @id @default(autoincrement())
+    id               Int             @id @default(autoincrement())
     instagramId      String
-    createdAt        DateTime @default(now())
-    userId           String   @default("")
-    long_lived_token String?  @db.Text()
+    createdAt        DateTime        @default(now())
+    userId           String          @default("")
+    long_lived_token String?         @db.Text()
     User             User[]
+    InstagramPages   InstagramPage[]
 
     @@unique([userId])
+}
+
+model InstagramPage {
+    id                 Int              @id @default(autoincrement())
+    instagramId        String           @default("")
+    profilePictureUrl  String           @db.Text()
+    followers          Int
+    biography          String           @db.Text()
+    userDescription    String?          @db.Text()
+    username           String
+    createdAt          DateTime         @default(now())
+    userId             String           @default("")
+    user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    instagramAccount   InstagramAccount @relation(fields: [instagramAccountId], references: [id])
+    instagramAccountId Int
 }
 
 model Subscription {
@@ -86,6 +102,7 @@ model User {
     InstagramAccount   InstagramAccount? @relation(fields: [instagramAccountId], references: [id])
     Subscription       Subscription[]
     instagramAccountId Int?
+    InstagramPage      InstagramPage[]
 }
 
 model VerificationToken {

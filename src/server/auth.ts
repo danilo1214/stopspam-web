@@ -40,9 +40,8 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       if (user && account) {
-        console.log(user);
         try {
           // generate long lived token
           const res = await axios.get(
@@ -57,11 +56,10 @@ export const authOptions: NextAuthOptions = {
             },
           );
 
-          const instagramAccount = await db.instagramAccount.create({
+          const facebookAccount = await db.instagramAccount.create({
             data: {
               long_lived_token: res.data.access_token as string,
               instagramId: account.providerAccountId,
-              userId: user.id,
             },
           });
 

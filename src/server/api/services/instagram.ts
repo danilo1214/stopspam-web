@@ -18,15 +18,14 @@ export class Instagram {
   }
 
   async getIgPages(account: InstagramAccount): Promise<IgPageResult[]> {
-    const res = await this.instance.get(
-      `/me/accounts?access_token=${account.long_lived_token}`,
-    );
-    const pages = res.data.data as any[];
-
     let igPages = [];
+    try {
+      const res = await this.instance.get(
+        `/me/accounts?access_token=${account.long_lived_token}`,
+      );
+      const pages = res.data.data as any[];
 
-    for (const page of pages) {
-      try {
+      for (const page of pages) {
         const businessAccountRes = await this.instance.get(`/${page.id}`, {
           params: {
             fields: "instagram_business_account",
@@ -46,11 +45,16 @@ export class Instagram {
           });
           igPages.push(igPageDataRes.data);
         }
-      } catch (err: any) {
-        console.log(err.response.data);
       }
+    } catch (err: any) {
+      console.log("fuck me bro");
+      console.log(err.response.data);
     }
 
-    return igPages as IgPageResult[];
+    return igPages.map((page) => ({
+      ...page,
+      biography: page.biography ?? "",
+      profile_picture_url: page.profile_picture_url ?? "",
+    })) as IgPageResult[];
   }
 }

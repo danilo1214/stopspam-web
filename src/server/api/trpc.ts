@@ -122,14 +122,24 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+
+  const account = await ctx.db.account.findFirst({
+    where: { userId: ctx.session.user.id },
+  });
+
+  if (!account) {
+    throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+  }
+
   return next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
+      account,
     },
   });
 });
