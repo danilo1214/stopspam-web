@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 
 const navigation: NavigationItem[] = [
   { label: "Home", link: "/" },
+  { label: "Connect Pages", link: "/connect" },
   { label: "Pricing", link: "/pricing" },
   { label: "How it works?", link: "/how-it-works" },
 ];

@@ -11,9 +11,6 @@ import { api } from "~/utils/api";
 export const AccountList = () => {
   const utils = api.useUtils();
 
-  /** Queries */
-
-  const { mutate: cron } = api.cronRouter.job.useMutation();
   const { data: instagramAccounts, isLoading: isInstagramAccountsLoading } =
     api.instagram.getInstagramAccounts.useQuery(undefined, {
       // 5 mins
@@ -57,6 +54,8 @@ export const AccountList = () => {
         <div className="flex justify-between align-middle">
           <div className="mb-2 text-xl font-bold">Accounts</div>
           <Modal
+            title="Add Accounts"
+            description="Connect your Instagram accounts to Reply Master."
             open={open}
             onConfirm={() => savePages()}
             onClose={() => setOpen(false)}
@@ -75,15 +74,6 @@ export const AccountList = () => {
             label="Add"
             className="mb-4 max-w-[100px] rounded-lg bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-700"
             onClick={() => setOpen(true)}
-          ></Button>
-
-          <Button
-            icon={
-              <PlusIcon className="size-5 font-light text-textPrimary-100" />
-            }
-            label="CRON"
-            className="mb-4 max-w-[100px] rounded-lg bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-700"
-            onClick={() => cron({ secret: "123" })}
           ></Button>
         </div>
         <div className="space-y-4">

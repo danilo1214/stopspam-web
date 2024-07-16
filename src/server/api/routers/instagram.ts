@@ -48,7 +48,7 @@ export const instagramRouter = createTRPCRouter({
         throw Error("No user found");
       }
 
-      const facebookAccount = await ctx.db.instagramAccount.findFirst({
+      const facebookAccount = await ctx.db.facebookAccount.findFirst({
         where: {
           instagramId: ctx.account.providerAccountId,
         },
@@ -78,7 +78,7 @@ export const instagramRouter = createTRPCRouter({
         if (!currentPagesMap[page.id]) {
           await ctx.db.instagramPage.create({
             data: {
-              instagramAccountId: facebookAccount.id,
+              facebookAccountId: facebookAccount.id,
               instagramId: page.id,
               followers: page.followers_count,
               biography: page.biography,
@@ -134,7 +134,7 @@ export const instagramRouter = createTRPCRouter({
       throw Error("No user found");
     }
 
-    const facebookAccount = await ctx.db.instagramAccount.findFirst({
+    const facebookAccount = await ctx.db.facebookAccount.findFirst({
       where: {
         instagramId: ctx.account.providerAccountId,
       },

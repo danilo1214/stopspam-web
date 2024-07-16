@@ -14,18 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -46,31 +34,29 @@ model Account {
     @@unique([provider, providerAccountId])
 }
 
-model InstagramAccount {
+model FacebookAccount {
     id               Int             @id @default(autoincrement())
     instagramId      String
     createdAt        DateTime        @default(now())
-    userId           String          @default("")
     long_lived_token String?         @db.Text()
-    User             User[]
-    InstagramPages   InstagramPage[]
+    instagramPages   InstagramPage[]
 
-    @@unique([userId])
+    @@unique([instagramId])
 }
 
 model InstagramPage {
-    id                 Int              @id @default(autoincrement())
-    instagramId        String           @default("")
-    profilePictureUrl  String           @db.Text()
-    followers          Int
-    biography          String           @db.Text()
-    userDescription    String?          @db.Text()
-    username           String
-    createdAt          DateTime         @default(now())
-    userId             String           @default("")
-    user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-    instagramAccount   InstagramAccount @relation(fields: [instagramAccountId], references: [id])
-    instagramAccountId Int
+    id                Int             @id @default(autoincrement())
+    instagramId       String          @default("")
+    profilePictureUrl String          @db.Text()
+    followers         Int
+    biography         String          @db.Text()
+    userDescription   String?         @db.Text()
+    username          String
+    createdAt         DateTime        @default(now())
+    userId            String          @default("")
+    user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+    facebookAccount   FacebookAccount @relation(fields: [facebookAccountId], references: [id])
+    facebookAccountId Int
 }
 
 model Subscription {
@@ -91,18 +77,15 @@ model Session {
 }
 
 model User {
-    id                 String            @id @default(cuid())
-    name               String?
-    email              String?           @unique
-    emailVerified      DateTime?
-    image              String?
-    accounts           Account[]
-    sessions           Session[]
-    posts              Post[]
-    InstagramAccount   InstagramAccount? @relation(fields: [instagramAccountId], references: [id])
-    Subscription       Subscription[]
-    instagramAccountId Int?
-    InstagramPage      InstagramPage[]
+    id            String          @id @default(cuid())
+    name          String?
+    email         String?         @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    subscription  Subscription[]
+    InstagramPage InstagramPage[]
 }
 
 model VerificationToken {

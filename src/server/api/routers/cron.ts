@@ -8,11 +8,11 @@ export const cronRouter = createTRPCRouter({
     .input(z.object({ secret: z.string() }))
     .mutation(async ({ input }) => {
       if (input.secret === "123") {
-        const facebookAccounts = await db.instagramAccount.findMany();
+        const facebookAccounts = await db.facebookAccount.findMany();
         for (const account of facebookAccounts) {
           const pages = await db.instagramPage.findMany({
             where: {
-              instagramAccountId: account.id,
+              facebookAccountId: account.id,
             },
           });
 
