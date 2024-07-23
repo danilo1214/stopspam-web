@@ -5,3 +5,31 @@
 body {
     font-family: sans-serif;
 }
+
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: theme(size.4);
+    height: theme(size.4);
+    background: theme("colors.primary.400"); /* Change this color to your desired thumb color */
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  input[type="range"]::-moz-range-thumb {
+    width: theme(size.4);
+    height: theme(size.4);
+    background: theme("colors.primary.400"); /* Change this color to your desired thumb color */
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  input[type="range"]::-ms-thumb {
+    width: theme(size.4);
+    height: theme(size.4);
+    background: theme("colors.primary.400"); /* Change this color to your desired thumb color */
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  

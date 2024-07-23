@@ -14,6 +14,7 @@ import Navbar from "~/components/generic/NavBar";
 import { ToastContainer } from "react-toastify";
 import { AppRouter } from "~/server/api/root";
 import SuperJSON from "superjson";
+import classNames from "classnames";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -23,7 +24,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <ToastContainer />
       <Navbar className={GeistSans.className} />
-      <main className={GeistSans.className}>
+      <main className={classNames(GeistSans.className, "p-5")}>
         <Component {...pageProps} />
       </main>
     </SessionProvider>

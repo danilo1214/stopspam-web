@@ -1,11 +1,32 @@
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Button from "~/components/generic/Button";
+import { AccountItem } from "~/components/accounts/AccountItem";
+import { Dashboard } from "~/components/dashboard/Dashboard";
+import { HomeHeader } from "~/components/generic/HomeHeader";
+import { Nudge } from "~/components/generic/Nudge";
+import { CTABanner } from "~/components/pricing/SubscriptionBanner";
 
 import { api } from "~/utils/api";
 
 export default function Home() {
-  const { mutate: cron } = api.cronRouter.job.useMutation();
+  const { data: subscription } = api.subscriptions.getCurrent.useQuery({});
+  const { data: pages } = api.instagram.getSavedPages.useQuery();
+  const { data: account } = api.instagram.getFacebookAccount.useQuery();
+  const { data: sessionData } = useSession();
+
+  if (subscription) {
+    return <CTABanner />;
+  }
+
+  if (!account) {
+    return (
+      <Nudge
+        title="You don't have a business account yet"
+        description="Connect Business Account"
+        link="/connect"
+      />
+    );
+  }
 
   return (
     <>
@@ -14,14 +35,18 @@ export default function Home() {
         <meta name="description" content="Keyyy" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        hiii
-        <Button
-          icon={<PlusIcon className="size-5 font-light text-textPrimary-100" />}
-          label="CRON"
-          className="mb-4 max-w-[100px] rounded-lg bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-700"
-          onClick={() => cron({ secret: "123" })}
-        ></Button>
+      <main className="flex flex-col gap-y-10 px-10">
+        <HomeHeader
+          pages={pages?.length ?? 0}
+          name={sessionData?.user.name ?? ""}
+        />
+
+        <Dashboard />
+
+        <div>
+          <div className="mb-2 text-lg font-semibold">Your connected pages</div>
+          {pages?.map((p) => <AccountItem instagramPage={p} />)}
+        </div>
       </main>
     </>
   );

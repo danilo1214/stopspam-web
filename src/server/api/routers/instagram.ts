@@ -1,5 +1,6 @@
 import { InstagramPage } from "@prisma/client";
 import axios from "axios";
+import { use } from "react";
 import { z } from "zod";
 import { Instagram } from "~/server/api/services/instagram";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -27,6 +28,77 @@ export const instagramRouter = createTRPCRouter({
 
     return pages;
   }),
+
+  getSavedPage: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+      if (!user) {
+        throw Error("No user found");
+      }
+
+      const page = await ctx.db.instagramPage.findUnique({
+        where: {
+          id: Number(input),
+        },
+      });
+
+      if (!page) {
+        throw Error("Not found");
+      }
+
+      if (page.userId !== user.id) {
+        throw Error("User not found");
+      }
+
+      return page;
+    }),
+
+  updatePage: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        description: z.string().optional(),
+        vibe: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+      if (!user) {
+        throw Error("No user found");
+      }
+
+      const update: Partial<InstagramPage> = {};
+
+      if (input.vibe) {
+        update["vibe"] = input.vibe;
+      }
+
+      if (input.description) {
+        update["userDescription"] = input.description;
+      }
+
+      const page = await ctx.db.instagramPage.findUnique({
+        where: {
+          id: Number(input.id),
+        },
+      });
+
+      if (!page) {
+        throw Error("Not found");
+      }
+
+      if (page.userId !== user.id) {
+        throw Error("User not found");
+      }
+
+      await ctx.db.instagramPage.update({
+        where: {
+          id: Number(input.id),
+        },
+        data: update,
+      });
+    }),
 
   syncPages: protectedProcedure
     .input(
@@ -127,6 +199,25 @@ export const instagramRouter = createTRPCRouter({
     }),
 
   connectFacebookPage: protectedProcedure.mutation(async ({ ctx }) => {}),
+
+  getFacebookAccount: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+    if (!user) {
+      throw Error("No user found");
+    }
+
+    const facebookAccount = await ctx.db.facebookAccount.findFirst({
+      where: {
+        instagramId: ctx.account.providerAccountId,
+      },
+    });
+
+    if (!facebookAccount) {
+      throw Error("No account connected");
+    }
+
+    return facebookAccount;
+  }),
 
   getInstagramAccounts: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
