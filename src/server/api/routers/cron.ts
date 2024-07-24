@@ -7,6 +7,7 @@ export const cronRouter = createTRPCRouter({
   job: publicProcedure
     .input(z.object({ secret: z.string() }))
     .mutation(async ({ input }) => {
+      // This will obviously be an .env variable later
       if (input.secret === "123") {
         const facebookAccounts = await db.facebookAccount.findMany();
         for (const account of facebookAccounts) {
@@ -35,6 +36,7 @@ export const cronRouter = createTRPCRouter({
                 | undefined = post.comments?.data;
               if (comments && comments.length > 0) {
                 for (const comment of comments) {
+                  // This will be a queue entry
                   console.log(`Creating a job`, {
                     comment,
                     instagramPageId: page.instagramId,

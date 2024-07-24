@@ -14,7 +14,6 @@ import { Fragment } from "react";
 import { useBreakpoint } from "~/hooks/media";
 import Button from "./Button";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 const navigation: NavigationItem[] = [
   { label: "Home", link: "/" },
@@ -24,7 +23,6 @@ const navigation: NavigationItem[] = [
 ];
 
 const UserMenu = ({ image }: { image?: string | null }) => {
-  const router = useRouter();
   return (
     <Menu as="div" className="relative ml-auto flex items-center">
       <div>

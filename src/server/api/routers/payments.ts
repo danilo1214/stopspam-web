@@ -22,7 +22,10 @@ export const paymentRouter = createTRPCRouter({
                 },
               },
               product_options: {
-                redirect_url: "http://localhost:3000",
+                redirect_url:
+                  env.NODE_ENV === "development"
+                    ? "http://localhost:3000"
+                    : "prod_url",
               },
             },
             relationships: {
@@ -57,7 +60,7 @@ export const paymentRouter = createTRPCRouter({
         subscriptionId: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }): Promise<string> => {
+    .mutation(async ({ input }): Promise<string> => {
       try {
         const response = await lemonSqueezyApi.delete(
           `/subscriptions${input.subscriptionId}`,

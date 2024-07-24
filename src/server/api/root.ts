@@ -1,4 +1,3 @@
-import { postRouter } from "~/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { cronRouter } from "./routers/cron";
 import { paymentRouter } from "./routers/payments";
@@ -11,7 +10,6 @@ import { instagramRouter } from "~/server/api/routers/instagram";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
   cronRouter: cronRouter,
   payments: paymentRouter,
   subscriptions: subscriptionRouter,

@@ -1,4 +1,3 @@
-import { MouseEventHandler } from "react";
 import Button from "../generic/Button";
 
 export interface PricingCardProps {
@@ -36,7 +35,7 @@ export default function PricingCard({
         <Button
           onClick={onClick}
           label="Buy now"
-          className="focus:shadow-outline bg-primary-600 hover:bg-primary-500 flex items-center justify-center rounded-md border border-transparent px-5 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out focus:outline-none"
+          className="focus:shadow-outline flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
         ></Button>
       </div>
       <div className="mt-5 bg-white px-6 pb-8 pt-6 sm:p-10 sm:pt-6 dark:bg-gray-800">
@@ -45,7 +44,7 @@ export default function PricingCard({
             <li className="mt-4 flex items-start" key={key}>
               <div className="flex-shrink-0">
                 <svg
-                  className="text-secondary-800 h-6 w-6"
+                  className="h-6 w-6 text-secondary-800"
                   stroke="currentColor"
                   fill="none"
                   viewBox="0 0 24 24"

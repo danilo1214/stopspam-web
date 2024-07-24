@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CheckboxSelect from "~/components/generic/CheckboxGroup";
 import { IgPageResult } from "~/server/api/services/instagram";
 

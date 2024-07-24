@@ -1,6 +1,4 @@
 import { InstagramPage } from "@prisma/client";
-import axios from "axios";
-import { use } from "react";
 import { z } from "zod";
 import { Instagram } from "~/server/api/services/instagram";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -15,14 +13,9 @@ type IgPageResult = {
 
 export const instagramRouter = createTRPCRouter({
   getSavedPages: protectedProcedure.query(async ({ ctx }) => {
-    const user = ctx.session.user;
-    if (!user) {
-      throw Error("No user found");
-    }
-
     const pages = await ctx.db.instagramPage.findMany({
       where: {
-        userId: user.id,
+        userId: ctx.session.user.id,
       },
     });
 
@@ -32,11 +25,6 @@ export const instagramRouter = createTRPCRouter({
   getSavedPage: protectedProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
-      const user = ctx.session.user;
-      if (!user) {
-        throw Error("No user found");
-      }
-
       const page = await ctx.db.instagramPage.findUnique({
         where: {
           id: Number(input),
@@ -47,8 +35,8 @@ export const instagramRouter = createTRPCRouter({
         throw Error("Not found");
       }
 
-      if (page.userId !== user.id) {
-        throw Error("User not found");
+      if (page.userId !== ctx.session.user.id) {
+        throw Error("Access denied");
       }
 
       return page;
@@ -64,19 +52,6 @@ export const instagramRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
-      if (!user) {
-        throw Error("No user found");
-      }
-
-      const update: Partial<InstagramPage> = {};
-
-      if (input.vibe) {
-        update["vibe"] = input.vibe;
-      }
-
-      if (input.description) {
-        update["userDescription"] = input.description;
-      }
 
       const page = await ctx.db.instagramPage.findUnique({
         where: {
@@ -89,7 +64,17 @@ export const instagramRouter = createTRPCRouter({
       }
 
       if (page.userId !== user.id) {
-        throw Error("User not found");
+        throw Error("Access denied");
+      }
+
+      const update: Partial<InstagramPage> = {};
+
+      if (input.vibe) {
+        update["vibe"] = input.vibe;
+      }
+
+      if (input.description) {
+        update["userDescription"] = input.description;
       }
 
       await ctx.db.instagramPage.update({
@@ -116,9 +101,6 @@ export const instagramRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
-      if (!user) {
-        throw Error("No user found");
-      }
 
       const facebookAccount = await ctx.db.facebookAccount.findFirst({
         where: {
