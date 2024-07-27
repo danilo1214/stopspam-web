@@ -16,6 +16,7 @@ const vibes = [
 ];
 
 export default function Page() {
+  const utils = api.useUtils();
   const { query } = useRouter();
   const id = query.id as string;
   const {
@@ -41,6 +42,10 @@ export default function Page() {
     }
   }, [page?.vibe]);
 
+  const invalidatePageCache = () => {
+    utils.instagram.getSavedPage.invalidate();
+  };
+
   const onChangeVibe = (v: number) => {
     setVibe(v);
     updatePage(
@@ -48,6 +53,7 @@ export default function Page() {
       {
         onSuccess: () => {
           toast("Successfully updated vibe");
+          invalidatePageCache();
         },
       },
     );
@@ -55,7 +61,7 @@ export default function Page() {
 
   const steps = [
     {
-      title: "Describe your bussiness",
+      title: "Describe your business",
       content: (
         <div>
           <div className=" my-10 text-sm">
@@ -86,6 +92,7 @@ export default function Page() {
                 {
                   onSuccess: () => {
                     toast("Successfully updated description");
+                    invalidatePageCache();
                   },
                 },
               );

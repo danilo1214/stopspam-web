@@ -44,7 +44,16 @@ export default function Home() {
         <Dashboard />
 
         <div>
-          <div className="mb-2 text-lg font-semibold">Your connected pages</div>
+          <div className="mb-10 text-lg font-semibold">
+            Your connected pages
+          </div>
+          {(!pages || pages.length === 0) && (
+            <Nudge
+              link="/connect"
+              title="You don't have any connected Instagram pages yet."
+              description="Connect"
+            />
+          )}
           {pages?.map((p) => <AccountItem instagramPage={p} />)}
         </div>
       </main>

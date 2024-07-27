@@ -82,8 +82,8 @@ export const AccountList = () => {
               <AccountItem key={index} instagramPage={page} />
             ))
           ) : (
-            <div className="text-center text-lg font-semibold text-textPrimary-900">
-              No pages yet
+            <div className="text-center text-lg text-textPrimary-900">
+              No pages connected yet.
             </div>
           )}
         </div>

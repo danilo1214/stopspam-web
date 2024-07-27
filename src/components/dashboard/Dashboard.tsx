@@ -6,7 +6,7 @@ import { DashboardBox } from "~/components/dashboard/DashboardBox";
 
 export function Dashboard() {
   return (
-    <div className="flex flex-col gap-x-4 lg:flex-row">
+    <div className="flex flex-col gap-x-4 gap-y-4 lg:flex-row">
       <DashboardBox
         icon={<XMarkIcon className=" size-10 text-secondary-800" />}
         amount={6}

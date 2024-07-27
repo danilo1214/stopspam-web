@@ -51,7 +51,7 @@ model InstagramPage {
     followers         Int
     biography         String          @db.Text()
     userDescription   String?         @db.Text()
-    vibe              String          @default("Casual")
+    vibe              String?
     username          String
     createdAt         DateTime        @default(now())
     userId            String          @default("")

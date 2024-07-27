@@ -11,8 +11,8 @@ export function Nudge({
   link: string;
 }) {
   return (
-    <div className="flex flex-col items-center gap-y-5 text-center">
-      <h1 className="text-lg font-semibold">{title}</h1>
+    <div className="flex flex-col gap-y-2">
+      <h1 className="text-lg">{title}</h1>
       <Link
         className="mb-4  flex max-w-72 items-center  rounded-lg bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-700"
         href={link}
