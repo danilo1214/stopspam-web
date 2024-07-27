@@ -1,7 +1,9 @@
+import { Select } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Button from "~/components/generic/Button";
+import CustomSelect from "~/components/generic/Select";
 import { Slider } from "~/components/generic/Slider";
 import { Steps } from "~/components/generic/Steps";
 import { api } from "~/utils/api";
@@ -15,6 +17,12 @@ const vibes = [
   "Professional",
 ];
 
+const options: { value: string; label: string }[] = [
+  { value: "increase-sales", label: "To increase my sales" },
+  { value: "boost-engagement", label: "To boost my page engagement" },
+  { value: "idk", label: "I don't know" },
+];
+
 export default function Page() {
   const utils = api.useUtils();
   const { query } = useRouter();
@@ -26,8 +34,12 @@ export default function Page() {
   } = api.instagram.getSavedPage.useQuery(id);
   const [text, setText] = useState(page?.userDescription ?? "");
   const [vibe, setVibe] = useState(0);
+  const [selectedGoal, setSelectedGoal] = useState<string | null>(
+    page?.goal ?? null,
+  );
 
   const { mutate: updatePage } = api.instagram.updatePage.useMutation();
+
   useEffect(() => {
     if (page?.userDescription) {
       setText(page.userDescription);
@@ -35,15 +47,32 @@ export default function Page() {
   }, [page?.userDescription]);
 
   useEffect(() => {
+    if (page?.goal) {
+      setSelectedGoal(page.goal);
+    }
+  }, [page?.goal]);
+
+  useEffect(() => {
     if (page?.vibe) {
-      console.log(page.vibe);
-      console.log(vibes.indexOf(page.vibe));
       setVibe(vibes.indexOf(page?.vibe));
     }
   }, [page?.vibe]);
 
   const invalidatePageCache = () => {
     utils.instagram.getSavedPage.invalidate();
+  };
+
+  const handleOptionChange = (option: string) => {
+    setSelectedGoal(option);
+    updatePage(
+      { id, goal: option },
+      {
+        onSuccess: () => {
+          toast("Successfully updated goal");
+          invalidatePageCache();
+        },
+      },
+    );
   };
 
   const onChangeVibe = (v: number) => {
@@ -115,8 +144,21 @@ export default function Page() {
       ),
     },
     {
-      title: "Step 3",
-      content: <div>Content for Step 3</div>,
+      title: "Goal",
+      content: (
+        <div className="p-4">
+          <div className="mb-2">
+            <div className=" text-textPrimary-800">
+              What's your goal with our product?
+            </div>
+          </div>
+          <CustomSelect
+            onOptionChange={handleOptionChange}
+            options={options}
+            value={selectedGoal ?? undefined}
+          />
+        </div>
+      ),
     },
   ];
 

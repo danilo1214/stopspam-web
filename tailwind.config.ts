@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        customFont: ['"Trebuchet"', "sans-serif"],
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {

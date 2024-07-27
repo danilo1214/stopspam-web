@@ -110,7 +110,7 @@ export default function Navbar({ ...props }) {
             <>
               <div className="flex w-full  flex-wrap items-center lg:w-auto lg:justify-between">
                 <Link href="/">
-                  <div className="flex items-center space-x-2 text-2xl font-medium text-primary-800 dark:text-gray-100">
+                  <div className="flex items-center space-x-2 text-2xl font-medium text-primary-700/75 dark:text-gray-100">
                     <span>
                       <Image
                         alt="logo"
@@ -119,7 +119,7 @@ export default function Navbar({ ...props }) {
                         src="/logo.png"
                       />
                     </span>
-                    <span>Reply Master</span>
+                    <span className=" font-customFont">Reply Master</span>
                   </div>
                 </Link>
 

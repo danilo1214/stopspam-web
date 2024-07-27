@@ -52,6 +52,7 @@ model InstagramPage {
     biography         String          @db.Text()
     userDescription   String?         @db.Text()
     vibe              String?
+    goal              String?
     username          String
     createdAt         DateTime        @default(now())
     userId            String          @default("")

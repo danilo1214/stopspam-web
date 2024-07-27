@@ -45,6 +45,7 @@ export const instagramRouter = createTRPCRouter({
   updatePage: protectedProcedure
     .input(
       z.object({
+        goal: z.string().optional(),
         id: z.string(),
         description: z.string().optional(),
         vibe: z.string().optional(),
@@ -71,6 +72,10 @@ export const instagramRouter = createTRPCRouter({
 
       if (input.vibe) {
         update["vibe"] = input.vibe;
+      }
+
+      if (input.goal) {
+        update["goal"] = input.goal;
       }
 
       if (input.description) {

@@ -14,11 +14,11 @@ interface StepsProps {
 export const Steps: React.FC<StepsProps> = ({ steps, currentStep }) => {
   return (
     <div className="w-full">
-      <div className="space-y-8">
+      <div className="space-y-10">
         {steps.map((step, index) => (
           <div
             key={index}
-            className="flex flex-col items-start gap-x-5 lg:flex-row"
+            className="flex flex-col items-start gap-x-5 gap-y-2 lg:flex-row"
           >
             <div className="flex w-full flex-shrink-0 space-x-4 lg:w-72">
               <div
@@ -39,7 +39,7 @@ export const Steps: React.FC<StepsProps> = ({ steps, currentStep }) => {
               </div>
             </div>
             {currentStep >= index && (
-              <div className="flex-1 rounded-lg border bg-white p-4 shadow-lg">
+              <div className="w-full flex-1 rounded-lg border bg-white p-4 shadow-lg">
                 {step.content}
               </div>
             )}

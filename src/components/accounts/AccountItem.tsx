@@ -6,6 +6,7 @@ import { InstagramPage } from "@prisma/client";
 import { api } from "~/utils/api";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { OnlineStatus } from "~/components/generic/OnlineStatus";
 
 export interface AccountItemProps {
   instagramPage: InstagramPage;
@@ -31,6 +32,12 @@ export const AccountItem: React.FC<AccountItemProps> = ({ instagramPage }) => {
     };
   }, []);
 
+  const isOnline = !instagramPage.userDescription
+    ? false
+    : instagramPage.vibe
+      ? true
+      : false;
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -42,12 +49,13 @@ export const AccountItem: React.FC<AccountItemProps> = ({ instagramPage }) => {
         "relative mb-2 flex items-center justify-between rounded-lg bg-textPrimary-100 p-4",
       )}
     >
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-1">
         <img
           src={instagramPage.profilePictureUrl}
           alt={instagramPage.username}
-          className="h-12 w-12 rounded-full object-cover"
+          className="mr-2 h-12 w-12 rounded-full object-cover"
         />
+        <OnlineStatus isOnline={isOnline} />
         <span>{instagramPage.username}</span>
       </div>
       <div className="relative" ref={menuRef}>
