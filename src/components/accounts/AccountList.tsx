@@ -52,7 +52,7 @@ export const AccountList = () => {
     <div className="mx-auto h-full max-w-xl rounded-lg">
       <div className="px-6 py-4">
         <div className="flex justify-between align-middle">
-          <div className="mb-2 text-xl font-bold">Accounts</div>
+          <div className="mb-2 text-xl font-semibold">Accounts</div>
           <Modal
             title="Add Accounts"
             description="Connect your Instagram accounts to Reply Master."

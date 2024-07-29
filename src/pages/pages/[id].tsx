@@ -174,11 +174,17 @@ export default function Page() {
     );
   }
 
-  const currentStep = !page.userDescription ? 0 : page.vibe ? 2 : 1;
+  const currentStep = !page.userDescription
+    ? 0
+    : page.vibe
+      ? page.goal
+        ? 3
+        : 2
+      : 1;
 
   return (
     <main>
-      <div className="pl-4">
+      <div className="flex items-center gap-x-2 pl-4">
         <img
           referrerPolicy="no-referrer"
           src={page.profilePictureUrl}

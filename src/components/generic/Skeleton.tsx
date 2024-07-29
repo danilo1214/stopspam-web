@@ -1,6 +1,6 @@
 export const Skeleton = () => {
   return (
-    <div className="mx-auto h-full max-w-xl animate-pulse rounded-lg">
+    <div className="h-full max-w-xl animate-pulse rounded-lg">
       <div className="px-6 py-4">
         <div className="flex justify-between align-middle">
           <div className="mb-2 h-6 w-32 rounded bg-gray-300"></div>

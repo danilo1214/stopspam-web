@@ -10,7 +10,7 @@ export function DashboardBox({
   title: string;
 }) {
   return (
-    <div className="flex flex-col rounded-lg  border border-solid border-textPrimary-900  p-16 text-3xl text-textPrimary-900">
+    <div className="flex flex-col rounded-lg  bg-white   p-16 text-3xl text-textPrimary-900">
       <div className="text-sm">{title}</div>
       <div className="flex items-center gap-x-2">
         {icon}

@@ -17,7 +17,8 @@ import Image from "next/image";
 
 const navigation: NavigationItem[] = [
   { label: "Home", link: "/" },
-  { label: "Connect Pages", link: "/connect" },
+  { label: "Connect Pages", link: "/connect", protected: true },
+  { label: "App", link: "/app", protected: true },
   { label: "Pricing", link: "/pricing" },
   { label: "How it works?", link: "/how-it-works" },
 ];
@@ -95,11 +96,16 @@ const SignInButton = () => {
 export interface NavigationItem {
   label: string;
   link: string;
+  protected?: boolean;
 }
 
 export default function Navbar({ ...props }) {
   const { isLargeScreen, isMediumScreen } = useBreakpoint();
-  const { data } = useSession();
+  const { data, status } = useSession();
+
+  const isSignedIn = status !== "loading" && !!data?.user;
+
+  const filteredNav = navigation.filter((n) => !n.protected || isSignedIn);
 
   return (
     <div className="w-full" {...props}>
@@ -123,7 +129,7 @@ export default function Navbar({ ...props }) {
                   </div>
                 </Link>
 
-                {data?.user && isMediumScreen && (
+                {isSignedIn && isMediumScreen && (
                   <UserMenu image={data?.user.image} />
                 )}
 
@@ -131,7 +137,7 @@ export default function Navbar({ ...props }) {
                   aria-label="Toggle Menu"
                   className={classNames(
                     "dark:focus:bg-trueGray-700 ml-5 rounded-md px-2 py-1 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none lg:hidden dark:text-gray-300",
-                    !data?.user && "ml-auto",
+                    !isSignedIn && "ml-auto",
                   )}
                 >
                   <svg
@@ -157,7 +163,7 @@ export default function Navbar({ ...props }) {
 
                 <DisclosurePanel className="my-5 flex w-full flex-col flex-wrap text-center lg:hidden">
                   <>
-                    {navigation.map((item, index) => (
+                    {filteredNav.map((item, index) => (
                       <Link key={index} href={item.link}>
                         <div className="dark:focus:bg-trueGray-700  w-full rounded-md px-4 py-2 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-300">
                           {item.label}
@@ -165,7 +171,7 @@ export default function Navbar({ ...props }) {
                       </Link>
                     ))}
 
-                    {data?.user ? <></> : <SignInButton />}
+                    {!isSignedIn && <SignInButton />}
                   </>
                 </DisclosurePanel>
               </div>
@@ -176,7 +182,7 @@ export default function Navbar({ ...props }) {
         {isLargeScreen && (
           <div className="ml-auto flex items-center justify-between text-center">
             <ul className="flex-1 list-none items-center justify-end pt-6 lg:flex lg:pt-0">
-              {navigation.map((item, index) => (
+              {filteredNav.map((item, index) => (
                 <li className="nav__item mr-3" key={index}>
                   <Link href={item.link}>
                     <div className="inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-200">

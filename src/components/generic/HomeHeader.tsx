@@ -12,7 +12,7 @@ export function HomeHeader({ pages, name }: { pages: number; name: string }) {
       </h1>
       <div className="mt-2 flex gap-x-5 text-sm lg:max-w-[30%]">
         <div className="flex items-center">
-          <UserCircleIcon className="size-5 font-light text-textPrimary-600" />
+          <UserCircleIcon className="size-5 font-light text-textPrimary-500" />
           <div className="text-textPrimary-900">{pages} Pages Connected</div>
         </div>
       </div>
