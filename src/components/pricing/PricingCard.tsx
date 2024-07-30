@@ -17,17 +17,22 @@ export default function PricingCard({
   onClick,
 }: PricingCardProps) {
   return (
-    <div className="overflow-hidden rounded-lg bg-white shadow-lg">
+    <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
+      <div
+        className=" bg-[radial-gradient(169.40% 89.55% at 94.76% 6.29%, rgba(128,0,128,0.80) 0%, rgba(75,0,160,0.60) 50%, rgba(72,61,139,0.40) 100%)]
+ pointer-events-none absolute h-full w-full"
+      ></div>
+
       <div className=" px-6 py-8 sm:p-10 sm:pb-6 dark:bg-gray-800">
         <div className="flex justify-center">
-          <span className="inline-flex rounded-full px-4 py-1 text-sm font-semibold uppercase leading-5 tracking-wide dark:text-white">
+          <span className="inline-flex rounded-full px-4 py-1 text-sm font-semibold uppercase leading-5 tracking-wide text-textPrimary-800 dark:text-white">
             {name}
           </span>
         </div>
-        <div className="mt-4 flex justify-center text-6xl font-extrabold leading-none dark:text-white">
+        <div className="mt-4 flex justify-center text-3xl  leading-none text-textPrimary-900 dark:text-white">
           ${price}
-          <span className="ml-1 pt-6 text-2xl font-medium leading-8 text-gray-500 dark:text-gray-400">
-            /{type}
+          <span className="ml-1  pt-0.5 text-sm  leading-8 text-textPrimary-800 ">
+            per {type}
           </span>
         </div>
       </div>
@@ -35,10 +40,10 @@ export default function PricingCard({
         <Button
           onClick={onClick}
           label="Buy now"
-          className="focus:shadow-outline flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
+          className="focus:shadow-outline py- mx-10 flex w-[60%] items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 text-base font-medium  text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
         ></Button>
       </div>
-      <div className="mt-5 bg-white px-6 pb-8 pt-6 sm:p-10 sm:pt-6 dark:bg-gray-800">
+      <div className="mt-3 bg-white px-6 pb-8 pt-6 sm:p-10 sm:pt-6 dark:bg-gray-800">
         <ul>
           {benefits.map((benefit, key) => (
             <li className="mt-4 flex items-start" key={key}>
@@ -57,7 +62,7 @@ export default function PricingCard({
                   ></path>
                 </svg>
               </div>
-              <p className="ml-3 text-base leading-6 text-gray-700 dark:text-gray-200">
+              <p className="ml-3 text-base leading-6 text-textPrimary-700 dark:text-textPrimary-200">
                 {benefit}
               </p>
             </li>
