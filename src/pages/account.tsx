@@ -130,11 +130,11 @@ export default function AccountPage() {
           )}
           <Button
             icon={
-              <TrashIcon className="size-5 font-light text-secondary-400" />
+              <TrashIcon className="size-5 font-light text-textPrimary-100" />
             }
             label="Delete account"
             onClick={handleDeleteAccount}
-            className="transform  rounded-lg  px-4 py-2 text-lg text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
+            className="transform rounded-lg  bg-secondary-600  px-4 py-2 text-lg text-textPrimary-100 shadow-md transition duration-200 ease-in-out hover:scale-105"
           />
         </div>
       </div>

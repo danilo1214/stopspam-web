@@ -49,10 +49,10 @@ export const AccountList = () => {
   }
 
   return (
-    <div className="mx-auto h-full max-w-xl rounded-lg">
+    <div className="mx-auto h-full max-w-3xl rounded-lg">
       <div className="px-6 py-4">
         <div className="flex justify-between align-middle">
-          <div className="mb-2 text-xl font-semibold">Accounts</div>
+          <div className="mb-2 text-lg">Accounts</div>
           <Modal
             title="Add Accounts"
             description="Connect your Instagram accounts to Reply Master."
@@ -72,11 +72,11 @@ export const AccountList = () => {
               <PlusIcon className="size-5 font-light text-textPrimary-100" />
             }
             label="Add"
-            className="mb-4 max-w-[100px] rounded-lg bg-primary-600 px-4 py-2 font-bold text-white hover:bg-primary-700"
+            className="mb-4 rounded-lg bg-primary-600 px-4 py-2 font-bold text-white shadow-md transition duration-200 ease-in-out hover:scale-105 "
             onClick={() => setOpen(true)}
           ></Button>
         </div>
-        <div className="space-y-4">
+        <div className="mt-6">
           {savedPages?.length ? (
             savedPages.map((page, index) => (
               <AccountItem key={index} instagramPage={page} />

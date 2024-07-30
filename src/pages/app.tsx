@@ -61,9 +61,7 @@ export default function Home() {
         <Dashboard />
 
         <div>
-          <div className="mb-10 text-lg font-semibold">
-            Your connected pages
-          </div>
+          <div className="my-5 text-lg">Your connected pages</div>
           {(!pages || pages.length === 0) && (
             <Nudge
               link="/connect"

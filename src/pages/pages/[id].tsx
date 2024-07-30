@@ -127,7 +127,7 @@ export default function Page() {
               );
             }}
             label="Update"
-            className="focus:shadow-outline flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
+            className="focus:shadow-outline rounded-md bg-primary-600 p-3 text-base font-medium text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
           ></Button>
         </div>
       ),
@@ -136,7 +136,7 @@ export default function Page() {
       title: "Set the tone for comments",
       content: (
         <Slider
-          label="Set the tone of your replies"
+          label="Our AI assistant will answer with the given tone in mind."
           value={vibe}
           onChange={onChangeVibe}
           labels={vibes}
@@ -196,7 +196,7 @@ export default function Page() {
         </h1>
       </div>
 
-      <div className="mt-14 flex min-h-screen items-center justify-center px-4">
+      <div className="mt-14 flex min-h-screen items-center justify-center">
         <Steps steps={steps} currentStep={currentStep} />
       </div>
     </main>

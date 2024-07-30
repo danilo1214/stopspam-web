@@ -108,8 +108,8 @@ export default function Navbar({ ...props }) {
   const filteredNav = navigation.filter((n) => !n.protected || isSignedIn);
 
   return (
-    <div className="w-full" {...props}>
-      <nav className="container relative mx-auto flex flex-wrap items-center justify-between p-8 lg:justify-between xl:px-0">
+    <div className="w-full shadow-sm" {...props}>
+      <nav className="container relative mx-auto flex flex-wrap items-center justify-between px-8 py-6 lg:justify-between xl:px-0">
         {/* Logo  */}
         <Disclosure>
           {({ open }) => (
@@ -120,8 +120,8 @@ export default function Navbar({ ...props }) {
                     <span>
                       <Image
                         alt="logo"
-                        width={50}
-                        height={50}
+                        width={40}
+                        height={40}
                         src="/logo.png"
                       />
                     </span>
@@ -185,7 +185,7 @@ export default function Navbar({ ...props }) {
               {filteredNav.map((item, index) => (
                 <li className="nav__item mr-3" key={index}>
                   <Link href={item.link}>
-                    <div className="inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-200">
+                    <div className="inline-block rounded-md px-4 py-2 font-normal text-gray-800 no-underline hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-200">
                       {item.label}
                     </div>
                   </Link>

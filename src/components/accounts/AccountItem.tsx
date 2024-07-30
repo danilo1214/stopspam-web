@@ -46,7 +46,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({ instagramPage }) => {
     <Link
       href={`/pages/${instagramPage.id}`}
       className={classNames(
-        "relative mb-2 flex items-center justify-between rounded-lg bg-white p-4",
+        "relative mb-4 flex items-center justify-between rounded-lg bg-white p-4 shadow-sm",
       )}
     >
       <div className="flex items-center space-x-1">

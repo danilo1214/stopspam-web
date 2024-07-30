@@ -17,8 +17,8 @@ export default function PricingCard({
   onClick,
 }: PricingCardProps) {
   return (
-    <div className="overflow-hidden rounded-lg shadow-lg">
-      <div className="bg-white px-6 py-8 sm:p-10 sm:pb-6 dark:bg-gray-800">
+    <div className="overflow-hidden rounded-lg bg-white shadow-lg">
+      <div className=" px-6 py-8 sm:p-10 sm:pb-6 dark:bg-gray-800">
         <div className="flex justify-center">
           <span className="inline-flex rounded-full px-4 py-1 text-sm font-semibold uppercase leading-5 tracking-wide dark:text-white">
             {name}

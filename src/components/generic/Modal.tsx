@@ -18,7 +18,7 @@ export function Modal({
 }) {
   return (
     <Dialog open={open} onClose={onClose} className="relative z-10">
-      <DialogBackdrop className="fixed inset-0 bg-black/30" />
+      <DialogBackdrop className="fixed inset-0 bg-black/40" />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">

@@ -16,12 +16,9 @@ export const Steps: React.FC<StepsProps> = ({ steps, currentStep }) => {
     <div className="w-full">
       <div className="space-y-10">
         {steps.map((step, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-start gap-x-4 gap-y-2 lg:flex-row"
-          >
+          <div key={index} className="flex items-center gap-y-2  lg:gap-x-4">
             {currentStep >= index && (
-              <div className="m-5 w-full flex-1 rounded-lg bg-white p-4 ">
+              <div className="m-5 w-full flex-1 rounded-lg bg-white p-4 shadow-md">
                 <div className=" flex flex-shrink-0 items-center gap-x-2">
                   <div
                     className={`flex h-6 w-6 items-center justify-center rounded-full border-2 ${
