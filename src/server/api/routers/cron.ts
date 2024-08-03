@@ -31,9 +31,11 @@ export const cronRouter = createTRPCRouter({
             // Only reply comment last 5 posts
             const posts = mediaRes.data.data.slice(0, 5);
             for (const post of posts) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               const comments:
                 | { timestamp: string; text: string; id: string }[]
-                | undefined = post.comments?.data;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                | undefined = post?.comments?.data;
               if (comments && comments.length > 0) {
                 for (const comment of comments) {
                   // This will be a queue entry

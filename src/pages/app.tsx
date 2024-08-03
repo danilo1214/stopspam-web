@@ -31,7 +31,7 @@ export default function Home() {
     return <Skeleton />;
   }
 
-  if (subscription) {
+  if (!subscription) {
     return <CTABanner />;
   }
 
@@ -69,7 +69,7 @@ export default function Home() {
               description="Connect"
             />
           )}
-          {pages?.map((p) => <AccountItem instagramPage={p} />)}
+          {pages?.map((p, idx) => <AccountItem key={idx} instagramPage={p} />)}
         </div>
       </main>
     </>

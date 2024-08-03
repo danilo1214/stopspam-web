@@ -40,8 +40,8 @@ export default function AccountPage() {
   }
 
   const handleDeleteAccount = async () => {
-    await deleteAccount();
-    router.replace("/");
+    deleteAccount();
+    await router.replace("/");
   };
 
   const handleSubscriptionToggle = () => {
@@ -74,12 +74,6 @@ export default function AccountPage() {
   return (
     <div className="mt-10 flex items-center justify-center ">
       <div className="w-full max-w-xl rounded-lg bg-white p-8 shadow-lg">
-        {(!subscription && !isSubscriptionLoading) ||
-          (subscription?.status === "cancelled" && (
-            <div className="mb-10">
-              <CTABanner />
-            </div>
-          ))}
         <div className="mb-6 flex flex-col items-center">
           <img
             src={user?.user.image ?? ""} // Replace with actual path to profile picture
@@ -106,6 +100,12 @@ export default function AccountPage() {
           <></>
         )}
         <div className="mt-10 flex flex-col space-y-4">
+          {((!subscription && !isSubscriptionLoading) ||
+            subscription?.status === "cancelled") && (
+            <div className="mb-10">
+              <CTABanner />
+            </div>
+          )}
           {subscription && (
             <Button
               label={
@@ -130,11 +130,11 @@ export default function AccountPage() {
           )}
           <Button
             icon={
-              <TrashIcon className="size-5 font-light text-textPrimary-100" />
+              <TrashIcon className="size-5 font-light text-secondary-600" />
             }
             label="Delete account"
             onClick={handleDeleteAccount}
-            className="transform rounded-lg  bg-secondary-600  px-4 py-2 text-lg text-textPrimary-100 shadow-md transition duration-200 ease-in-out hover:scale-105"
+            className="transform rounded-lg  bg-white  px-4 py-2 text-lg text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
           />
         </div>
       </div>

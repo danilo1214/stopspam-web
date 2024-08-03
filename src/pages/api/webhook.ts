@@ -48,6 +48,9 @@ export default async function handler(
             subscriptionId: event.data.id as string,
           },
         });
+        if (!sub) {
+          res.status(200);
+        }
         await db.subscription.update({
           where: {
             id: sub?.id,
@@ -73,6 +76,8 @@ export default async function handler(
             userId: event.meta.custom_data.user_id as string,
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             subscriptionId: event.data.id as string,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            variantId: event.data.attributes.variant_id as number,
           },
         });
         res.status(200).end();

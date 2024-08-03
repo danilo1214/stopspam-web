@@ -68,6 +68,7 @@ model Subscription {
     status         String
     expires        DateTime
     user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    variantId      Int
 }
 
 model Session {

@@ -40,7 +40,7 @@ export default function PricingCard({
         <Button
           onClick={onClick}
           label="Buy now"
-          className="focus:shadow-outline py- mx-10 flex w-[60%] items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 text-base font-medium  text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
+          className="py- mx-10 flex w-[60%] items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 text-base font-medium text-white  shadow-lg transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
         ></Button>
       </div>
       <div className="mt-3 bg-white px-6 pb-8 pt-6 sm:p-10 sm:pt-6 dark:bg-gray-800">
@@ -55,9 +55,9 @@ export default function PricingCard({
                   viewBox="0 0 24 24"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M5 13l4 4L19 7"
                   ></path>
                 </svg>

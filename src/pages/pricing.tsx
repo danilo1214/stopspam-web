@@ -18,6 +18,7 @@ export default function Pricing() {
         "Multi language support",
       ],
     },
+
     {
       name: "Pro Plan",
       price: 9.99,
@@ -46,7 +47,7 @@ export default function Pricing() {
   };
 
   return (
-    <div className="w-ful flex flex-col items-center justify-center gap-x-5 gap-y-5 px-10 py-4 align-middle md:flex-row">
+    <div className="w-ful flex flex-col items-center justify-center gap-x-10 gap-y-5 px-10 py-4 align-middle md:flex-row">
       {cards.map((item, key) => (
         <PricingCard
           key={key}
