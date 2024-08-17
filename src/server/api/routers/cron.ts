@@ -45,6 +45,7 @@ export const cronRouter = createTRPCRouter({
                     desc: page.biography,
                     token: account.long_lived_token,
                     profileDescription: page.userDescription,
+                    goal: page.goal,
                   });
                 }
               }

@@ -196,7 +196,7 @@ export default function Page() {
         </h1>
       </div>
 
-      <div className="mt-14 flex min-h-screen items-center justify-center">
+      <div className="mt-14 flex min-h-screen items-center justify-center lg:mx-10 lg:mb-20">
         <Steps steps={steps} currentStep={currentStep} />
       </div>
     </main>

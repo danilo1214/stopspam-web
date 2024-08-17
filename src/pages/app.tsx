@@ -1,5 +1,9 @@
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { type GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import SuperJSON from "superjson";
 import { AccountItem } from "~/components/accounts/AccountItem";
 import { Dashboard } from "~/components/dashboard/Dashboard";
 import { AccessDenied } from "~/components/generic/AccessDenied";
@@ -7,6 +11,10 @@ import { HomeHeader } from "~/components/generic/HomeHeader";
 import { Nudge } from "~/components/generic/Nudge";
 import { Skeleton } from "~/components/generic/Skeleton";
 import { CTABanner } from "~/components/pricing/SubscriptionBanner";
+import { appRouter } from "~/server/api/root";
+import { createInnerTRPCContext } from "~/server/api/trpc";
+import { authOptions } from "~/server/auth";
+import { helpers } from "~/server/helpers";
 
 import { api } from "~/utils/api";
 
@@ -74,4 +82,32 @@ export default function Home() {
       </main>
     </>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session }),
+    transformer: SuperJSON,
+  });
+
+  await helpers.subscriptions.getCurrent.fetch({}, { context });
+  await helpers.instagram.getSavedPages.fetch(undefined, { context });
+  await helpers.instagram.getFacebookAccount.fetch(undefined, { context });
+
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
+  };
 }

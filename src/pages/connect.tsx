@@ -1,7 +1,14 @@
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import { type GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
+import SuperJSON from "superjson";
 import { AccountList } from "~/components/accounts/AccountList";
 import { AccessDenied } from "~/components/generic/AccessDenied";
 import { CTABanner } from "~/components/pricing/SubscriptionBanner";
+import { appRouter } from "~/server/api/root";
+import { createInnerTRPCContext } from "~/server/api/trpc";
+import { authOptions } from "~/server/auth";
 import { api } from "~/utils/api";
 
 export default function Connect() {
@@ -25,4 +32,32 @@ export default function Connect() {
       <AccountList />
     </main>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session }),
+    transformer: SuperJSON,
+  });
+
+  await helpers.subscriptions.getCurrent.fetch({}, { context });
+  await helpers.instagram.getSavedPages.fetch(undefined, { context });
+
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
+  };
 }

@@ -39,7 +39,7 @@ export const AccountList = () => {
       );
       await syncPages({ pages: toSync });
       setOpen(false);
-      utils.instagram.getSavedPages.invalidate();
+      await utils.instagram.getSavedPages.invalidate();
       toast("Successfully synced pages");
     }
   };

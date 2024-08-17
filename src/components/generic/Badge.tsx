@@ -20,14 +20,14 @@ export function Badge({
       return "bg-orange-500/80";
     }
 
-    return "bg-tertiary-600/90";
+    return "bg-primary-600/90";
   }, [type]);
 
   return (
     <span
       {...props}
       className={classNames(
-        "rounded-md px-2 py-1 text-textPrimary-100",
+        "mb-1 rounded-full px-3 text-textPrimary-100",
         color,
         className,
       )}

@@ -12,9 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "~/styles/globals.css";
 import Navbar from "~/components/generic/NavBar";
 import { ToastContainer } from "react-toastify";
-import { AppRouter } from "~/server/api/root";
+import { type AppRouter } from "~/server/api/root";
 import SuperJSON from "superjson";
 import classNames from "classnames";
+import { BottomBar } from "~/components/generic/BottomBar";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

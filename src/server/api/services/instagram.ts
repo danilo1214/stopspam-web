@@ -1,5 +1,9 @@
-import { InstagramAccount } from "@prisma/client";
-import axios, { AxiosInstance } from "axios";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type FacebookAccount } from "@prisma/client";
+import axios, { type AxiosError, type AxiosInstance } from "axios";
 
 export type IgPageResult = {
   id: string;
@@ -17,8 +21,8 @@ export class Instagram {
     });
   }
 
-  async getIgPages(account: InstagramAccount): Promise<IgPageResult[]> {
-    let igPages = [];
+  async getIgPages(account: FacebookAccount): Promise<IgPageResult[]> {
+    const igPages = [];
     try {
       const res = await this.instance.get(
         `/me/accounts?access_token=${account.long_lived_token}`,
@@ -46,9 +50,8 @@ export class Instagram {
           igPages.push(igPageDataRes.data);
         }
       }
-    } catch (err: any) {
-      console.log("fuck me bro");
-      console.log(err.response.data);
+    } catch (err) {
+      console.log((err as AxiosError).response?.data);
     }
 
     return igPages.map((page) => ({

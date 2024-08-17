@@ -17,8 +17,9 @@ import Image from "next/image";
 
 const navigation: NavigationItem[] = [
   { label: "Home", link: "/" },
-  { label: "Connect Pages", link: "/connect", protected: true },
   { label: "App", link: "/app", protected: true },
+  { label: "Connect Pages", link: "/connect", protected: true },
+  { label: "Account", link: "/account", protected: true },
   { label: "Pricing", link: "/pricing" },
   { label: "How it works?", link: "/how-it-works" },
 ];
@@ -61,20 +62,6 @@ const UserMenu = ({ image }: { image?: string | null }) => {
               </button>
             )}
           </MenuItem>
-
-          <MenuItem>
-            {(pageProps) => (
-              <Link
-                href="/account"
-                className={classNames(
-                  pageProps.focus ? "bg-gray-100" : "",
-                  "block w-full px-4 py-2",
-                )}
-              >
-                Account
-              </Link>
-            )}
-          </MenuItem>
         </MenuItems>
       </Transition>
     </Menu>
@@ -105,10 +92,11 @@ export default function Navbar({ ...props }) {
 
   const isSignedIn = status !== "loading" && !!data?.user;
 
-  const filteredNav = navigation.filter((n) => !n.protected || isSignedIn);
+  const publicRoutes = navigation.filter((n) => !n.protected);
+  const protectedRoutes = navigation.filter((n) => n.protected && isSignedIn);
 
   return (
-    <div className="w-full shadow-sm" {...props}>
+    <div className={classNames("w-full bg-white shadow-lg")}>
       <nav className="container relative mx-auto flex flex-wrap items-center justify-between px-8 py-6 lg:justify-between xl:px-0">
         {/* Logo  */}
         <Disclosure>
@@ -163,7 +151,17 @@ export default function Navbar({ ...props }) {
 
                 <DisclosurePanel className="my-5 flex w-full flex-col flex-wrap text-center lg:hidden">
                   <>
-                    {filteredNav.map((item, index) => (
+                    {publicRoutes.map((item, index) => (
+                      <Link key={index} href={item.link}>
+                        <div className="dark:focus:bg-trueGray-700  w-full rounded-md px-4 py-2 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-300">
+                          {item.label}
+                        </div>
+                      </Link>
+                    ))}
+
+                    <div className="mx-auto w-[50%] border-t border-t-primary-600 border-opacity-20"></div>
+
+                    {protectedRoutes.map((item, index) => (
                       <Link key={index} href={item.link}>
                         <div className="dark:focus:bg-trueGray-700  w-full rounded-md px-4 py-2 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-300">
                           {item.label}
@@ -182,8 +180,20 @@ export default function Navbar({ ...props }) {
         {isLargeScreen && (
           <div className="ml-auto flex items-center justify-between text-center">
             <ul className="flex-1 list-none items-center justify-end pt-6 lg:flex lg:pt-0">
-              {filteredNav.map((item, index) => (
-                <li className="nav__item mr-3" key={index}>
+              {publicRoutes.map((item, index) => (
+                <li className="nav__item px-1" key={index}>
+                  <Link href={item.link}>
+                    <div className="inline-block rounded-md px-4 py-2 font-normal text-gray-800 no-underline hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-200">
+                      {item.label}
+                    </div>
+                  </Link>
+                </li>
+              ))}
+
+              <div className="mx-3 h-[30px] border-r border-r-primary-600 border-opacity-55"></div>
+
+              {protectedRoutes.map((item, index) => (
+                <li className="nav__item px-1" key={index}>
                   <Link href={item.link}>
                     <div className="inline-block rounded-md px-4 py-2 font-normal text-gray-800 no-underline hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none dark:text-gray-200">
                       {item.label}
