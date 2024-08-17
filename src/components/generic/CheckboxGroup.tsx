@@ -1,9 +1,9 @@
 import React from "react";
 
 interface CheckboxSelectProps {
-  options: { label: string; value: any }[];
-  selectedOptions: any[];
-  setSelectedOptions: (selected: any[]) => void;
+  options: { label: string; value: string }[];
+  selectedOptions: string[];
+  setSelectedOptions: (selected: string[]) => void;
 }
 
 const CheckboxSelect: React.FC<CheckboxSelectProps> = ({

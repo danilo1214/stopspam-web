@@ -1,5 +1,5 @@
 import CheckboxSelect from "~/components/generic/CheckboxGroup";
-import { IgPageResult } from "~/server/api/services/instagram";
+import { type IgPageResult } from "~/server/api/services/instagram";
 
 export default function AddAccounts({
   accounts,
@@ -15,7 +15,7 @@ export default function AddAccounts({
       <CheckboxSelect
         options={accounts.map((a) => ({ label: a.username, value: a.id }))}
         selectedOptions={selectedAccounts}
-        setSelectedOptions={(v) => setSelectedAccounts(v)}
+        setSelectedOptions={(v: string[]) => setSelectedAccounts(v)}
       />
     </div>
   );

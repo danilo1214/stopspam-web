@@ -59,7 +59,7 @@ export default function Page() {
   }, [page?.vibe]);
 
   const invalidatePageCache = () => {
-    utils.instagram.getSavedPage.invalidate();
+    void utils.instagram.getSavedPage.invalidate();
   };
 
   const handleOptionChange = (option: string) => {
@@ -149,7 +149,7 @@ export default function Page() {
         <div className="p-4">
           <div className="mb-2">
             <div className=" text-textPrimary-800">
-              What's your goal with our product?
+              What is your goal with our product?
             </div>
           </div>
           <CustomSelect

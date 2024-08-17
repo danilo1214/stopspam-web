@@ -44,7 +44,7 @@ export const authOptions: NextAuthOptions = {
       if (user && account) {
         try {
           // generate long lived token
-          const res = await axios.get(
+          const res = await axios.get<{ access_token: string }>(
             `https://graph.facebook.com/v20.0/oauth/access_token`,
             {
               params: {
@@ -58,7 +58,7 @@ export const authOptions: NextAuthOptions = {
 
           const facebookAccount = await db.facebookAccount.create({
             data: {
-              long_lived_token: res.data.access_token as string,
+              long_lived_token: res.data.access_token,
               instagramId: account.providerAccountId,
             },
           });

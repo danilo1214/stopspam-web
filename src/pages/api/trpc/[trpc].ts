@@ -12,10 +12,10 @@ export default createNextApiHandler({
     enabled: false,
   },
   responseMeta(opts) {
-    const { ctx, info, errors, type } = opts;
-    const allInstagram =
-      info &&
-      info.calls.every((call) => call.path.includes("getInstagramAccounts"));
+    const { info, errors, type } = opts;
+    const allInstagram = info?.calls.every((call) =>
+      call.path.includes("getInstagramAccounts"),
+    );
     // checking that no procedures errored
     const allOk = errors.length === 0;
     // checking we're doing a query request

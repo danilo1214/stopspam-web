@@ -1,4 +1,4 @@
-import { InstagramPage } from "@prisma/client";
+import { type InstagramPage } from "@prisma/client";
 import { z } from "zod";
 import { Instagram } from "~/server/api/services/instagram";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -71,15 +71,15 @@ export const instagramRouter = createTRPCRouter({
       const update: Partial<InstagramPage> = {};
 
       if (input.vibe) {
-        update["vibe"] = input.vibe;
+        update.vibe = input.vibe;
       }
 
       if (input.goal) {
-        update["goal"] = input.goal;
+        update.goal = input.goal;
       }
 
       if (input.description) {
-        update["userDescription"] = input.description;
+        update.userDescription = input.description;
       }
 
       await ctx.db.instagramPage.update({
@@ -184,8 +184,6 @@ export const instagramRouter = createTRPCRouter({
       }
       await ctx.db.instagramPage.delete({ where: { id: input.id } });
     }),
-
-  connectFacebookPage: protectedProcedure.mutation(async ({ ctx }) => {}),
 
   getFacebookAccount: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;

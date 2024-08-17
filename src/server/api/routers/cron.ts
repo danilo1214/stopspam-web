@@ -29,6 +29,7 @@ export const cronRouter = createTRPCRouter({
             );
 
             // Only reply comment last 5 posts
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             const posts = mediaRes.data.data.slice(0, 5);
             for (const post of posts) {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

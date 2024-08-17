@@ -16,6 +16,7 @@ import { authOptions } from "~/server/auth";
 import { AccessDenied } from "~/components/generic/AccessDenied";
 import { Badge } from "~/components/generic/Badge";
 import classNames from "classnames";
+import { type GetServerSidePropsContext } from "next";
 
 export default function AccountPage() {
   const utils = api.useUtils();
@@ -49,7 +50,7 @@ export default function AccountPage() {
       cancelSub(undefined, {
         onSuccess: () => {
           setTimeout(() => {
-            utils.subscriptions.getCurrent.invalidate();
+            void utils.subscriptions.getCurrent.invalidate();
           }, 1000);
           toast("Subscription canceled");
         },
@@ -57,10 +58,10 @@ export default function AccountPage() {
     } else {
       resumeSub(undefined, {
         onSuccess: () => {
-          utils.subscriptions.getCurrent.invalidate();
+          void utils.subscriptions.getCurrent.invalidate();
           toast("Subscription resumed");
           setTimeout(() => {
-            utils.subscriptions.getCurrent.invalidate();
+            void utils.subscriptions.getCurrent.invalidate();
           }, 1000);
         },
       });
@@ -142,7 +143,7 @@ export default function AccountPage() {
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { req, res } = context;
   if (req && res) {
     return {

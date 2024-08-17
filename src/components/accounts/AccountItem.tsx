@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Cog6ToothIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Transition } from "@headlessui/react";
-import { InstagramPage } from "@prisma/client";
+import { type InstagramPage } from "@prisma/client";
 import { api } from "~/utils/api";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -86,7 +86,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({ instagramPage }) => {
                 e.preventDefault();
                 e.stopPropagation();
                 await deletePage({ id: instagramPage.id });
-                utils.instagram.getSavedPages.invalidate();
+                await utils.instagram.getSavedPages.invalidate();
                 toast("Successfully removed page");
               }}
             >
