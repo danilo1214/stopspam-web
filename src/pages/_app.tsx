@@ -6,16 +6,13 @@ import { type AppType } from "next/app";
 import { httpLink } from "@trpc/client/links/httpLink";
 import { withTRPC } from "@trpc/next";
 
-import { api } from "~/utils/api";
-
 import "react-toastify/dist/ReactToastify.css";
 import "~/styles/globals.css";
-import Navbar from "~/components/generic/NavBar";
 import { ToastContainer } from "react-toastify";
 import { type AppRouter } from "~/server/api/root";
 import SuperJSON from "superjson";
 import classNames from "classnames";
-import { BottomBar } from "~/components/generic/BottomBar";
+import Navbar from "~/components/navigation/NavBar";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
