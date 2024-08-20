@@ -40,7 +40,7 @@ export default function Navbar({ ...props }) {
   const protectedRoutes = navigation.filter((n) => n.protected && isSignedIn);
 
   return (
-    <div className={classNames("w-full bg-white shadow-lg")}>
+    <div className={classNames("w-full  bg-primary-600 shadow-lg")}>
       <nav className="container relative mx-auto flex flex-wrap items-center justify-between px-8 py-6 lg:justify-between xl:px-0">
         {/* Logo  */}
         <Disclosure>
@@ -57,7 +57,9 @@ export default function Navbar({ ...props }) {
                         src="/logo.png"
                       />
                     </span>
-                    <span className=" font-customFont">Reply Master</span>
+                    <span className="font-customFont text-white">
+                      Reply Master
+                    </span>
                   </div>
                 </Link>
 
@@ -68,7 +70,7 @@ export default function Navbar({ ...props }) {
                 <DisclosureButton
                   aria-label="Toggle Menu"
                   className={classNames(
-                    "dark:focus:bg-trueGray-700 ml-5 rounded-md px-2 py-1 text-gray-500 hover:text-primary-500 focus:bg-primary-100 focus:text-secondary-500 focus:outline-none lg:hidden dark:text-gray-300",
+                    "dark:focus:bg-trueGray-700 ml-5 rounded-md px-2 py-1 text-white hover:text-white  focus:outline-none lg:hidden ",
                     !isSignedIn && "ml-auto",
                   )}
                 >
@@ -88,7 +90,7 @@ export default function Navbar({ ...props }) {
                       <NavBarItemMobile item={item} key={index} />
                     ))}
 
-                    <div className="mx-auto w-[50%] border-t border-t-textPrimary-600 border-opacity-20"></div>
+                    <div className="mx-auto w-[50%] border-t border-t-textPrimary-100 border-opacity-20"></div>
 
                     {protectedRoutes.map((item, index) => (
                       <NavBarItemMobile item={item} key={index} />
@@ -109,7 +111,7 @@ export default function Navbar({ ...props }) {
                 <NavBarItemWeb key={index} item={item} />
               ))}
 
-              <div className="mx-3 h-[30px] border-r border-r-textPrimary-600 border-opacity-55"></div>
+              <div className="mx-3 h-[30px] border-r border-r-textPrimary-100 border-opacity-55"></div>
 
               {protectedRoutes.map((item, index) => (
                 <NavBarItemWeb key={index} item={item} />

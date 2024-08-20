@@ -23,10 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <ToastContainer />
       <Navbar className={GeistSans.className} />
       <main
-        className={classNames(
-          GeistSans.className,
-          "min-h-[100vh] bg-gray-100 p-5",
-        )}
+        className={classNames(GeistSans.className, "min-h-[100vh] bg-gray-100")}
       >
         <Component {...pageProps} />
       </main>
