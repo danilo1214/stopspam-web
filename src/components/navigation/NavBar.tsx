@@ -14,6 +14,7 @@ import { NavBarItemWeb } from "~/components/navigation/NavBarItemWeb";
 import { NavBarItemMobile } from "~/components/navigation/NavBarItemMobile";
 import { HamburgerClosed } from "~/components/navigation/HamburgerClosed";
 import { HamburgerOpen } from "~/components/navigation/HamburgerOpen";
+import { useRouter } from "next/router";
 
 const navigation: NavigationItem[] = [
   { label: "Home", link: "/" },
@@ -33,22 +34,30 @@ export interface NavigationItem {
 export default function Navbar({ ...props }) {
   const { isLargeScreen, isMediumScreen } = useBreakpoint();
   const { data, status } = useSession();
+  const { pathname } = useRouter();
 
   const isSignedIn = status !== "loading" && !!data?.user;
 
   const publicRoutes = navigation.filter((n) => !n.protected);
   const protectedRoutes = navigation.filter((n) => n.protected && isSignedIn);
 
+  const isDark = pathname === "/";
+
   return (
-    <div className={classNames("w-full  bg-primary-600 shadow-lg")}>
-      <nav className="container relative mx-auto flex flex-wrap items-center justify-between px-8 py-6 lg:justify-between xl:px-0">
+    <div
+      className={classNames(
+        "w-full bg-white shadow-lg dark:bg-primary-600",
+        isDark && "dark",
+      )}
+    >
+      <nav className="container relative mx-auto flex flex-wrap items-center justify-between  px-8 py-6 lg:justify-between xl:px-0 ">
         {/* Logo  */}
         <Disclosure>
           {({ open }) => (
             <>
               <div className="flex w-full  flex-wrap items-center lg:w-auto lg:justify-between">
                 <Link href="/">
-                  <div className="flex items-center space-x-2 text-2xl font-medium text-primary-700/75 dark:text-gray-100">
+                  <div className="flex items-center space-x-2 text-2xl font-medium text-primary-700/75 ">
                     <span>
                       <Image
                         alt="logo"
@@ -70,7 +79,7 @@ export default function Navbar({ ...props }) {
                 <DisclosureButton
                   aria-label="Toggle Menu"
                   className={classNames(
-                    "dark:focus:bg-trueGray-700 ml-5 rounded-md px-2 py-1 text-white hover:text-white  focus:outline-none lg:hidden ",
+                    "ml-5 rounded-md px-2 py-1 text-textPrimary-800 hover:text-textPrimary-900 focus:outline-none lg:hidden  dark:text-white dark:hover:text-white ",
                     !isSignedIn && "ml-auto",
                   )}
                 >
