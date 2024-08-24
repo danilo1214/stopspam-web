@@ -23,7 +23,7 @@ export default function Home() {
         <meta name="description" content="Keyyy" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex w-full flex-col text-white">
+      <main className="flex w-full flex-col bg-white text-white">
         <div
           className="flex flex-col content-between items-center justify-center bg-primary-600 lg:flex-row lg:items-start lg:space-x-20"
           style={
@@ -36,7 +36,7 @@ export default function Home() {
               : {}
           }
         >
-          <div className="p-10 text-center md:p-16 md:text-left lg:mt-10 lg:max-w-3xl lg:p-5">
+          <div className="p-10 text-center md:m-10 md:text-left lg:mt-10 lg:max-w-3xl lg:p-5">
             <h1 className="text-4xl font-semibold">
               Never Miss a Comment, Never Lose a Customer
             </h1>
@@ -54,22 +54,22 @@ export default function Home() {
           <Image src="/test.png" width={350} height={300} alt="hh" />
         </div>
 
-        <div className="flex flex-col items-center bg-white p-20 text-center text-textPrimary-900">
+        <div className="flex flex-col items-center bg-white p-10 text-center text-textPrimary-900">
           <h3 className="text-md font-bold text-tertiary-800">
-            How does it work?
+            Empower Your Business
           </h3>
-          <h2 className="text-2xl font-bold">Use the power of AI</h2>
-          <p className="mt-5 lg:px-20">
+          <h2 className="text-2xl font-bold">
+            Automate Your Social Media Engagement with AI
+          </h2>
+          <p className="mt-3 lg:px-20">
             {" "}
-            We use cutting edge artificial intelligence to automatically reply
-            to your social media comments, with relevant information about your
-            business. We use cutting edge artificial intelligence to
-            automatically reply to your social media comments, with relevant
-            information about your business.{" "}
+            Our advanced AI technology automatically responds to your social
+            media comments with accurate and relevant information, ensuring your
+            customers always get the answers they need, quickly and efficiently.{" "}
           </p>
 
           <Image
-            className="mt-5"
+            className="mt-4"
             src="/hero.png"
             width={350}
             height={300}
@@ -77,12 +77,12 @@ export default function Home() {
           />
         </div>
 
-        <div className="bg-white p-10 text-center text-textPrimary-900">
+        <div className="mt-10 bg-white p-10 text-center text-textPrimary-900">
           <h3 className="text-md font-bold text-tertiary-800">We can help!</h3>
           <h2 className="text-2xl font-bold">
             Engage with your audience without draining your time
           </h2>
-          <p className="mt-5">
+          <p className="mt-3">
             {" "}
             Running a business is hard. Let alone replying to all those
             comments. Here are three ways we can help.{" "}
@@ -121,7 +121,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="p-10">
+        <div className=" bg-gray-100 p-10">
           <PricingList cards={cards} />
         </div>
 
