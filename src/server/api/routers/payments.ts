@@ -3,6 +3,9 @@ import { env } from "~/env";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { lemonSqueezyApi } from "~/server/lemonsqueezy";
 
+interface AxiosErr {
+  response: { data: unknown };
+}
 export const paymentRouter = createTRPCRouter({
   checkout: protectedProcedure
     .input(
@@ -25,7 +28,7 @@ export const paymentRouter = createTRPCRouter({
                 redirect_url:
                   env.NODE_ENV === "development"
                     ? "http://localhost:3000"
-                    : "prod_url",
+                    : "https://reply-master.vercel.app/",
               },
             },
             relationships: {
@@ -49,8 +52,9 @@ export const paymentRouter = createTRPCRouter({
         const url: string | undefined = response?.data?.data?.attributes
           .url as string;
         return url;
-      } catch (err) {
-        console.log(err);
+      } catch (err: unknown) {
+        const e = err as AxiosErr;
+        console.log(e.response.data);
         throw err;
       }
     }),
