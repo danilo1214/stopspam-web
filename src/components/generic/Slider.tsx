@@ -14,7 +14,6 @@ export const Slider = ({
   const handleVibeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(parseInt(event.target.value));
   };
-  console.log(value);
 
   return (
     <div className="rounded-lg bg-white p-6">

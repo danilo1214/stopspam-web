@@ -4,9 +4,10 @@ import classNames from "classnames";
 type ButtonProps = {
   label: string;
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
   disabled?: boolean;
   icon?: React.ReactNode;
+  type?: "button" | "submit";
 };
 
 export default function Button({
@@ -15,10 +16,12 @@ export default function Button({
   onClick,
   disabled,
   icon,
+  type,
 }: ButtonProps) {
   return (
     <button
       disabled={disabled}
+      type={type}
       className={classNames(
         "flex items-center justify-center space-x-2 rounded px-8 py-2",
         className,

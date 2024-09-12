@@ -6,7 +6,6 @@ import { lemonSqueezyApi } from "~/server/lemonsqueezy";
 
 export const subscriptionRouter = createTRPCRouter({
   getCurrent: protectedProcedure.input(z.object({})).query(async ({ ctx }) => {
-    console.log("ctx is", ctx);
     const user = ctx.session.user;
     if (!user) {
       throw Error("No user found");
@@ -44,8 +43,6 @@ export const subscriptionRouter = createTRPCRouter({
       throw Error("No subscription found");
     }
 
-    console.log("SUB FOUND", sub.id);
-
     try {
       const response = await lemonSqueezyApi.patch(
         `/subscriptions/${sub.subscriptionId}`,
@@ -59,8 +56,6 @@ export const subscriptionRouter = createTRPCRouter({
           },
         },
       );
-
-      console.log(response);
 
       return true;
     } catch (err) {

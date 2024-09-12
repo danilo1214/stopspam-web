@@ -204,6 +204,25 @@ export const instagramRouter = createTRPCRouter({
     return facebookAccount;
   }),
 
+  getFacebookUnconnectedPages: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+    if (!user) {
+      throw Error("No user found");
+    }
+
+    const facebookAccount = await ctx.db.facebookAccount.findFirst({
+      where: {
+        instagramId: ctx.account.providerAccountId,
+      },
+    });
+
+    if (!facebookAccount) {
+      throw Error("No account connected");
+    }
+
+    return await new Instagram().getFbPages(facebookAccount);
+  }),
+
   getInstagramAccounts: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
     if (!user) {

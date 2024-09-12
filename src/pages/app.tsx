@@ -7,6 +7,7 @@ import SuperJSON from "superjson";
 import { AccountItem } from "~/components/accounts/AccountItem";
 import { Dashboard } from "~/components/dashboard/Dashboard";
 import { AccessDenied } from "~/components/generic/AccessDenied";
+import Button from "~/components/generic/Button";
 import { HomeHeader } from "~/components/generic/HomeHeader";
 import { Nudge } from "~/components/generic/Nudge";
 import { Skeleton } from "~/components/generic/Skeleton";
@@ -28,6 +29,8 @@ export default function Home() {
     api.instagram.getFacebookAccount.useQuery(undefined, {
       enabled: !!sessionData?.user,
     });
+
+  const { mutate } = api.cronRouter.job.useMutation();
 
   const isLoading = isAccountLoading || isPagesLoading || isSubscriptionLoading;
 
@@ -65,6 +68,8 @@ export default function Home() {
           pages={pages?.length ?? 0}
           name={sessionData?.user.name ?? ""}
         />
+
+        <Button label="kur" onClick={() => mutate({ secret: "123" })} />
 
         <Dashboard />
 

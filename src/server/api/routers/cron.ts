@@ -38,17 +38,16 @@ export const cronRouter = createTRPCRouter({
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 | undefined = post?.comments?.data;
               if (comments && comments.length > 0) {
-                for (const comment of comments) {
-                  // This will be a queue entry
-                  console.log(`Creating a job`, {
-                    comment,
-                    instagramPageId: page.instagramId,
-                    desc: page.biography,
-                    token: account.long_lived_token,
-                    profileDescription: page.userDescription,
-                    goal: page.goal,
-                  });
-                }
+                console.log(`Creating a job`, {
+                  comments,
+                  instagramPageId: page.instagramId,
+                  desc: page.biography,
+                  token: account.long_lived_token,
+                  profileDescription: page.userDescription,
+                  goal: page.goal,
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  media: post,
+                });
               }
             }
           }

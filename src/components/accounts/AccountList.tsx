@@ -16,6 +16,13 @@ export const AccountList = () => {
       // 5 mins
       staleTime: 300 * 1000,
     });
+
+  const { data: facebookAccounts } =
+    api.instagram.getFacebookUnconnectedPages.useQuery(undefined, {
+      // 5 mins
+      staleTime: 300 * 1000,
+    });
+
   const { mutateAsync: syncPages } = api.instagram.syncPages.useMutation();
   const { data: savedPages, isLoading: isGetSavedPagesLoading } =
     api.instagram.getSavedPages.useQuery();
@@ -62,9 +69,10 @@ export const AccountList = () => {
           >
             {" "}
             <AddAccounts
+              instagramAccounts={instagramAccounts ?? []}
+              facebookAccounts={facebookAccounts ?? []}
               selectedAccounts={selectedAccounts}
               setSelectedAccounts={(v) => setSelectedAccounts(v)}
-              accounts={instagramAccounts ?? []}
             />
           </Modal>
           <Button
@@ -77,6 +85,7 @@ export const AccountList = () => {
           ></Button>
         </div>
         <div className="mt-6">
+          account.
           {savedPages?.length ? (
             savedPages.map((page, index) => (
               <AccountItem key={index} instagramPage={page} />

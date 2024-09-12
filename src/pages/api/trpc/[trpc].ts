@@ -14,15 +14,14 @@ export default createNextApiHandler({
   responseMeta(opts) {
     const { info, errors, type } = opts;
     const allInstagram = info?.calls.every((call) =>
-      call.path.includes("getInstagramAccounts"),
+      ["getFacebookUnconnectedPages", "getInstagramAccounts "].includes(
+        call.path,
+      ),
     );
     // checking that no procedures errored
     const allOk = errors.length === 0;
     // checking we're doing a query request
-    console.log("checccc");
     const isQuery = type === "query";
-    console.log(allInstagram);
-    console.log(info?.calls.map((c) => c.path));
 
     if (allInstagram && allOk && isQuery) {
       // cache request for 1 day + revalidate once every second

@@ -13,12 +13,45 @@ export type IgPageResult = {
   username: string;
 };
 
+export type FbPageResult = {
+  id: string;
+  name: string;
+};
+
 export class Instagram {
   instance: AxiosInstance;
   constructor() {
     this.instance = axios.create({
       baseURL: "https://graph.facebook.com/v20.0",
     });
+  }
+
+  async getFbPages(account: FacebookAccount): Promise<FbPageResult[]> {
+    const fbPages = [];
+    try {
+      const res = await this.instance.get(
+        `/me/accounts?access_token=${account.long_lived_token}`,
+      );
+      const pages = res.data.data as any[];
+
+      for (const page of pages) {
+        const businessAccountRes = await this.instance.get(`/${page.id}`, {
+          params: {
+            fields: "instagram_business_account,name",
+            access_token: account.long_lived_token,
+          },
+        });
+        const pageData = businessAccountRes.data;
+
+        if (!pageData.instagram_business_account?.id) {
+          fbPages.push(pageData);
+        }
+      }
+    } catch (err) {
+      console.log((err as AxiosError).response?.data);
+    }
+
+    return fbPages;
   }
 
   async getIgPages(account: FacebookAccount): Promise<IgPageResult[]> {
@@ -47,6 +80,7 @@ export class Instagram {
               access_token: account.long_lived_token,
             },
           });
+
           igPages.push(igPageDataRes.data);
         }
       }
