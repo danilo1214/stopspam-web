@@ -99,7 +99,13 @@ export default function Navbar({ ...props }) {
                       <NavBarItemMobile item={item} key={index} />
                     ))}
 
-                    <div className="mx-auto w-[50%] border-t border-t-textPrimary-100 border-opacity-20"></div>
+                    <div
+                      className={classNames(
+                        isSignedIn &&
+                          "border-t border-t-textPrimary-100  border-opacity-20",
+                        "mx-auto w-[50%] ",
+                      )}
+                    ></div>
 
                     {protectedRoutes.map((item, index) => (
                       <NavBarItemMobile item={item} key={index} />
@@ -120,7 +126,13 @@ export default function Navbar({ ...props }) {
                 <NavBarItemWeb key={index} item={item} />
               ))}
 
-              <div className="mx-3 h-[30px] border-r border-r-textPrimary-100 border-opacity-55"></div>
+              <div
+                className={classNames(
+                  "mx-3 h-[30px] ",
+                  isSignedIn &&
+                    "border-r border-r-textPrimary-100 border-opacity-55",
+                )}
+              ></div>
 
               {protectedRoutes.map((item, index) => (
                 <NavBarItemWeb key={index} item={item} />

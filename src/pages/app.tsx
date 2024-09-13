@@ -78,7 +78,7 @@ export default function Home() {
           {(!pages || pages.length === 0) && (
             <Nudge
               link="/connect"
-              title="You don't have any connected Instagram pages yet."
+              title="You don't have any connected Instagram profiles yet."
               description="Connect"
             />
           )}

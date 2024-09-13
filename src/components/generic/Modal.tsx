@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Dialog, DialogPanel, DialogBackdrop } from "@headlessui/react";
 
 export function Modal({
@@ -30,7 +30,7 @@ export function Modal({
               <div className="text-textPrimary-700">{description}</div>
             </div>
 
-            <div className="px-10 py-8">{children}</div>
+            <div className="px-7 py-8">{children}</div>
             <div className="gap-x-2 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"

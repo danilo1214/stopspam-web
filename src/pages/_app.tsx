@@ -14,6 +14,7 @@ import SuperJSON from "superjson";
 import classNames from "classnames";
 import Navbar from "~/components/navigation/NavBar";
 import { Footer } from "~/components/generic/Footer";
+import { Main } from "~/components/Main";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -21,14 +22,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <ToastContainer />
-      <Navbar className={GeistSans.className} />
-      <main
-        className={classNames(GeistSans.className, "min-h-[100vh] bg-gray-100")}
-      >
-        <Component {...pageProps} />
-      </main>
-      <Footer />
+      <Main Component={Component} {...pageProps} />
     </SessionProvider>
   );
 };

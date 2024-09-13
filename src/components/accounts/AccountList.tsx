@@ -62,7 +62,7 @@ export const AccountList = () => {
           <div className="mb-2 text-lg">Accounts</div>
           <Modal
             title="Add Accounts"
-            description="Connect your Instagram accounts to Reply Master."
+            description="Connect your Instagram profiles to Reply Master."
             open={open}
             onConfirm={() => savePages()}
             onClose={() => setOpen(false)}
