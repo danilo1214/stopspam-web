@@ -9,12 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const key = req.headers.authorization?.split("Bearer ")[1];
-
-  console.log(key === env.CRON_SECRET);
-  console.log(env.CRON_SECRET);
-  console.log(key);
-  if (req.headers.authorization?.split("Bearer ")[1] !== env.CRON_SECRET) {
+  if (req.headers.authorization?.split("Bearer ")[1] === env.CRON_SECRET) {
     const facebookAccounts = await db.facebookAccount.findMany();
     for (const account of facebookAccounts) {
       const pages = await db.instagramPage.findMany({
