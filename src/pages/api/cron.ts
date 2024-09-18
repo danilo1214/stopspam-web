@@ -10,6 +10,10 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   console.log(req.headers.authorization);
+  console.log(req.headers.authorization?.trim() === req.headers.authorization);
+  console.log(req.headers.authorization?.charAt(0));
+
+  console.log(env.CRON_SECRET);
   if (req.headers.authorization !== `Bearer ${env.CRON_SECRET}`) {
     const facebookAccounts = await db.facebookAccount.findMany();
     for (const account of facebookAccounts) {
