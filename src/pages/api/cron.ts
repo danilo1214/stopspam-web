@@ -67,5 +67,9 @@ export default async function handler(
         }
       }
     }
+
+    res.status(200).json({});
+  } else {
+    res.status(401).json({});
   }
 }
