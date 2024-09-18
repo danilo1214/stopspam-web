@@ -62,9 +62,6 @@ export const authOptions: NextAuthOptions = {
               instagramId: account.providerAccountId,
             },
           });
-
-          // 2. store long lived token on new ig table
-          // 3. store all shitz such as pages and stuff in ig table.
         } catch (err) {
           if (err instanceof Error) {
             console.error(err.message);

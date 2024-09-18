@@ -85,7 +85,6 @@ export const AccountList = () => {
           ></Button>
         </div>
         <div className="mt-6">
-          account.
           {savedPages?.length ? (
             savedPages.map((page, index) => (
               <AccountItem key={index} instagramPage={page} />
