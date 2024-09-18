@@ -28,6 +28,7 @@ export const env = createEnv({
     LEMONSQUEEZY_API_KEY: z.string(),
     LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
     LEMONSQUEEZY_STORE_ID: z.string(),
+    CRON_SECRET: z.string(),
   },
 
   /**
@@ -54,6 +55,7 @@ export const env = createEnv({
     LEMONSQUEEZY_WEBHOOK_SECRET: process.env.LEMONSQUEEZY_WEBHOOK_SECRET,
     LEMONSQUEEZY_STORE_ID: process.env.LEMONSQUEEZY_STORE_ID,
     AWS_QUEUE_URL: process.env.AWS_QUEUE_URL,
+    CRON_SECRET: process.env.CRON_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
