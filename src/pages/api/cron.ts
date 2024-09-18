@@ -34,25 +34,24 @@ export default async function handler(
         const posts = mediaRes.data.data.slice(0, 5);
         for (const post of posts) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const comments:
-            | {
-                timestamp: string;
-                text: string;
-                id: string;
-                like_count: number;
-              }[]
+          const comments: {
+            timestamp: string;
+            text: string;
+            id: string;
+            like_count: number;
+          }[] =
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            | undefined = post?.comments?.data;
-          if (comments && comments.length > 0) {
-            const filteredComments = comments
-              .filter((comment) => {
-                return moment(comment.timestamp).isAfter(
-                  moment().subtract(1, "hours"),
-                );
-              })
-              .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
-              .slice(0, 5);
+            post?.comments?.data ?? [];
 
+          const filteredComments = comments
+            .filter((comment) => {
+              return moment(comment.timestamp).isAfter(
+                moment().subtract(1, "hours"),
+              );
+            })
+            .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
+            .slice(0, 5);
+          if (filteredComments && filteredComments.length > 0) {
             await sendMessageToQueue({
               comments: filteredComments,
               instagramPageId: page.instagramId,
