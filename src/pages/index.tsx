@@ -25,7 +25,7 @@ export default function Home() {
       </Head>
       <main className="flex w-full flex-col bg-white text-white">
         <div
-          className="flex flex-col content-between items-center justify-center bg-primary-600 lg:flex-row lg:items-start lg:space-x-20"
+          className="flex flex-col content-between items-center justify-center bg-primary-600 py-10 lg:flex-row lg:items-start lg:space-x-20"
           style={
             isLargeScreen
               ? {
@@ -53,9 +53,9 @@ export default function Home() {
 
           <Image
             loading="lazy"
-            src="/test.png"
-            width={350}
-            height={300}
+            src="/tst.png"
+            width={700}
+            height={10000}
             alt="hh"
           />
         </div>
