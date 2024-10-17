@@ -36,11 +36,11 @@ export default function Home() {
               : {}
           }
         >
-          <div className="p-10 text-center md:m-10 md:text-left lg:mt-10 lg:max-w-3xl lg:p-5">
-            <h1 className="text-4xl font-semibold">
+          <div className="space-y-4 p-4 text-center md:m-10 lg:mt-10 lg:max-w-3xl lg:p-10 lg:text-left">
+            <h1 className="text-2xl font-semibold text-textPrimary-100">
               Never Miss a Comment, Never Lose a Customer
             </h1>
-            <p className="my-4 text-lg">
+            <p className="text-lg text-textPrimary-200">
               Reply Master uses cutting edge AI to interract with your social
               media page comments. Engage with your audience 24/7, even when
               you’re busy running your business.
@@ -54,7 +54,7 @@ export default function Home() {
           <Image src="/test.png" width={350} height={300} alt="hh" />
         </div>
 
-        <div className="flex flex-col items-center bg-white p-10 text-center text-textPrimary-900">
+        <div className="mt-4 flex flex-col items-center bg-white p-4 text-center text-textPrimary-900 lg:p-10">
           <h3 className="text-md font-bold text-tertiary-800">
             Empower Your Business
           </h3>
@@ -77,7 +77,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="mt-10 bg-white p-10 text-center text-textPrimary-900">
+        <div className="mt-10 bg-white p-4 text-center text-textPrimary-900 lg:p-10">
           <h3 className="text-md font-bold text-tertiary-800">We can help!</h3>
           <h2 className="text-2xl font-bold">
             Engage with your audience without draining your time
@@ -88,7 +88,7 @@ export default function Home() {
             comments. Here are three ways we can help.{" "}
           </p>
 
-          <div className="my-12 flex w-full flex-col justify-center gap-y-10 lg:flex-row lg:gap-x-20 lg:gap-y-0">
+          <div className="my-5 flex w-full flex-col justify-center gap-y-10 lg:flex-row lg:gap-x-20 lg:gap-y-0">
             <div className="flex flex-1 flex-col items-center align-middle">
               <ClockIcon className=" size-16 font-light text-primary-600" />
               <h1 className="text-lg font-semibold">Time Management</h1>
