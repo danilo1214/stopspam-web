@@ -60,6 +60,7 @@ export default function Navbar({ ...props }) {
                   <div className="flex items-center space-x-2 text-2xl font-medium text-primary-700/75 ">
                     <span>
                       <Image
+                        loading="lazy"
                         alt="logo"
                         width={40}
                         height={40}

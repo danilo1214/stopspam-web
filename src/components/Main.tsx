@@ -19,6 +19,7 @@ export const Main = ({
     return (
       <div className="flex h-[100vh] w-full content-center items-center justify-center bg-primary-600">
         <Image
+          loading="lazy"
           alt="logo"
           width={100}
           height={100}

@@ -106,9 +106,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     transformer: SuperJSON,
   });
 
-  await helpers.subscriptions.getCurrent.fetch({}, { context });
-  await helpers.instagram.getSavedPages.fetch(undefined, { context });
-  await helpers.instagram.getFacebookAccount.fetch(undefined, { context });
+  // Run all three fetch operations in parallel
+  await Promise.all([
+    helpers.subscriptions.getCurrent.fetch({}, { context }),
+    helpers.instagram.getSavedPages.fetch(undefined, { context }),
+    helpers.instagram.getFacebookAccount.fetch(undefined, { context }),
+  ]);
 
   return {
     props: {

@@ -52,8 +52,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     transformer: SuperJSON,
   });
 
-  await helpers.subscriptions.getCurrent.fetch({}, { context });
-  await helpers.instagram.getSavedPages.fetch(undefined, { context });
+  await Promise.all([
+    helpers.subscriptions.getCurrent.fetch({}, { context }),
+    helpers.instagram.getSavedPages.fetch(undefined, { context }),
+  ]);
 
   return {
     props: {
