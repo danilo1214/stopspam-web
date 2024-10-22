@@ -8,7 +8,7 @@ export const Slider = ({
 }: {
   labels: string[];
   value: number;
-  label: string;
+  label?: string;
   onChange: (v: number) => void;
 }) => {
   const handleVibeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,15 +16,7 @@ export const Slider = ({
   };
 
   return (
-    <div className="rounded-lg bg-white p-6">
-      <label htmlFor="vibe-slider" className="mb-4 block  text-textPrimary-900">
-        {label}
-      </label>
-      <div className="flex content-between justify-between text-xs">
-        <div>{labels[0]}</div>
-
-        <div>{labels[labels.length - 1]}</div>
-      </div>
+    <div className="border-radius-[50%] relative rounded-full px-10  py-8 shadow md:px-20">
       <input
         id="vibe-slider"
         type="range"
@@ -33,10 +25,47 @@ export const Slider = ({
         step={1}
         value={value}
         onChange={handleVibeChange}
-        className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
+        className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-primary-300"
+        style={{ position: "relative", zIndex: 2 }}
       />
-      <div className="mt-6 text-xl font-medium text-textPrimary-900">
-        {labels[value]}
+      <div className="pointer-events-none absolute left-0 right-0 top-1/2  flex items-center justify-between px-10  text-center md:px-20 ">
+        <div
+          className="bold size-2 rounded-full bg-primary-300"
+          aria-hidden="true"
+        >
+          <div
+            className="size-2 -translate-x-3 translate-y-4 whitespace-nowrap text-xs"
+            aria-hidden="true"
+          >
+            {labels[0]}
+          </div>
+        </div>
+
+        {new Array(labels.length - 2).fill(0).map((_, idx) => (
+          <div
+            key={idx}
+            className="bold size-2 rounded-full bg-primary-300"
+            aria-hidden="true"
+          >
+            <div
+              className="size-2 -translate-x-3 translate-y-4 whitespace-nowrap text-xs"
+              aria-hidden="true"
+            >
+              {labels[idx + 1]}
+            </div>
+          </div>
+        ))}
+        <div
+          className="bold size-2 rounded-full bg-primary-300"
+          aria-hidden="true"
+        >
+          <div
+            className=" size-2 -translate-x-3 translate-y-4 text-xs"
+            aria-hidden="true"
+          >
+            {labels[labels.length - 1]}
+          </div>
+        </div>
       </div>
     </div>
   );

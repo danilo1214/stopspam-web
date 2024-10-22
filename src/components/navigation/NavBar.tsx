@@ -46,7 +46,7 @@ export default function Navbar({ ...props }) {
   return (
     <div
       className={classNames(
-        "w-full bg-white shadow-lg dark:bg-primary-600",
+        "w-full bg-white shadow-sm dark:bg-primary-600",
         isDark && "dark",
       )}
     >
