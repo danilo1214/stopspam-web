@@ -53,6 +53,7 @@ model InstagramPage {
     userDescription   String?         @db.Text()
     vibe              String?
     goal              String?
+    businessType      String?
     username          String
     createdAt         DateTime        @default(now())
     userId            String          @default("")

@@ -47,6 +47,7 @@ export const instagramRouter = createTRPCRouter({
       z.object({
         goal: z.string().optional(),
         id: z.string(),
+        businessType: z.string().optional(),
         description: z.string().optional(),
         vibe: z.string().optional(),
       }),
@@ -80,6 +81,10 @@ export const instagramRouter = createTRPCRouter({
 
       if (input.description) {
         update.userDescription = input.description;
+      }
+
+      if (input.businessType) {
+        update.businessType = input.businessType;
       }
 
       await ctx.db.instagramPage.update({

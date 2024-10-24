@@ -38,7 +38,9 @@ export default function Page() {
     page?.goal ?? null,
   );
 
-  const { isSmallScreen } = useBreakpoint();
+  const [selectedBusinessType, setSelectedBusinessType] = useState<
+    string | null
+  >(page?.businessType ?? null);
 
   const { mutate: updatePage } = api.instagram.updatePage.useMutation();
 
@@ -53,6 +55,12 @@ export default function Page() {
       setSelectedGoal(page.goal);
     }
   }, [page?.goal]);
+
+  useEffect(() => {
+    if (page?.businessType) {
+      setSelectedBusinessType(page.businessType);
+    }
+  }, [page?.businessType]);
 
   useEffect(() => {
     if (page?.vibe) {
@@ -71,6 +79,19 @@ export default function Page() {
       {
         onSuccess: () => {
           toast("Successfully updated goal");
+          invalidatePageCache();
+        },
+      },
+    );
+  };
+
+  const handleBusinessTypeChange = (option: string) => {
+    setSelectedBusinessType(option);
+    updatePage(
+      { id, businessType: option },
+      {
+        onSuccess: () => {
+          toast("Successfully business type");
           invalidatePageCache();
         },
       },
@@ -226,7 +247,14 @@ export default function Page() {
               What type of business do you own?
             </div>
           </div>
-          <CustomSelect options={[]} />
+          <CustomSelect
+            options={[
+              { label: "Restaurant", value: "Restaurant" },
+              { label: "Clothing Store", value: "Clothing Store" },
+            ]}
+            value={selectedBusinessType ?? undefined}
+            onOptionChange={handleBusinessTypeChange}
+          />
         </div>
       </div>
 
@@ -262,23 +290,24 @@ export default function Page() {
               placeholder="Enter a prompt..."
               required
             />
+
+            <Button
+              onClick={async () => {
+                updatePage(
+                  { id, description: text },
+                  {
+                    onSuccess: () => {
+                      toast("Successfully updated description");
+                      invalidatePageCache();
+                    },
+                  },
+                );
+              }}
+              label="Update"
+              className="focus:shadow-outline rounded-md bg-primary-600 p-3 text-base font-medium text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
+            ></Button>
           </div>
         </div>
-        <Button
-          onClick={async () => {
-            updatePage(
-              { id, description: text },
-              {
-                onSuccess: () => {
-                  toast("Successfully updated description");
-                  invalidatePageCache();
-                },
-              },
-            );
-          }}
-          label="Update"
-          className="focus:shadow-outline rounded-md bg-primary-600 p-3 text-base font-medium text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
-        ></Button>
       </div>
     </main>
   );
