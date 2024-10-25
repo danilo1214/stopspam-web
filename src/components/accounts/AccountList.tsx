@@ -1,5 +1,5 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { AccountItem } from "~/components/accounts/AccountItem";
 import AddAccounts from "~/components/accounts/AddAccounts";
@@ -11,7 +11,7 @@ import { api } from "~/utils/api";
 export const AccountList = () => {
   const utils = api.useUtils();
 
-  const { data: instagramAccounts, isLoading: isInstagramAccountsLoading } =
+  const { data: instagramAccounts } =
     api.instagram.getInstagramAccounts.useQuery(undefined, {
       // 5 mins
       staleTime: 300 * 1000,
@@ -29,15 +29,16 @@ export const AccountList = () => {
 
   /** States */
   const [open, setOpen] = useState(false);
-  const savedPagesIds = savedPages?.map((page) => page.instagramId) ?? [];
+  const savedPagesIds = useMemo(
+    () => savedPages?.map((page) => page.instagramId) ?? [],
+    [savedPages],
+  );
   const [selectedAccounts, setSelectedAccounts] =
     useState<string[]>(savedPagesIds);
 
   useEffect(() => {
     setSelectedAccounts(savedPagesIds);
-  }, [savedPages]);
-
-  const isLoading = isGetSavedPagesLoading || isInstagramAccountsLoading;
+  }, [savedPagesIds]);
 
   const savePages = async () => {
     if (instagramAccounts) {
@@ -50,10 +51,6 @@ export const AccountList = () => {
       toast("Successfully synced pages");
     }
   };
-
-  if (isLoading) {
-    return <Skeleton />;
-  }
 
   return (
     <div className="mx-auto h-full max-w-3xl rounded-lg">
