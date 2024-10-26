@@ -243,8 +243,8 @@ export default function Page() {
                     },
                   );
                 }}
-                label="Update"
-                className="focus:shadow-outline rounded-md bg-primary-600 p-3 text-base font-medium text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
+                label="Update description"
+                className="focus:shadow-outline rounded-md bg-primary-600 p-3   text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
               ></Button>
             </div>
           </div>

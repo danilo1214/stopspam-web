@@ -1,48 +1,48 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AccountItem } from "~/components/accounts/AccountItem";
 import AddAccounts from "~/components/accounts/AddAccounts";
 import Button from "~/components/generic/Button";
 import { Modal } from "~/components/generic/Modal";
-import { Skeleton } from "~/components/generic/Skeleton";
+import { Nudge } from "~/components/generic/Nudge";
+import { useMeta } from "~/hooks/useMeta";
 import { api } from "~/utils/api";
 
 export const AccountList = () => {
   const utils = api.useUtils();
 
-  const { data: instagramAccounts } =
-    api.instagram.getInstagramAccounts.useQuery(undefined, {
-      // 5 mins
-      staleTime: 300 * 1000,
-    });
-
-  const { data: facebookAccounts } =
-    api.instagram.getFacebookUnconnectedPages.useQuery(undefined, {
-      // 5 mins
-      staleTime: 300 * 1000,
-    });
-
+  /**
+   * Mutations
+   */
   const { mutateAsync: syncPages } = api.instagram.syncPages.useMutation();
-  const { data: savedPages, isLoading: isGetSavedPagesLoading } =
-    api.instagram.getSavedPages.useQuery();
 
-  /** States */
+  /**
+   * Queries
+   */
+  const { instagramPages, facebookPages, savedPages, savedPagesIds } =
+    useMeta();
+
+  /**
+   * States
+   */
   const [open, setOpen] = useState(false);
-  const savedPagesIds = useMemo(
-    () => savedPages?.map((page) => page.instagramId) ?? [],
-    [savedPages],
-  );
   const [selectedAccounts, setSelectedAccounts] =
     useState<string[]>(savedPagesIds);
 
+  /**
+   * Effects
+   */
   useEffect(() => {
     setSelectedAccounts(savedPagesIds);
   }, [savedPagesIds]);
 
+  /**
+   * Functions
+   */
   const savePages = async () => {
-    if (instagramAccounts) {
-      const toSync = instagramAccounts.filter((p) =>
+    if (instagramPages) {
+      const toSync = instagramPages.filter((p) =>
         selectedAccounts.includes(p.id),
       );
       await syncPages({ pages: toSync });
@@ -53,46 +53,46 @@ export const AccountList = () => {
   };
 
   return (
-    <div className="mx-auto h-full max-w-3xl rounded-lg">
-      <div className="px-6 py-4">
-        <div className="flex justify-between align-middle">
-          <div className="mb-2 text-lg">Accounts</div>
-          <Modal
-            title="Add Accounts"
-            description="Connect your Instagram profiles to Reply Master."
-            open={open}
-            onConfirm={() => savePages()}
-            onClose={() => setOpen(false)}
-          >
-            {" "}
-            <AddAccounts
-              instagramAccounts={instagramAccounts ?? []}
-              facebookAccounts={facebookAccounts ?? []}
-              selectedAccounts={selectedAccounts}
-              setSelectedAccounts={(v) => setSelectedAccounts(v)}
-            />
-          </Modal>
+    <div className="my-5 flex flex-col gap-y-1">
+      <Modal
+        title="Add Accounts"
+        description="Connect your Instagram profiles to Reply Master."
+        open={open}
+        onConfirm={() => savePages()}
+        onClose={() => setOpen(false)}
+      >
+        {" "}
+        <AddAccounts
+          instagramAccounts={instagramPages ?? []}
+          facebookAccounts={facebookPages ?? []}
+          selectedAccounts={selectedAccounts}
+          setSelectedAccounts={(v) => setSelectedAccounts(v)}
+        />
+      </Modal>
+
+      <div className="flex items-center">
+        <div className="flex w-full justify-between align-middle">
+          <div className="text-lg">Your connected pages</div>
+
           <Button
             icon={
               <PlusIcon className="size-5 font-light text-textPrimary-100" />
             }
             label="Add"
-            className="mb-4 rounded-lg bg-primary-600 px-4 py-2 font-bold text-white shadow-md transition duration-200 ease-in-out hover:scale-105 "
+            className="mb-4 rounded-lg bg-primary-600 px-4 py-2  text-white shadow-md transition duration-200 ease-in-out hover:scale-105 "
             onClick={() => setOpen(true)}
           ></Button>
         </div>
-        <div className="mt-6">
-          {savedPages?.length ? (
-            savedPages.map((page, index) => (
-              <AccountItem key={index} instagramPage={page} />
-            ))
-          ) : (
-            <div className="text-center text-lg text-textPrimary-900">
-              No pages connected yet.
-            </div>
-          )}
-        </div>
       </div>
+
+      {(!savedPages || savedPages.length === 0) && (
+        <Nudge
+          link="/connect"
+          title="You don't have any connected Instagram profiles yet."
+          description="Connect"
+        />
+      )}
+      {savedPages?.map((p, idx) => <AccountItem key={idx} instagramPage={p} />)}
     </div>
   );
 };

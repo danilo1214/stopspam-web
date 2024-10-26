@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
             },
           );
 
-          const facebookAccount = await db.facebookAccount.create({
+          await db.facebookAccount.create({
             data: {
               long_lived_token: res.data.access_token,
               instagramId: account.providerAccountId,

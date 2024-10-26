@@ -55,10 +55,12 @@ export default async function handler(
             await sendMessageToQueue({
               comments: filteredComments,
               instagramPageId: page.instagramId,
-              desc: page.biography,
+              biography: page.biography,
               token: account.long_lived_token,
               profileDescription: page.userDescription,
               goal: page.goal,
+              businessType: page.businessType,
+              tone: page.vibe,
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               media: post,
             });

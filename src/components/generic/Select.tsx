@@ -61,7 +61,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
         onChange={(e) => setFilter(e.target.value)}
         onClick={() => setIsOpen(!isOpen)} // Toggle dropdown on click
         placeholder={placeholder}
-        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm placeholder:text-textPrimary-900 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
       />
 
       {/* Dropdown options */}
