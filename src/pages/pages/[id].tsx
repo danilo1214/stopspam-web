@@ -2,7 +2,7 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { type GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import SuperJSON from "superjson";
 import Button from "~/components/generic/Button";
@@ -15,16 +15,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import Link from "next/link";
 
-const vibes = [
-  "Funny",
-  "Casual",
-  "Friendly",
-  "Neutral",
-  "Formal",
-  "Professional",
-];
+const vibes = ["Funny", "Casual", "Friendly", "Neutral", "Formal"];
 
-const options: { value: string; label: string }[] = [
+const goals: { value: string; label: string }[] = [
   { value: "increase-sales", label: "To increase my sales" },
   { value: "boost-engagement", label: "To boost my page engagement" },
   { value: "idk", label: "I don't know" },
@@ -37,41 +30,18 @@ export default function Page() {
   const { mutateAsync: deletePage, isPending: isDeleting } =
     api.instagram.deletePage.useMutation();
   const { data: page, isError } = api.instagram.getSavedPage.useQuery(id);
+
   const [text, setText] = useState(page?.userDescription ?? "");
-  const [vibe, setVibe] = useState(0);
+
+  const [vibe, setVibe] = useState(page?.vibe ? vibes.indexOf(page.vibe) : 0);
   const [selectedGoal, setSelectedGoal] = useState<string | null>(
     page?.goal ?? null,
   );
-
-  const [selectedBusinessType, setSelectedBusinessType] = useState<
-    string | null
-  >(page?.businessType ?? null);
+  const [selectedBusinessType, setSelectedBusinessType] = useState(
+    page?.businessType ?? null,
+  );
 
   const { mutate: updatePage } = api.instagram.updatePage.useMutation();
-
-  useEffect(() => {
-    if (page?.userDescription) {
-      setText(page.userDescription);
-    }
-  }, [page?.userDescription]);
-
-  useEffect(() => {
-    if (page?.goal) {
-      setSelectedGoal(page.goal);
-    }
-  }, [page?.goal]);
-
-  useEffect(() => {
-    if (page?.businessType) {
-      setSelectedBusinessType(page.businessType);
-    }
-  }, [page?.businessType]);
-
-  useEffect(() => {
-    if (page?.vibe) {
-      setVibe(vibes.indexOf(page?.vibe));
-    }
-  }, [page?.vibe]);
 
   const invalidatePageCache = () => {
     void utils.instagram.getSavedPage.invalidate();
@@ -175,7 +145,7 @@ export default function Page() {
             </div>
             <CustomSelect
               onOptionChange={handleOptionChange}
-              options={options}
+              options={goals}
               value={selectedGoal ?? undefined}
             />
           </div>
