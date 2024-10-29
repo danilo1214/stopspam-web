@@ -8,7 +8,6 @@ import SuperJSON from "superjson";
 import { AccountList } from "~/components/accounts/AccountList";
 import { Dashboard } from "~/components/dashboard/Dashboard";
 import { AccessDenied } from "~/components/generic/AccessDenied";
-import Button from "~/components/generic/Button";
 import { HomeHeader } from "~/components/generic/HomeHeader";
 import { CTABanner } from "~/components/pricing/SubscriptionBanner";
 import { useMeta } from "~/hooks/useMeta";
@@ -25,8 +24,6 @@ export default function Home() {
   const { data: subscription } = api.subscriptions.getCurrent.useQuery({});
   const { data: sessionData, status } = useSession();
   const { savedPages } = useMeta();
-
-  const { mutate } = api.cronRouter.job.useMutation();
 
   if (status === "unauthenticated") {
     return <AccessDenied />;

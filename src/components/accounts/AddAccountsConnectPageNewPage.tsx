@@ -1,7 +1,7 @@
 import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { ArrowsRightLeftIcon, CheckIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { type ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
+import { ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
 import { AccountStepItem } from "~/components/accounts/AccountStepItem";
 import Button from "~/components/generic/Button";
 import { type FbPageResult } from "~/server/api/services/instagram";

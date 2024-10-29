@@ -19,6 +19,27 @@ export default async function handler(
       });
 
       for (const page of pages) {
+        const igPageRes = await axios.get<{ profile_picture_url: string }>(
+          `https://graph.facebook.com/v20.0/${page.instagramId}`,
+          {
+            params: {
+              fields: "profile_picture_url",
+              access_token: account.long_lived_token,
+            },
+          },
+        );
+        const igPage = igPageRes.data;
+        console.log(igPage);
+
+        if (igPage.profile_picture_url !== page.profilePictureUrl) {
+          await db.instagramPage.update({
+            where: { id: page.id },
+            data: {
+              profilePictureUrl: igPage.profile_picture_url,
+            },
+          });
+        }
+
         const mediaRes = await axios.get(
           `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
           {
