@@ -51,7 +51,7 @@ export default function Home() {
             </div>
           </div>
 
-          <Image src="/tst.png" width={500} height={1000} alt="hh" />
+          <Image src="/tst.png" width={200} alt="hh" />
         </div>
 
         <div className="mt-4 flex flex-col items-center bg-white p-4 text-center text-textPrimary-900 lg:p-10">
