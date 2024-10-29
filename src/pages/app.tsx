@@ -49,8 +49,6 @@ export default function Home() {
           name={sessionData?.user.name ?? ""}
         />
 
-        <Button label="kur" onClick={() => mutate({ secret: "123" })} />
-
         <Dashboard />
 
         <AccountList />

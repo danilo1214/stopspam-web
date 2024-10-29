@@ -27,7 +27,7 @@ export default function AddAccounts({
   const [connectingName, setConnectingName] = useState("");
 
   return (
-    <div>
+    <div className="">
       {currentStep === ADD_ACCOUNTS_STEPS.SELECT_PAGES && (
         <AddAccountsSelectPages
           instagramAccounts={instagramAccounts}

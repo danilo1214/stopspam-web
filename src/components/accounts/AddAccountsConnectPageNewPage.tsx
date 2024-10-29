@@ -1,6 +1,7 @@
 import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { ArrowsRightLeftIcon, CheckIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
+import { type ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
 import { AccountStepItem } from "~/components/accounts/AccountStepItem";
 import Button from "~/components/generic/Button";
 import { type FbPageResult } from "~/server/api/services/instagram";
@@ -20,18 +21,19 @@ export const AddAccountsConnectPageNewPage = ({
 
   return (
     <div>
-      <h1 className="text-md font-semibold">
-        Let&apos;s connect @{connectingName} to a Facebook Page.
+      <h1 className=" text-textPrimary-800">
+        Let&apos;s connect{" "}
+        <span className="text-textPrimary-900">@{connectingName}</span> to a
+        Facebook Page.
       </h1>
 
-      <div className="my-4 flex flex-col gap-y-3">
+      <div className="my-4 flex flex-col gap-y-3 text-sm text-textPrimary-700">
         <AccountStepItem index="1">
-          Select a page from the list below. Alternatively you can create a new
-          page.
+          Pick a page from the list below, or create a new page.
         </AccountStepItem>
 
         <AccountStepItem index="2">
-          Go to the page Settings, search for Instagram.
+          Go to the page Settings, search for &quot;Instagram&quot;.
         </AccountStepItem>
 
         <AccountStepItem index="3">
@@ -50,35 +52,37 @@ export const AddAccountsConnectPageNewPage = ({
 
         <AccountStepItem index="4">
           <div>
-            Once you are done click Refresh, your instagram profile should now
+            Once you are done click Done, your instagram profile should now
             appear.
-            <Button
-              onClick={async () => {
-                setIsRefreshing(true);
-                await utils.instagram.getInstagramAccounts.invalidate();
-                setIsRefreshing(false);
-                setCurrentStep(ADD_ACCOUNTS_STEPS.SELECT_PAGES);
-              }}
-              disabled={isRefreshing}
-              className="px-0 text-primary-600 shadow"
-              icon={<ArrowPathIcon width={20} height={20} />}
-              label="Refresh"
-            />
           </div>
         </AccountStepItem>
+
+        <Button
+          onClick={async () => {
+            setIsRefreshing(true);
+            await utils.instagram.getInstagramAccounts.invalidate();
+            setIsRefreshing(false);
+            setCurrentStep(ADD_ACCOUNTS_STEPS.SELECT_PAGES);
+          }}
+          disabled={isRefreshing}
+          className="mx-auto w-64 bg-primary-500 px-0  text-white shadow"
+          icon={<CheckIcon width={20} height={20} />}
+          label="Done"
+        />
       </div>
 
-      <div className="my-8 space-y-4">
+      <div className="mt-6">
         <div className="flex items-center justify-between align-middle">
           <div>
-            <h1 className=" text-md font-semibold">Facebook pages we found</h1>
-            <p className="text-sm">
+            <h1 className="text-lg text-textPrimary-900">Pages we found</h1>
+            <p className="text-sm text-textPrimary-700">
               You can also{" "}
               <a
                 className="   text-primary-500 "
+                target="_blank"
                 href="https://www.facebook.com/pages/creation"
               >
-                create a new Facebook page.
+                create a new page.
               </a>
             </p>
           </div>
@@ -91,22 +95,21 @@ export const AddAccountsConnectPageNewPage = ({
                 setIsRefreshing(false);
               }}
               disabled={isRefreshing}
-              className=" px-0 text-sm text-primary-600 shadow"
-              icon={<ArrowPathIcon width={20} height={20} />}
-              label="Refresh"
+              className=" rounded-full text-primary-600  shadow-sm"
+              icon={<ArrowPathIcon width={14} height={14} />}
             />
           </div>
         </div>
 
         {facebookAccounts.map((fb) => (
-          <div key={fb.name} className=" flex items-center justify-between">
+          <div key={fb.name} className="my-5 flex items-center justify-between">
             <div className="h-full font-semibold">{fb.name}</div>
             <a
               target="_blank"
-              className="rounded-md bg-primary-600 px-5 py-2 text-white"
+              className=" bg-white px-5 py-2 shadow "
               href={`https://facebook.com/profile.php?id=${fb.id}`}
             >
-              Connect Page
+              <ArrowsRightLeftIcon className="size-4 font-light text-primary-600" />
             </a>
           </div>
         ))}

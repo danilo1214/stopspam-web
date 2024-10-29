@@ -23,8 +23,8 @@ export const AddAccountsSelectPages = ({
 }) => {
   return (
     <div>
-      <p className="mb-5 text-sm  font-semibold">
-        We found {instagramAccounts.length ?? 0} instagram profiles linked with
+      <p className="mb-5 text-textPrimary-900">
+        We found {instagramAccounts.length ?? 0} Instagram profiles linked with
         Facebook pages managed by you.
       </p>
 
@@ -42,7 +42,7 @@ export const AddAccountsSelectPages = ({
           onClick={() => setCurrentStep(ADD_ACCOUNTS_STEPS.IG_PAGE_NAME_INPUT)}
           className="my-5 flex-1 px-0 text-sm text-primary-600 shadow"
           icon={<PlusIcon width={20} height={20} />}
-          label="Connect another profile"
+          label="Add profile"
         />
 
         <Button

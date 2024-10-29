@@ -12,12 +12,14 @@ export const AddAccountsPageNameInputForm = ({
 }) => {
   return (
     <form
-      className="space-y-1"
+      className="flex flex-col gap-y-2"
       onSubmit={() => {
         setCurrentStep(ADD_ACCOUNTS_STEPS.CONNECT_PAGE_SELECTION_NEW_PAGE);
       }}
     >
-      <p className="font-semibold">What is the instagram profile name?</p>
+      <div className=" text-textPrimary-900">
+        What is the Instagram profile name?
+      </div>
       <input
         value={connectingName}
         onChange={(e) => setConnectingName(e.target.value)}
@@ -26,7 +28,7 @@ export const AddAccountsPageNameInputForm = ({
       />
       <Button
         type="submit"
-        className=" bg-primary-600 px-0 text-white"
+        className=" w-40 bg-primary-600 px-0 text-white"
         label="Next"
       />
     </form>

@@ -30,7 +30,7 @@ const CheckboxSelect: React.FC<CheckboxSelectProps> = ({
             onChange={() => handleCheckboxChange(option.value)}
             className="form-checkbox text-primary h-5 w-5 accent-primary-500"
           />
-          <label htmlFor={option.label} className="ml-2 text-gray-700">
+          <label htmlFor={option.label} className="ml-2 text-textPrimary-700">
             {option.label}
           </label>
         </div>

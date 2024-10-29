@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 
 type ButtonProps = {
-  label: string;
+  label?: string;
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -31,8 +31,8 @@ export default function Button({
       )}
       onClick={onClick}
     >
-      {icon && <span className="mr-2">{icon}</span>}
-      <span>{label}</span>
+      {icon && <span className={classNames(label && "mr-2")}>{icon}</span>}
+      {label && <span>{label}</span>}
     </button>
   );
 }
