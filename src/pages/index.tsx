@@ -51,13 +51,7 @@ export default function Home() {
             </div>
           </div>
 
-          <Image
-            loading="lazy"
-            src="/tst.png"
-            width={700}
-            height={10000}
-            alt="hh"
-          />
+          <Image src="/tst.png" width={700} alt="hh" />
         </div>
 
         <div className="mt-4 flex flex-col items-center bg-white p-4 text-center text-textPrimary-900 lg:p-10">
