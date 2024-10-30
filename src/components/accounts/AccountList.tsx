@@ -72,7 +72,9 @@ export const AccountList = () => {
 
       <div className="flex items-center">
         <div className="flex w-full justify-between align-middle">
-          <div className="text-lg">Your connected pages</div>
+          <div className="text-lg text-textPrimary-900">
+            Your connected pages
+          </div>
 
           <Button
             icon={
@@ -86,11 +88,7 @@ export const AccountList = () => {
       </div>
 
       {(!savedPages || savedPages.length === 0) && (
-        <Nudge
-          link="/connect"
-          title="You don't have any connected Instagram profiles yet."
-          description="Connect"
-        />
+        <div className="text-md text-center text-textPrimary-700"></div>
       )}
       {savedPages?.map((p, idx) => <AccountItem key={idx} instagramPage={p} />)}
     </div>
