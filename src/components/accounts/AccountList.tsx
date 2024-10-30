@@ -88,7 +88,9 @@ export const AccountList = () => {
       </div>
 
       {(!savedPages || savedPages.length === 0) && (
-        <div className="text-md text-center text-textPrimary-700"></div>
+        <div className="text-md text-center text-textPrimary-700">
+          You don&apos;t have any connected pages
+        </div>
       )}
       {savedPages?.map((p, idx) => <AccountItem key={idx} instagramPage={p} />)}
     </div>
