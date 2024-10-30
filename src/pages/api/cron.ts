@@ -10,8 +10,37 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.headers.authorization?.split("Bearer ")[1] === env.CRON_SECRET) {
-    const facebookAccounts = await db.facebookAccount.findMany();
+    const facebookAccounts = await db.facebookAccount.findMany({
+      include: {
+        account: {
+          include: {
+            user: {
+              include: {
+                subscription: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
     for (const account of facebookAccounts) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const subscription = account.account.user.subscription[0];
+      if (!subscription) {
+        return;
+      }
+
+      // Standard only get once per 4h
+      if (
+        subscription &&
+        subscription.variantId === 436646 &&
+        moment().hour() % 4 !== 0
+      ) {
+        console.log("SKIP FOR STANDARD");
+        return;
+      }
+
       const pages = await db.instagramPage.findMany({
         where: {
           facebookAccountId: account.id,

@@ -29,7 +29,7 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
         Affordable pricing for your business
       </h1>
 
-      <div className="flex w-full flex-col justify-center gap-x-10 gap-y-5 px-16 py-4 align-middle md:flex-row lg:px-10">
+      <div className="flex w-full flex-col justify-center gap-x-10 gap-y-5 px-4 py-4 align-middle md:flex-row lg:px-10">
         {cards.map((item, key) => (
           <PricingCard
             key={key}
