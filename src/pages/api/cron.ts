@@ -10,8 +10,6 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.headers.authorization?.split("Bearer ")[1] === env.CRON_SECRET) {
-    res.status(200).json({});
-
     console.log("getting fb accounts");
     const facebookAccounts = await db.facebookAccount.findMany();
 
