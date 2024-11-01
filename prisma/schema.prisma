@@ -93,6 +93,7 @@ model User {
     sessions      Session[]
     subscription  Subscription[]
     InstagramPage InstagramPage[]
+    CommentReply  CommentReply[]
 }
 
 model VerificationToken {
@@ -101,4 +102,12 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model CommentReply {
+    id          String @id @default(cuid())
+    instagramId String
+    text        String
+    userId      String
+    user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

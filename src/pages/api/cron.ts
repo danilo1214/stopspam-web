@@ -103,6 +103,17 @@ export default async function handler(
             })
             .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
             .slice(0, 5);
+
+          for (const comment of filteredComments) {
+            void db.commentReply.create({
+              data: {
+                userId: account.account.userId,
+                instagramId: comment.id,
+                text: comment.text,
+              },
+            });
+          }
+
           if (filteredComments && filteredComments.length > 0) {
             await sendMessageToQueue({
               comments: filteredComments,
