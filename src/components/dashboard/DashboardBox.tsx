@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
 
 export function DashboardBox({
   title,
@@ -10,7 +10,7 @@ export function DashboardBox({
   title: string;
 }) {
   return (
-    <div className="shadow-xs flex flex-col rounded-lg  bg-white  p-6  text-3xl text-textPrimary-900 lg:p-16">
+    <div className="shadow-xs flex flex-col rounded-lg  bg-white  p-6  text-3xl text-textPrimary-900 lg:p-14">
       <div className="text-sm text-textPrimary-800">{title}</div>
       <div className="flex items-center gap-x-2">
         {icon}
