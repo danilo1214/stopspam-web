@@ -12,23 +12,28 @@ export default async function handler(
   if (req.headers.authorization?.split("Bearer ")[1] === env.CRON_SECRET) {
     res.status(200).json({});
 
-    const facebookAccounts = await db.facebookAccount.findMany({
-      include: {
-        account: {
-          include: {
-            user: {
-              include: {
-                subscription: true,
-              },
+    const facebookAccounts = await db.facebookAccount.findMany();
+
+    for (const account of facebookAccounts) {
+      const acc = await db.account.findFirst({
+        where: {
+          providerAccountId: account.instagramId,
+        },
+        include: {
+          user: {
+            include: {
+              subscription: true,
             },
           },
         },
-      },
-    });
+      });
 
-    for (const account of facebookAccounts) {
+      if (!acc) {
+        return;
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const subscription = account.account.user.subscription[0];
+      const subscription = acc.user.subscription[0];
       if (!subscription) {
         return;
       }
@@ -107,7 +112,7 @@ export default async function handler(
           for (const comment of filteredComments) {
             void db.commentReply.create({
               data: {
-                userId: account.account.userId,
+                userId: acc.userId,
                 instagramId: comment.id,
                 text: comment.text,
               },

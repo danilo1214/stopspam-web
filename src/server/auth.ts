@@ -41,6 +41,7 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
+      console.log(user, account);
       if (user && account) {
         try {
           // generate long lived token

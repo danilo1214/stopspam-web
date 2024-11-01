@@ -22,6 +22,19 @@ export const subscriptionRouter = createTRPCRouter({
 
   deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
     const { user } = ctx.session;
+
+    const account = await db.account.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    await db.facebookAccount.delete({
+      where: {
+        instagramId: account?.providerAccountId,
+      },
+    });
+
     await db.user.delete({
       where: { id: user.id },
     });
