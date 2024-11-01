@@ -25,9 +25,9 @@ export default function Home() {
       </Head>
       <main className="flex w-full flex-col bg-white text-white">
         <div
-          className="flex flex-col content-between items-center justify-center bg-primary-600 py-10 lg:flex-row lg:items-start lg:space-x-20"
+          className="flex flex-col content-between items-center justify-center gap-y-20 bg-primary-600 py-10 lg:flex-row lg:items-start lg:space-x-20 lg:px-10"
           style={
-            isLargeScreen
+            true
               ? {
                   background: "url('/bg.png')",
                   backgroundRepeat: "round",
@@ -51,7 +51,7 @@ export default function Home() {
             </div>
           </div>
 
-          <Image src="/home.png" width={400} alt="hh" />
+          <Image src="/home.png" width={450} height={200} alt="hh" />
         </div>
 
         <div className="mt-4 flex flex-col items-center bg-white p-4 text-center text-textPrimary-900 lg:p-10">
@@ -78,7 +78,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="mt-10 bg-white p-4 text-center text-textPrimary-900 lg:p-10">
+        <div className="mt-8 bg-white p-4 text-center text-textPrimary-900 lg:p-10">
           <h3 className="text-md font-bold text-tertiary-800">We can help!</h3>
           <h2 className="text-2xl font-bold">
             Engage with your audience without draining your time
@@ -126,8 +126,8 @@ export default function Home() {
           <PricingList cards={cards} />
         </div>
 
-        <div className="flex flex-col items-center bg-primary-600 py-20 align-middle">
-          <h1 className="px-14 py-20 text-center text-3xl font-semibold text-white">
+        <div className="flex flex-col items-center bg-primary-600 py-10 align-middle">
+          <h1 className="px-5 py-20 text-center text-3xl font-semibold text-white lg:px-20">
             71% of consumers who have had a positive social media experience
             with a brand are likely to recommend it to others.
           </h1>

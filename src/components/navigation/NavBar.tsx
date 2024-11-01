@@ -66,7 +66,12 @@ export default function Navbar({ ...props }) {
                         src="/logo.png"
                       />
                     </span>
-                    <span className="font-customFont text-white">
+                    <span
+                      className={classNames(
+                        "font-customFont font-light text-textPrimary-900",
+                        isDark && "text-white",
+                      )}
+                    >
                       Reply Master
                     </span>
                   </div>

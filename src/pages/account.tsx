@@ -75,17 +75,17 @@ export default function AccountPage() {
   return (
     <div className="mt-10 flex items-center justify-center ">
       <div className="w-full max-w-xl rounded-lg bg-white p-8 shadow-lg">
-        <div className="mb-6 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <img
             src={user?.user.image ?? ""} // Replace with actual path to profile picture
             alt="Profile Picture"
-            className="mb-3 h-10 w-10 rounded-full"
+            className="mb-2 h-10 w-10 rounded-full"
           />
-          <h1 className="text-2xl font-semibold">{user?.user.name}</h1>
+          <h1 className="text-2xl text-textPrimary-900">{user?.user.name}</h1>
         </div>
         {subscription ? (
-          <div className="mb-6 mt-10 text-center">
-            <div className="text-gray-700">
+          <div className="mt-4 text-center">
+            <div className="text-textPrimary-700">
               Subscription{" "}
               <Badge
                 label={subscription.status}
@@ -100,9 +100,8 @@ export default function AccountPage() {
         ) : (
           <></>
         )}
-        <div className="mt-10 flex flex-col space-y-4">
-          {((!subscription && !isSubscriptionLoading) ||
-            subscription?.status === "cancelled") && (
+        <div className="mt-4 flex flex-col space-y-4">
+          {!subscription && !isSubscriptionLoading && (
             <div className="mb-10">
               <CTABanner />
             </div>

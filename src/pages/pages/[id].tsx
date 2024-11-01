@@ -47,14 +47,18 @@ export default function Page() {
     void utils.instagram.getSavedPage.invalidate();
   };
 
+  const onPageSuccess = (msg: string) => {
+    toast(msg);
+    invalidatePageCache();
+  };
+
   const handleOptionChange = (option: string) => {
     setSelectedGoal(option);
     updatePage(
       { id, goal: option },
       {
         onSuccess: () => {
-          toast("Successfully updated goal");
-          invalidatePageCache();
+          onPageSuccess("Successfully updated goal");
         },
       },
     );
@@ -66,8 +70,7 @@ export default function Page() {
       { id, businessType: option },
       {
         onSuccess: () => {
-          toast("Successfully business type");
-          invalidatePageCache();
+          onPageSuccess("Successfully updated business type");
         },
       },
     );
@@ -79,7 +82,7 @@ export default function Page() {
       { id, vibe: vibes[v] },
       {
         onSuccess: () => {
-          toast("Successfully updated vibe");
+          onPageSuccess("Successfully updated tone");
           invalidatePageCache();
         },
       },
@@ -108,7 +111,7 @@ export default function Page() {
         </Link>{" "}
       </div>
 
-      <div className="m-10  rounded-lg bg-white px-10 py-5 shadow">
+      <div className="m-2 rounded-lg  bg-white px-4 py-5 shadow lg:m-10">
         <div className="my-8 flex flex-col justify-between md:flex-row">
           <div className=" flex items-center gap-x-4">
             <img

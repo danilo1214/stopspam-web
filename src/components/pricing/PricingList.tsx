@@ -25,7 +25,7 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
 
   return (
     <div>
-      <h1 className="mb-10 mt-14 text-center text-3xl font-semibold text-textPrimary-900">
+      <h1 className="mb-6 mt-14 text-center text-3xl font-semibold text-textPrimary-900">
         Affordable pricing for your business
       </h1>
 
