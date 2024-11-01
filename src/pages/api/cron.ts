@@ -84,6 +84,8 @@ export default async function handler(
           });
         }
 
+        console.log("ne pusam kur");
+
         const mediaRes = await axios.get(
           `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
           {
@@ -93,6 +95,8 @@ export default async function handler(
             },
           },
         );
+
+        console.log("get media");
 
         // Only reply comment last 5 posts
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
@@ -117,6 +121,8 @@ export default async function handler(
             .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
             .slice(0, 5);
 
+          console.log(filteredComments);
+
           for (const comment of filteredComments) {
             await db.commentReply.create({
               data: {
@@ -127,7 +133,10 @@ export default async function handler(
             });
           }
 
+          console.log("ok get");
+
           if (filteredComments && filteredComments.length > 0) {
+            console.log("will post lambda");
             await sendMessageToQueue({
               comments: filteredComments,
               instagramPageId: page.instagramId,
