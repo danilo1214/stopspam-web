@@ -39,7 +39,8 @@ export default async function handler(
       }
 
       // Standard only get once per 4h
-      if (
+      /**
+      *  if (
         subscription &&
         subscription.variantId === 436646 &&
         moment().hour() % 4 !== 0
@@ -47,6 +48,7 @@ export default async function handler(
         console.log("SKIP FOR STANDARD");
         return;
       }
+      */
 
       const pages = await db.instagramPage.findMany({
         where: {
