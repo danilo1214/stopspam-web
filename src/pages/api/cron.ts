@@ -12,9 +12,13 @@ export default async function handler(
   if (req.headers.authorization?.split("Bearer ")[1] === env.CRON_SECRET) {
     res.status(200).json({});
 
+    console.log("getting fb accounts");
     const facebookAccounts = await db.facebookAccount.findMany();
 
+    console.log(`Got ${facebookAccounts.length} accs`);
+
     for (const account of facebookAccounts) {
+      console.log("merging for " + account.instagramId);
       const acc = await db.account.findFirst({
         where: {
           providerAccountId: account.instagramId,
@@ -29,13 +33,15 @@ export default async function handler(
       });
 
       if (!acc) {
-        return;
+        console.log("no account found with id " + account.instagramId);
+        continue;
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const subscription = acc.user.subscription[0];
       if (!subscription) {
-        return;
+        console.log("no subscription found for " + account.instagramId);
+        continue;
       }
 
       // Standard only get once per 4h
@@ -68,6 +74,8 @@ export default async function handler(
         );
         const igPage = igPageRes.data;
         console.log(igPage);
+
+        console.log("TEEEZTTT");
 
         if (igPage.profile_picture_url !== page.profilePictureUrl) {
           await db.instagramPage.update({
