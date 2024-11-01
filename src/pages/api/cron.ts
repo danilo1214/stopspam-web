@@ -101,6 +101,11 @@ export default async function handler(
         // Only reply comment last 5 posts
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         const posts = mediaRes.data.data.slice(0, 5);
+
+        // in last 2 weeks?
+
+        // TODO: LIMIT ONLY 10 COMMS PER POST
+
         for (const post of posts) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           const comments: {
@@ -121,9 +126,9 @@ export default async function handler(
             .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
             .slice(0, 5);
 
-          console.log(filteredComments);
-
+          console.log(filteredComments.length);
           for (const comment of filteredComments) {
+            //
             await db.commentReply.create({
               data: {
                 userId: acc.userId,
