@@ -17,6 +17,8 @@ import { AccessDenied } from "~/components/generic/AccessDenied";
 import { Badge } from "~/components/generic/Badge";
 import classNames from "classnames";
 import { type GetServerSidePropsContext } from "next";
+import { useMemo } from "react";
+import { cards } from "~/const";
 
 export default function AccountPage() {
   const utils = api.useUtils();
@@ -35,6 +37,12 @@ export default function AccountPage() {
     subscriptionApi.resumeSubscription.useMutation({});
 
   const { mutate: deleteAccount } = subscriptionApi.deleteAccount.useMutation();
+
+  const currentPlan = useMemo(
+    () =>
+      cards.find((c) => c.checkoutId === subscription?.variantId.toString()),
+    [subscription],
+  );
 
   if (status === "unauthenticated") {
     return <AccessDenied />;
@@ -73,7 +81,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="mt-10 flex items-center justify-center ">
+    <div className="mx-5 mt-10 flex items-center justify-center ">
       <div className="w-full max-w-xl rounded-lg bg-white p-8 shadow-lg">
         <div className="flex flex-col items-center">
           <img
@@ -83,29 +91,44 @@ export default function AccountPage() {
           />
           <h1 className="text-2xl text-textPrimary-900">{user?.user.name}</h1>
         </div>
-        {subscription ? (
-          <div className="mt-4 text-center">
+
+        {currentPlan && subscription && (
+          <div className="my-4 flex flex-col gap-y-2">
             <div className="text-textPrimary-700">
-              Subscription{" "}
-              <Badge
-                label={subscription.status}
-                type={subscription.status === "active" ? "success" : "error"}
-              />{" "}
-              until{" "}
-              <span className="font-semibold">
-                {subscription?.expires.toDateString()}
+              Current Subscription:{" "}
+              <span className="text-textPrimary-800">{currentPlan?.name}</span>
+            </div>
+
+            <div className="text-textPrimary-700">
+              Billed as:{" "}
+              <span className="text-textPrimary-800">
+                ${currentPlan?.price} per month
+              </span>
+            </div>
+
+            <div className="text-textPrimary-700">
+              Status:{" "}
+              <span className="text-textPrimary-800">
+                <Badge
+                  label={subscription.status}
+                  type={subscription.status === "active" ? "success" : "error"}
+                />{" "}
+                until{" "}
+                <span className="font-semibold">
+                  {subscription?.expires.toDateString()}
+                </span>
               </span>
             </div>
           </div>
-        ) : (
-          <></>
         )}
+
         <div className="mt-4 flex flex-col space-y-4">
           {!subscription && !isSubscriptionLoading && (
             <div className="mb-10">
               <CTABanner />
             </div>
           )}
+
           {subscription && (
             <Button
               label={

@@ -16,7 +16,7 @@ export const Slider = ({
   };
 
   return (
-    <div className="border-radius-[50%] relative rounded-full px-7 py-6  shadow md:px-20 md:py-8">
+    <div className="relative rounded-full rounded-md px-7 py-6  shadow md:px-10 md:py-8">
       <input
         id="vibe-slider"
         type="range"
@@ -28,7 +28,7 @@ export const Slider = ({
         className="h-1 w-full cursor-pointer appearance-none rounded-lg bg-primary-300"
         style={{ position: "relative", zIndex: 2 }}
       />
-      <div className="pointer-events-none absolute left-0 right-0 top-1/2  flex items-center justify-between px-7  text-center md:px-20 ">
+      <div className="pointer-events-none absolute left-0 right-0 top-1/2  flex items-center justify-between px-7  text-center md:px-10 ">
         <div
           className="bold size-2 rounded-full bg-primary-300"
           aria-hidden="true"
