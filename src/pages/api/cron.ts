@@ -112,7 +112,7 @@ export default async function handler(
             .slice(0, 5);
 
           for (const comment of filteredComments) {
-            void db.commentReply.create({
+            await db.commentReply.create({
               data: {
                 userId: acc.userId,
                 instagramId: comment.id,
