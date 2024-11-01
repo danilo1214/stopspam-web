@@ -117,6 +117,8 @@ export default async function handler(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             post?.comments?.data ?? [];
 
+          console.log(comments);
+
           const filteredComments = comments
             .filter((comment) => {
               return moment(comment.timestamp).isAfter(
@@ -125,6 +127,8 @@ export default async function handler(
             })
             .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
             .slice(0, 5);
+
+          console.log(filteredComments);
 
           console.log(filteredComments.length);
           for (const comment of filteredComments) {
