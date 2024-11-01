@@ -16,7 +16,7 @@ export const Slider = ({
   };
 
   return (
-    <div className="relative rounded-full rounded-md px-7 py-6  shadow md:px-10 md:py-8">
+    <div className="relative  rounded-md px-7  md:px-10 ">
       <input
         id="vibe-slider"
         type="range"
