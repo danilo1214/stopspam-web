@@ -68,7 +68,7 @@ export default function Navbar({ ...props }) {
                     </span>
                     <span
                       className={classNames(
-                        "font-customFont font-light text-textPrimary-900",
+                        " font-mono font-semibold text-textPrimary-900",
                         isDark && "text-white",
                       )}
                     >

@@ -36,7 +36,7 @@ export default function Home() {
               : {}
           }
         >
-          <div className="space-y-4 p-4 text-center md:m-10 lg:mt-10 lg:max-w-3xl lg:p-10 lg:text-left">
+          <div className="space-y-6 p-8  md:m-10 lg:mt-10 lg:max-w-3xl lg:p-10 lg:text-left">
             <h1 className="text-2xl font-semibold text-textPrimary-100">
               Never Miss a Comment, Never Lose a Customer
             </h1>
