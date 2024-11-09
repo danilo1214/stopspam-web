@@ -65,6 +65,21 @@ export default async function handler(
         res.status(200).end();
 
       case "subscription_created":
+        const existingSub = await db.subscription.findFirst({
+          where: {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            userId: event.meta.custom_data.user_id as string,
+          },
+        });
+
+        if (existingSub) {
+          await db.subscription.delete({
+            where: {
+              id: existingSub.id,
+            },
+          });
+        }
+
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         await db.subscription.create({
           data: {

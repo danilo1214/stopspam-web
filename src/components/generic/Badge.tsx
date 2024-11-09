@@ -13,7 +13,7 @@ export function Badge({
 }) {
   const color: string = useMemo(() => {
     if (type === "error") {
-      return "bg-secondary-500/80";
+      return "bg-secondary-600/90";
     }
 
     if (type === "warning") {
