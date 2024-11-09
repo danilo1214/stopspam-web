@@ -17,9 +17,10 @@ import { AccessDenied } from "~/components/generic/AccessDenied";
 import { Badge } from "~/components/generic/Badge";
 import classNames from "classnames";
 import { type GetServerSidePropsContext } from "next";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { cards } from "~/const";
 import Head from "next/head";
+import { Modal } from "~/components/generic/Modal";
 
 export default function AccountPage() {
   const utils = api.useUtils();
@@ -45,13 +46,24 @@ export default function AccountPage() {
     [subscription],
   );
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   if (status === "unauthenticated") {
     return <AccessDenied />;
   }
 
   const handleDeleteAccount = async () => {
-    deleteAccount();
-    await router.replace("/");
+    deleteAccount(undefined, {
+      onSuccess: () => {
+        toast("Account deleted.");
+        void router.replace("/");
+      },
+    });
+  };
+
+  const handleDeleteAccountConfirm = async () => {
+    await handleDeleteAccount();
+    setIsDeleteModalOpen(false);
   };
 
   const handleSubscriptionToggle = () => {
@@ -61,14 +73,14 @@ export default function AccountPage() {
           setTimeout(() => {
             void utils.subscriptions.getCurrent.invalidate();
           }, 1000);
-          toast("Subscription canceled");
+          toast("Subscription cancelled.");
         },
       });
     } else {
       resumeSub(undefined, {
         onSuccess: () => {
           void utils.subscriptions.getCurrent.invalidate();
-          toast("Subscription resumed");
+          toast("Subscription resumed.");
           setTimeout(() => {
             void utils.subscriptions.getCurrent.invalidate();
           }, 1000);
@@ -117,6 +129,13 @@ export default function AccountPage() {
       </Head>
 
       <div className="mx-5 mt-10 flex items-center justify-center ">
+        <Modal
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDeleteAccountConfirm}
+          open={isDeleteModalOpen}
+          title="Delete Account?"
+          description="This will delete all data such as your subscription and page associations."
+        />
         <div className="w-full max-w-xl rounded-lg bg-white p-8 shadow-lg">
           <div className="flex flex-col items-center">
             <img
@@ -195,7 +214,7 @@ export default function AccountPage() {
                 <TrashIcon className="size-5 font-light text-secondary-600" />
               }
               label="Delete account"
-              onClick={handleDeleteAccount}
+              onClick={() => setIsDeleteModalOpen(true)}
               className="transform rounded-lg  bg-white  px-4 py-2 text-lg text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
             />
           </div>

@@ -12,7 +12,7 @@ export function Modal({
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   title: string;
   description: string;
 }) {

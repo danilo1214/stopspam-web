@@ -19,8 +19,8 @@ export default function HowToUse() {
       </Head>
 
       <main className="p-5">
-        <h1 className="mb-10 text-center text-lg  text-textSecondary-900">
-          How to Use?
+        <h1 className="mb-10 text-center text-xl  text-textPrimary-900">
+          <span className="text-bold text-primary-800">How</span> to Use?
         </h1>
 
         <InfoNumberBox
