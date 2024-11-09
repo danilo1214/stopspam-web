@@ -4,30 +4,16 @@ import {
   faTwitter,
   faTiktok,
 } from "@fortawesome/free-brands-svg-icons";
-import Image from "next/image";
-import { SignInButton } from "~/components/navigation/SignInButton";
+import { GetStartedBanner } from "~/components/accounts/GetStartedBanner";
+import { useSession } from "next-auth/react";
 
 export const Footer = () => {
+  const { data: sessionData } = useSession();
+
   return (
     <footer className="bg-textPrimary-900 py-4">
       <div className="container mx-auto text-center">
-        <div className="mb-24 mt-4 flex flex-col items-center gap-y-2">
-          <Image
-            loading="lazy"
-            alt="logo"
-            width={40}
-            height={40}
-            src="/logo.png"
-          />
-          <h1 className="text-3xl font-semibold text-textPrimary-100">
-            Never Miss a Comment, Never Lose a Customer
-          </h1>
-          <p className="text-lg text-textPrimary-300">
-            Boost your social media brand with AI using Reply Master.
-          </p>
-
-          <SignInButton />
-        </div>
+        {!sessionData && <GetStartedBanner />}
 
         <h3 className="mt-10 text-lg text-textPrimary-200">Contact Us:</h3>
         <p className="text-textPrimary-300">

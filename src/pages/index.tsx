@@ -153,18 +153,18 @@ export default function Home() {
           </div>
         </div>
 
-        <div className=" bg-gray-100 p-10">
-          <PricingList cards={cards} />
-        </div>
-
         <div className="flex flex-col items-center bg-primary-600 py-10 align-middle">
-          <h1 className="px-5 py-20 text-center text-3xl font-semibold text-white lg:px-20">
+          <h1 className="px-5 pb-5 pt-20 text-center text-3xl font-semibold text-white lg:px-20">
             71% of consumers who have had a positive social media experience
             with a brand are likely to recommend it to others.
           </h1>
           <div className="shadow-xl">
             <SignInButton />
           </div>
+        </div>
+
+        <div className=" bg-gray-100 p-10">
+          <PricingList cards={cards} />
         </div>
       </main>
     </>

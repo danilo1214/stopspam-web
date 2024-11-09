@@ -2,8 +2,6 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
 
 export function HomeHeader({ pages, name }: { pages: number; name: string }) {
-  const { data: sessionData } = useSession();
-
   return (
     <div>
       <h1 className="text-lg text-textPrimary-900"> Hello {name}</h1>
