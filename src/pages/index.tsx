@@ -19,10 +19,41 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Instagram admin manager</title>
-        <meta name="description" content="Keyyy" />
+        <title>
+          Reply Master: AI-Powered Social Media Engagement for Facebook &
+          Instagram
+        </title>
+        <meta
+          name="description"
+          content="Boost your business with Reply Master, the AI-driven tool for automating comment replies. Engage customers 24/7, save time, and enhance customer loyalty."
+        />
+        <meta
+          name="keywords"
+          content="social media automation, AI comment replies, Reply Master, Facebook comment automation, Instagram comment automation, customer engagement, business automation, social media engagement"
+        />
+        <meta
+          property="og:title"
+          content="Reply Master: AI-Powered Social Media Engagement for Facebook & Instagram"
+        />
+        <meta
+          property="og:description"
+          content="Engage customers and save time with Reply Master's AI automation for Instagram comments. Keep your audience engaged, even when you're offline."
+        />
+        <meta property="og:image" content="/home.png" />
+        <meta property="og:url" content="https://yourwebsite.com" />
+        <meta
+          name="twitter:title"
+          content="Reply Master: AI-Powered Social Media Engagement"
+        />
+        <meta
+          name="twitter:description"
+          content="Automate  Instagram comment replies with Reply Master. Engage customers, save time, and grow your business effortlessly."
+        />
+        <meta name="twitter:image" content="/hero.png" />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="flex w-full flex-col bg-white text-white">
         <div
           className="flex flex-col content-between items-center justify-center gap-y-20 bg-primary-600 py-10 lg:flex-row lg:items-start lg:space-x-20 lg:px-10"

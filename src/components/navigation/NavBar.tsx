@@ -21,7 +21,7 @@ const navigation: NavigationItem[] = [
   { label: "App", link: "/app", protected: true },
   { label: "Account", link: "/account", protected: true },
   { label: "Pricing", link: "/pricing" },
-  { label: "How it works?", link: "/how-it-works" },
+  { label: "How to Use?", link: "/how-to-use" },
 ];
 
 export interface NavigationItem {

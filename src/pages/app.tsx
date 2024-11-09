@@ -36,10 +36,28 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Instagram admin manager</title>
-        <meta name="description" content="Keyyy" />
+        <title>
+          Reply Master Dashboard | Manage Your Instagram and Facebook Engagement
+        </title>
+        <meta
+          name="description"
+          content="Access your Reply Master dashboard to manage your Instagram and Facebook comment responses. Monitor subscriptions, accounts, and page activity all in one place."
+        />
+        <meta
+          name="keywords"
+          content="Reply Master dashboard, Instagram management, Facebook management, social media automation, comment replies, customer engagement, subscription management"
+        />
+        <meta
+          property="og:title"
+          content="Reply Master Dashboard | Manage Your Social Media Engagement"
+        />
+        <meta
+          property="og:description"
+          content="Manage your Instagram and Facebook comment replies and track engagement directly from the Reply Master dashboard."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="flex flex-col gap-y-10 px-10">
         <HomeHeader
           pages={savedPages?.length ?? 0}
