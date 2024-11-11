@@ -2,6 +2,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AccountItem } from "~/components/accounts/AccountItem";
+import { ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
 import AddAccounts from "~/components/accounts/AddAccounts";
 import Button from "~/components/generic/Button";
 import { Modal } from "~/components/generic/Modal";
@@ -26,6 +27,7 @@ export const AccountList = () => {
   /**
    * States
    */
+  const [showModalButtons, setShowModalButtons] = useState(true);
   const [open, setOpen] = useState(false);
   const [selectedAccounts, setSelectedAccounts] =
     useState<string[]>(savedPagesIds);
@@ -55,6 +57,7 @@ export const AccountList = () => {
   return (
     <div className="my-5 flex flex-col gap-y-1">
       <Modal
+        showActionButtons={showModalButtons}
         title="Add Accounts"
         description="Connect your Instagram profiles to Reply Master."
         open={open}
@@ -63,6 +66,14 @@ export const AccountList = () => {
       >
         {" "}
         <AddAccounts
+          onStepChange={(s) => {
+            console.log(s);
+            if (s === ADD_ACCOUNTS_STEPS.SELECT_PAGES) {
+              setShowModalButtons(true);
+            } else {
+              setShowModalButtons(false);
+            }
+          }}
           instagramAccounts={instagramPages ?? []}
           facebookAccounts={facebookPages ?? []}
           selectedAccounts={selectedAccounts}

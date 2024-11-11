@@ -14,15 +14,22 @@ export default function AddAccounts({
   selectedAccounts,
   setSelectedAccounts,
   facebookAccounts,
+  onStepChange,
 }: {
   instagramAccounts: IgPageResult[];
   facebookAccounts: FbPageResult[];
   selectedAccounts: string[];
   setSelectedAccounts: (selected: string[]) => void;
+  onStepChange: (step: ADD_ACCOUNTS_STEPS) => void;
 }) {
   const [currentStep, setCurrentStep] = useState<ADD_ACCOUNTS_STEPS>(
     ADD_ACCOUNTS_STEPS.SELECT_PAGES,
   );
+
+  const handleChangeStep = (step: ADD_ACCOUNTS_STEPS) => {
+    setCurrentStep(step);
+    onStepChange(step);
+  };
 
   const [connectingName, setConnectingName] = useState("");
 
@@ -33,7 +40,7 @@ export default function AddAccounts({
           instagramAccounts={instagramAccounts}
           selectedAccounts={selectedAccounts}
           setSelectedAccounts={setSelectedAccounts}
-          setCurrentStep={setCurrentStep}
+          setCurrentStep={handleChangeStep}
         />
       )}
 
@@ -41,21 +48,21 @@ export default function AddAccounts({
         <AddAccountsPageNameInputForm
           connectingName={connectingName}
           setConnectingName={setConnectingName}
-          setCurrentStep={setCurrentStep}
+          setCurrentStep={handleChangeStep}
         />
       )}
 
       {currentStep === ADD_ACCOUNTS_STEPS.CONNECT_PAGE_SELECTION_NEW_PAGE && (
         <AddAccountsConnectPageNewPage
           connectingName={connectingName}
-          setCurrentStep={setCurrentStep}
+          setCurrentStep={handleChangeStep}
           facebookAccounts={facebookAccounts}
         />
       )}
 
       {currentStep === ADD_ACCOUNTS_STEPS.CONNECT_PAGE_CREATE_PAGE && (
         <AddAccountsConnectPageCreatePage
-          setCurrentStep={setCurrentStep}
+          setCurrentStep={handleChangeStep}
           connectingName={connectingName}
         />
       )}

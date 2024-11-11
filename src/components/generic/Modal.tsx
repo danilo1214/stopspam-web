@@ -8,6 +8,7 @@ export function Modal({
   children,
   title,
   description,
+  showActionButtons = true,
 }: {
   open: boolean;
   onClose: () => void;
@@ -15,6 +16,7 @@ export function Modal({
   children?: ReactNode;
   title: string;
   description: string;
+  showActionButtons?: boolean;
 }) {
   return (
     <Dialog open={open} onClose={onClose} className="relative z-10">
@@ -31,23 +33,25 @@ export function Modal({
             </div>
 
             <div className="px-7 py-8">{children}</div>
-            <div className="gap-x-2 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                type="button"
-                data-autofocus
-                onClick={() => onConfirm()}
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:bg-primary-700 sm:mt-0 sm:w-auto"
-              >
-                Confirm
-              </button>
-              <button
-                type="button"
-                onClick={() => onClose()}
-                className="inline-flex w-full justify-center rounded-md bg-white  px-3 py-2 text-sm font-semibold text-textPrimary-900 hover:bg-gray-100  sm:ml-3 sm:w-auto"
-              >
-                Cancel
-              </button>
-            </div>
+            {showActionButtons && (
+              <div className="gap-x-2 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button
+                  type="button"
+                  data-autofocus
+                  onClick={() => onConfirm()}
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white hover:bg-primary-700 sm:mt-0 sm:w-auto"
+                >
+                  Confirm
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onClose()}
+                  className="inline-flex w-full justify-center rounded-md bg-white  px-3 py-2 text-sm font-semibold text-textPrimary-900 hover:bg-gray-100  sm:ml-3 sm:w-auto"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
           </DialogPanel>
         </div>
       </div>
