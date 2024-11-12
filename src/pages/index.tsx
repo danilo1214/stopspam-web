@@ -2,6 +2,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import {
   BanknotesIcon,
   ChartBarIcon,
+  CheckIcon,
   ClockIcon,
 } from "@heroicons/react/24/solid";
 import { signIn } from "next-auth/react";
@@ -67,16 +68,42 @@ export default function Home() {
               : {}
           }
         >
-          <div className="space-y-6 p-8  md:m-10 lg:mt-10 lg:max-w-3xl lg:p-10 lg:text-left">
-            <h1 className="text-2xl font-semibold text-textPrimary-100">
+          <div className="space-y-5 p-8 md:p-6 lg:mt-10  lg:space-y-4  lg:p-10 lg:text-left">
+            <h1 className="text-4xl font-semibold text-textPrimary-100">
               Never Miss a Comment, Never Lose a Customer
             </h1>
-            <p className="text-lg text-textPrimary-200">
+
+            <div className="flex flex-col gap-y-1 text-textPrimary-200">
+              <div className="flex items-center gap-x-1 text-lg ">
+                <CheckIcon
+                  className="text-tertiary-600"
+                  height={17}
+                  width={17}
+                />
+                <div>Boost customer engagement automatical</div>
+              </div>
+              <div className="flex items-center gap-x-1 text-lg ">
+                <CheckIcon
+                  className="text-tertiary-600"
+                  height={17}
+                  width={17}
+                />
+                <div>Strengthen customer loyalty with rapid replies.</div>
+              </div>
+              <div className="flex items-center gap-x-1 text-lg ">
+                <CheckIcon
+                  className="text-tertiary-600"
+                  height={17}
+                  width={17}
+                />
+                <div>Focus on growth while AI manages the conversations</div>
+              </div>
+            </div>
+            <p className="text-sm text-textPrimary-200">
               Reply Master uses cutting edge AI to interract with your social
               media page comments. Engage with your audience 24/7, even when
               you’re busy running your business.
             </p>
-
             <div className="flex w-full justify-center lg:justify-start">
               <SignInButton />
             </div>

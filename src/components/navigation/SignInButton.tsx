@@ -6,7 +6,7 @@ export const SignInButton = () => {
     <Button
       label="Get Started now"
       onClick={() => signIn("facebook")}
-      className="w-2xl rounded-full bg-tertiary-700 px-8 py-2 text-center  text-lg text-white  shadow-md hover:bg-tertiary-600"
+      className="w-2xl rounded-full bg-tertiary-800 px-8 py-2 text-center  text-lg text-white  shadow-xl hover:bg-tertiary-700"
     />
   );
 };
