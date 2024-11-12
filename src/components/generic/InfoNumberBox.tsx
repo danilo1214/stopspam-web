@@ -21,7 +21,7 @@ export const InfoNumberBox = ({
   return (
     <div
       className={classNames(
-        "m-5 flex flex-col items-center justify-between gap-x-20 rounded-lg bg-white px-10 py-10  shadow lg:m-10 lg:max-w-4xl lg:max-w-xl  lg:flex-row lg:px-20",
+        "m-5 flex flex-col items-center justify-between gap-x-20 rounded-lg bg-white px-10 py-10  shadow lg:m-10 lg:max-w-4xl   lg:flex-row lg:px-20",
         className,
       )}
     >
