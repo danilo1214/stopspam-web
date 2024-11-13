@@ -59,7 +59,7 @@ model InstagramPage {
     createdAt         DateTime        @default(now())
     userId            String          @default("")
     user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-    facebookAccount   FacebookAccount @relation(fields: [facebookAccountId], references: [id])
+    facebookAccount   FacebookAccount @relation(fields: [facebookAccountId], references: [id], onDelete: Cascade)
     facebookAccountId Int
 }
 
