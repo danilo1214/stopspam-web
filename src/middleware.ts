@@ -27,5 +27,7 @@ export default withAuth({
 
 // This matcher applies the middleware to all routes except for /get-started and /api/auth (if you use NextAuth API routes).
 export const config = {
-  matcher: ["/((?!get-started|api/auth).*)"],
+  matcher: [
+    "/((?!_next/|favicon.ico|robots.txt|get-started|api/auth|.*\\.(jpg|jpeg|png|gif|webp|ico|svg|bmp|tiff)).*)",
+  ],
 };
