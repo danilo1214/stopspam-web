@@ -33,13 +33,14 @@ export const Main = ({
   return (
     <>
       <ToastContainer />
-      <Navbar className={GeistSans.className} />
+      {session.status === "authenticated" && (
+        <Navbar className={GeistSans.className} />
+      )}
       <main
         className={classNames(GeistSans.className, "min-h-[100vh] bg-gray-100")}
       >
         <Component {...pageProps} />
       </main>
-      <Footer />
     </>
   );
 };

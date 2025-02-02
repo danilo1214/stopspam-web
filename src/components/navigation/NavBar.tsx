@@ -17,11 +17,9 @@ import { HamburgerOpen } from "~/components/navigation/HamburgerOpen";
 import { useRouter } from "next/router";
 
 const navigation: NavigationItem[] = [
-  { label: "Home", link: "/" },
   { label: "App", link: "/app", protected: true },
   { label: "Account", link: "/account", protected: true },
-  { label: "Pricing", link: "/pricing" },
-  { label: "How to Use?", link: "/how-to-use" },
+  { label: "Pricing", link: "/pricing", protected: true },
 ];
 
 export interface NavigationItem {

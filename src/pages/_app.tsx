@@ -8,12 +8,8 @@ import { withTRPC } from "@trpc/next";
 
 import "react-toastify/dist/ReactToastify.css";
 import "~/styles/globals.css";
-import { ToastContainer } from "react-toastify";
 import { type AppRouter } from "~/server/api/root";
 import SuperJSON from "superjson";
-import classNames from "classnames";
-import Navbar from "~/components/navigation/NavBar";
-import { Footer } from "~/components/generic/Footer";
 import { Main } from "~/components/Main";
 
 const MyApp: AppType<{ session: Session | null }> = ({
