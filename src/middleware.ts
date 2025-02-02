@@ -10,7 +10,9 @@ export default withAuth({
   callbacks: {
     authorized: ({ req }) => {
       // verify token and return a boolean
-      const sessionToken = req.cookies.get("next-auth.session-token");
+      const sessionToken =
+        req.cookies.get("next-auth.session-token") ??
+        req.cookies.get("__Secure-next-auth.session-token");
       if (sessionToken) {
         return true;
       }
