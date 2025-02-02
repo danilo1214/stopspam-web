@@ -10,8 +10,17 @@ export default withAuth({
   callbacks: {
     authorized: ({ req }) => {
       // verify token and return a boolean
+      const path = req.nextUrl.pathname;
+      if (
+        path.includes(".png") ||
+        path.includes(".jpeg") ||
+        path.includes(".svg") ||
+        path.includes(".ico") ||
+        path.includes(".jpg")
+      ) {
+        return true;
+      }
 
-      console.log(`check ${req.url}`);
       const sessionToken =
         req.cookies.get("next-auth.session-token") ??
         req.cookies.get("__Secure-next-auth.session-token");
@@ -27,7 +36,5 @@ export default withAuth({
 
 // This matcher applies the middleware to all routes except for /get-started and /api/auth (if you use NextAuth API routes).
 export const config = {
-  matcher: [
-    "/((?!_next/|favicon.ico|robots.txt|get-started|api/auth|.*\\.(jpg|jpeg|png|gif|webp|ico|svg|bmp|tiff)).*)",
-  ],
+  matcher: ["/((?!get-started|api/auth).*)"],
 };
