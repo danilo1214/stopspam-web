@@ -10,6 +10,7 @@ export default withAuth({
   callbacks: {
     authorized: ({ req }) => {
       // verify token and return a boolean
+      console.log(req.url);
       const sessionToken =
         req.cookies.get("next-auth.session-token") ??
         req.cookies.get("__Secure-next-auth.session-token");
@@ -25,5 +26,7 @@ export default withAuth({
 
 // This matcher applies the middleware to all routes except for /get-started and /api/auth (if you use NextAuth API routes).
 export const config = {
-  matcher: ["/((?!_next/|favicon.ico|robots.txt|get-started|api/auth).*)"],
+  matcher: [
+    "/((?!_next/|_next/image|favicon.ico|robots.txt|get-started|api/auth).*)",
+  ],
 };
