@@ -85,6 +85,9 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   adapter: PrismaAdapter(db) as Adapter,
+  session: {
+    strategy: "database",
+  },
   providers: [
     FacebookProvider({
       clientId: env.FACEBOOK_CLIENT_ID,

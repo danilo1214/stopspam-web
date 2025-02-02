@@ -7,6 +7,17 @@ export default withAuth({
     signIn: "/get-started",
     signOut: "/auth/signout",
   },
+  callbacks: {
+    authorized: ({ req }) => {
+      // verify token and return a boolean
+      const sessionToken = req.cookies.get("next-auth.session-token");
+      if (sessionToken) {
+        return true;
+      }
+
+      return false;
+    },
+  },
   secret: env.NEXTAUTH_SECRET,
 });
 
