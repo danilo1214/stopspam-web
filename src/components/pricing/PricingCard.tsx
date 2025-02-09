@@ -4,7 +4,7 @@ export type TPricingCard = {
   type: string;
   price: number;
   name: string;
-  checkoutId: string;
+  productId: string;
   benefits: string[];
 };
 
@@ -12,7 +12,7 @@ export interface PricingCardProps {
   type: string;
   price: number;
   name: string;
-  checkoutId: string;
+  productId: string;
   benefits: string[];
   onClick: () => void;
 }

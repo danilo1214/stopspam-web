@@ -1,113 +1,132 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { db } from "~/server/db";
-import crypto from "crypto";
+import { buffer } from "stream/consumers";
+import type Stripe from "stripe";
 import { env } from "~/env";
+import { db } from "~/server/db";
+import { stripe } from "~/server/stripe";
 
-async function buffer(readable: any) {
-  const chunks = [];
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-  }
-  return Buffer.concat(chunks);
-}
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   try {
-    if (req.method !== "POST") {
-      return res.status(405);
-    }
+    console.log("hiiii");
+    if (req.method === "POST") {
+      const sig = req.headers["stripe-signature"] as string;
+      console.log(sig);
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    const b: Buffer = await buffer(req);
+      let event: Stripe.Event;
 
-    const secret = env.LEMONSQUEEZY_WEBHOOK_SECRET;
-    const hmac = crypto.createHmac("sha256", secret);
-    const digest = Buffer.from(
-      hmac.update(b.toString()).digest("hex"),
-      "utf8",
-    ).toString();
-    const signature = req.headers["x-signature"];
+      const raw = await buffer(req);
 
-    if (signature !== digest) {
-      res.status(401).end();
-      return;
-    }
+      try {
+        event = stripe.webhooks.constructEvent(
+          raw,
+          sig,
+          env.STRIPE_WEBHOOK_SECRET,
+        );
+      } catch (err: any) {
+        console.log(err);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
 
-    // Example of processing a webhook event
-    const event: any = JSON.parse(b.toString()) as object;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    switch (event.meta.event_name as string) {
-      case "subscription_updated":
-        const sub = await db.subscription.findFirst({
-          where: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            subscriptionId: event.data.id as string,
-          },
-        });
-        if (!sub) {
-          res.status(200);
-        }
-        await db.subscription.update({
-          where: {
-            id: sub?.id,
-          },
-          data: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            status: event.data.attributes.status as string,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            expires: new Date(event.data.attributes.renews_at as string),
-          },
-        });
-        res.status(200).end();
+      switch (event.type) {
+        case "checkout.session.completed":
+          const metadata = event.data.object.metadata;
 
-      case "subscription_created":
-        const existingSub = await db.subscription.findFirst({
-          where: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            userId: event.meta.custom_data.user_id as string,
-          },
-        });
+          if (!metadata) {
+            return res.status(500).end();
+          }
 
-        if (existingSub) {
-          await db.subscription.delete({
+          const existingSub = await db.subscription.findFirst({
             where: {
-              id: existingSub.id,
+              userId: metadata.user_id!,
             },
           });
-        }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        await db.subscription.create({
-          data: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            status: event.data.attributes.status as string,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            expires: new Date(event.data.attributes.renews_at as string),
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            userId: event.meta.custom_data.user_id as string,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            subscriptionId: event.data.id as string,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            variantId: event.data.attributes.variant_id as number,
-          },
-        });
-        res.status(200).end();
-        return;
-      // Handle subscription creation
-      case "subscription.updated":
-        // Handle subscription updates
-        break;
-      // Add more cases as needed
+          if (existingSub) {
+            await db.subscription.delete({
+              where: {
+                id: existingSub.id,
+              },
+            });
+          }
+
+          const customer = event.data.object.customer;
+          if (!customer) {
+            return res.status(400).end();
+          }
+          const createdCustomerId =
+            typeof customer === "string" ? customer : customer.id;
+
+          const subscription = event.data.object.subscription;
+          if (!subscription) {
+            return res.status(400).end();
+          }
+          const subscriptionId =
+            typeof subscription === "string" ? subscription : subscription.id;
+
+          const stripeSub = await stripe.subscriptions.retrieve(subscriptionId);
+          const createdProductId = stripeSub.items.data[0]?.plan.id;
+
+          await db.subscription.create({
+            data: {
+              status: "active",
+              expires: new Date(),
+              userId: metadata.user_id!,
+              customerId: createdCustomerId,
+              subscriptionId,
+              productId: createdProductId,
+            },
+          });
+          return res.status(200).end();
+        case "customer.subscription.updated":
+          const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+          await sleep(20000);
+
+          const updatedSubscription = event.data.object;
+
+          const productId = updatedSubscription.items.data[0]?.plan.id;
+
+          const customerId =
+            typeof updatedSubscription.customer === "string"
+              ? updatedSubscription.customer
+              : updatedSubscription.customer.id;
+
+          const existingSubscription = await db.subscription.findFirst({
+            where: {
+              customerId,
+            },
+          });
+
+          if (!existingSubscription) {
+            return res.status(200);
+          }
+
+          await db.subscription.update({
+            where: {
+              id: existingSubscription?.id,
+            },
+            data: {
+              productId: productId,
+              subscriptionId: updatedSubscription.id,
+              status: updatedSubscription.status as string,
+              expires: new Date(updatedSubscription.current_period_end * 1000),
+            },
+          });
+          res.status(200).end();
+        default:
+          console.log("Unexpected webhook type", JSON.stringify(event));
+      }
+      return res.status(200).end();
     }
-
-    return res.status(200).end();
   } catch (err) {
     console.log(err);
   }
 }
-
-export const config = { api: { bodyParser: false } };

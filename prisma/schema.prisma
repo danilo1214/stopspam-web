@@ -66,11 +66,12 @@ model InstagramPage {
 model Subscription {
     id             String   @id @default(cuid())
     userId         String
-    subscriptionId String   @unique
+    subscriptionId String?  @unique
     status         String
     expires        DateTime
     user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    variantId      Int
+    productId      String?
+    customerId     String?  @unique
 }
 
 model Session {

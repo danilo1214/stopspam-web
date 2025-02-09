@@ -41,8 +41,7 @@ export default function AccountPage() {
   const { mutate: deleteAccount } = subscriptionApi.deleteAccount.useMutation();
 
   const currentPlan = useMemo(
-    () =>
-      cards.find((c) => c.checkoutId === subscription?.variantId.toString()),
+    () => cards.find((c) => c.productId === subscription?.productId),
     [subscription],
   );
 

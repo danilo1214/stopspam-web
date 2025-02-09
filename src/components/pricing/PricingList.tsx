@@ -17,10 +17,8 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
     }
 
     const newWindow = window.open("about:blank", "_blank")!;
-    paymentApi.mutate(
-      { productId },
-      { onSuccess: (data) => (newWindow.location.href = data) },
-    );
+    const url = await paymentApi.mutateAsync({ productId });
+    newWindow.location.href = url;
   };
 
   return (
@@ -37,8 +35,8 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
             name={item.name}
             benefits={item.benefits}
             price={item.price}
-            checkoutId={item.checkoutId}
-            onClick={() => buyProduct(item.checkoutId)}
+            productId={item.productId}
+            onClick={() => buyProduct(item.productId)}
           />
         ))}
       </div>
