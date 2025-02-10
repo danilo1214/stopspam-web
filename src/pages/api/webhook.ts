@@ -87,9 +87,6 @@ export default async function handler(
           });
           return res.status(200).end();
         case "customer.subscription.updated":
-          const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-          await sleep(20000);
-
           const updatedSubscription = event.data.object;
 
           const productId = updatedSubscription.items.data[0]?.plan.id;
@@ -106,7 +103,7 @@ export default async function handler(
           });
 
           if (!existingSubscription) {
-            return res.status(200);
+            res.status(200).end();
           }
 
           await db.subscription.update({
