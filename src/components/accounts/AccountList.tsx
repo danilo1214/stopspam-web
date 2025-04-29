@@ -67,7 +67,6 @@ export const AccountList = () => {
         {" "}
         <AddAccounts
           onStepChange={(s) => {
-            console.log(s);
             if (s === ADD_ACCOUNTS_STEPS.SELECT_PAGES) {
               setShowModalButtons(true);
             } else {
