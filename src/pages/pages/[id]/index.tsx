@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { SparklesIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { type GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
@@ -27,6 +27,8 @@ export default function Page() {
   const utils = api.useUtils();
   const { query, replace } = useRouter();
   const id = query.id as string;
+  const { mutateAsync: triggerDemo, isPending: isTriggeringDemo } =
+    api.commentReplies.triggerDemo.useMutation();
   const { mutateAsync: deletePage, isPending: isDeleting } =
     api.instagram.deletePage.useMutation();
   const { data: page, isError } = api.instagram.getSavedPage.useQuery(id);
@@ -95,6 +97,8 @@ export default function Page() {
     );
   }
 
+  const isDemoFinished = page.hasDemoed && page.demoReplies.length > 0;
+
   return (
     <main>
       <div className="flex w-full content-center  items-center justify-center md:justify-normal">
@@ -122,20 +126,47 @@ export default function Page() {
             />
             <h1 className="text-lg  text-textPrimary-900">{page.username}</h1>
           </div>
-          <Button
-            icon={
-              <TrashIcon className="size-5 font-light text-secondary-600" />
-            }
-            label="Delete"
-            disabled={isDeleting}
-            onClick={async () => {
-              await deletePage({ id: Number(id) });
-              await utils.instagram.getSavedPages.invalidate();
-              toast("Successfully removed page");
-              await replace("/app");
-            }}
-            className="transform rounded-lg  bg-white  px-4 py-2 text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
-          />
+          <div className="flex gap-x-5">
+            {!page.hasDemoed && (
+              <Button
+                icon={<SparklesIcon className="size-5 font-light text-white" />}
+                label="Demo"
+                disabled={isTriggeringDemo}
+                onClick={async () => {
+                  await triggerDemo(Number(id));
+                  await utils.instagram.getSavedPages.invalidate();
+                  toast("Successfully scheduled demo");
+                  await replace("/app");
+                }}
+                className="transform rounded-lg bg-primary-600    px-4 py-2 text-white shadow-md transition duration-200 ease-in-out hover:scale-105"
+              />
+            )}
+
+            {isDemoFinished && (
+              <Link
+                href={`/pages/${id}/demo`}
+                className="flex transform gap-x-2 rounded-lg bg-primary-600    px-4 py-2 text-white shadow-md transition duration-200 ease-in-out hover:scale-105"
+              >
+                <SparklesIcon className="size-5 font-light text-white" /> View
+                Demo
+              </Link>
+            )}
+
+            <Button
+              icon={
+                <TrashIcon className="size-5 font-light text-secondary-600" />
+              }
+              label="Delete"
+              disabled={isDeleting}
+              onClick={async () => {
+                await deletePage({ id: Number(id) });
+                await utils.instagram.getSavedPages.invalidate();
+                toast("Successfully removed page");
+                await replace("/app");
+              }}
+              className="transform rounded-lg  bg-white  px-4 py-2 text-secondary-600 shadow-md transition duration-200 ease-in-out hover:scale-105"
+            />
+          </div>
         </div>
 
         <div className="my-8 flex w-full flex-col content-between gap-x-6 lg:flex-row">

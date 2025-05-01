@@ -25,6 +25,10 @@ export const commentRepliesRouter = createTRPCRouter({
         page,
       );
 
+      console.log("OKKKKK GOT COMMENTS");
+
+      console.log(comments);
+
       await db.instagramPage.update({
         where: {
           id: input,

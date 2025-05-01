@@ -122,12 +122,12 @@ export class Instagram {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const posts = mediaRes.data.data.slice(0, 10);
 
-    const jointComments: IgComment[] = [];
+    let jointComments: IgComment[] = [];
 
     for (const post of posts) {
       const comments: IgComment[] = post?.comments?.data ?? [];
       const allowed = n - comments.length;
-      jointComments.concat(comments.slice(0, allowed));
+      jointComments = jointComments.concat(comments.slice(0, allowed));
     }
 
     return jointComments;

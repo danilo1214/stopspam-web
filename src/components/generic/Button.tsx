@@ -6,6 +6,7 @@ type ButtonProps = {
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
+  href?: string;
   icon?: React.ReactNode;
   type?: "button" | "submit";
 };
@@ -17,6 +18,7 @@ export default function Button({
   disabled,
   icon,
   type,
+  ...rest
 }: ButtonProps) {
   return (
     <button
@@ -29,6 +31,7 @@ export default function Button({
           "cursor-not-allowed opacity-50": disabled,
         },
       )}
+      {...rest}
       onClick={onClick}
     >
       {icon && <span className={classNames(label && "mr-2")}>{icon}</span>}

@@ -62,7 +62,7 @@ model InstagramPage {
     user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
     facebookAccount   FacebookAccount @relation(fields: [facebookAccountId], references: [id], onDelete: Cascade)
     facebookAccountId Int
-    DemoReply         DemoReply[]
+    demoReplies       DemoReply[]
 }
 
 model Subscription {
@@ -117,6 +117,7 @@ model DemoReply {
     id              String        @id @default(cuid())
     instagramPage   InstagramPage @relation(fields: [instagramPageId], references: [id], onDelete: Cascade)
     instagramPageId Int
+    handle          String
     commentText     String
     replyText       String
     mediaId         String

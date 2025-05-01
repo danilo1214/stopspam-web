@@ -29,6 +29,9 @@ export const instagramRouter = createTRPCRouter({
         where: {
           id: Number(input),
         },
+        include: {
+          demoReplies: true,
+        },
       });
 
       if (!page) {
