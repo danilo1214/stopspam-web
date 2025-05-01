@@ -54,6 +54,7 @@ model InstagramPage {
     userDescription   String?         @db.Text()
     vibe              String?
     goal              String?
+    hasDemoed         Boolean?
     businessType      String?
     username          String
     createdAt         DateTime        @default(now())
@@ -61,6 +62,7 @@ model InstagramPage {
     user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
     facebookAccount   FacebookAccount @relation(fields: [facebookAccountId], references: [id], onDelete: Cascade)
     facebookAccountId Int
+    DemoReply         DemoReply[]
 }
 
 model Subscription {
@@ -109,4 +111,15 @@ model CommentReply {
     text        String
     userId      String
     user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DemoReply {
+    id              String        @id @default(cuid())
+    instagramPage   InstagramPage @relation(fields: [instagramPageId], references: [id], onDelete: Cascade)
+    instagramPageId Int
+    commentText     String
+    replyText       String
+    mediaId         String
+    mediaText       String
+    createdAt       DateTime      @default(now())
 }

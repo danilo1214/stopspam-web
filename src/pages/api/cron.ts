@@ -71,9 +71,6 @@ export default async function handler(
           },
         );
         const igPage = igPageRes.data;
-        console.log(igPage);
-
-        console.log("TEEEZTTT");
 
         if (igPage.profile_picture_url !== page.profilePictureUrl) {
           await db.instagramPage.update({
@@ -84,8 +81,6 @@ export default async function handler(
           });
         }
 
-        console.log("ne pusam kur");
-
         const mediaRes = await axios.get(
           `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
           {
@@ -95,8 +90,6 @@ export default async function handler(
             },
           },
         );
-
-        console.log("get media");
 
         // Only reply comment last 5 posts
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access

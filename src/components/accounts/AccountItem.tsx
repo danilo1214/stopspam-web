@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { OnlineStatus } from "~/components/generic/OnlineStatus";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 export interface AccountItemProps {
   instagramPage: InstagramPage;
@@ -81,7 +82,7 @@ export const AccountItem: React.FC<AccountItemProps> = ({ instagramPage }) => {
         >
           <div className="absolute right-[-50px] z-10 mt-2 w-48 rounded border bg-white shadow-lg">
             <button
-              className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+              className="block w-full px-4 py-2 text-left  text-secondary-700 hover:bg-gray-100"
               onClick={async (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -90,7 +91,9 @@ export const AccountItem: React.FC<AccountItemProps> = ({ instagramPage }) => {
                 toast("Successfully removed page");
               }}
             >
-              Remove Page
+              <div className="flex items-center gap-x-2">
+                <TrashIcon height={16} width={16} /> Delete
+              </div>
             </button>
           </div>
         </Transition>

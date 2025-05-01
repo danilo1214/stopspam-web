@@ -126,7 +126,7 @@ export default function Page() {
             icon={
               <TrashIcon className="size-5 font-light text-secondary-600" />
             }
-            label="Delete account"
+            label="Delete"
             disabled={isDeleting}
             onClick={async () => {
               await deletePage({ id: Number(id) });
