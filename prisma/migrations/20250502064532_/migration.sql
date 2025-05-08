@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `DemoReply` ADD COLUMN `handle` VARCHAR(191) NOT NULL DEFAULT '';

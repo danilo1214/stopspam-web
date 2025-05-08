@@ -117,7 +117,7 @@ model DemoReply {
     id              String        @id @default(cuid())
     instagramPage   InstagramPage @relation(fields: [instagramPageId], references: [id], onDelete: Cascade)
     instagramPageId Int
-    handle          String
+    handle          String        @default("")
     commentText     String
     replyText       String
     mediaId         String

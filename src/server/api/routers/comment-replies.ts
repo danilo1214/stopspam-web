@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { Instagram } from "~/server/api/services/instagram";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { sendMessageToQueue } from "~/server/aws";
 import { db } from "~/server/db";
 
 export const commentRepliesRouter = createTRPCRouter({
@@ -25,9 +26,21 @@ export const commentRepliesRouter = createTRPCRouter({
         page,
       );
 
-      console.log("OKKKKK GOT COMMENTS");
+      console.log(JSON.stringify(comments));
 
-      console.log(comments);
+      /**
+       * await sendMessageToQueue({
+        comments,
+        instagramPageId: page.instagramId,
+        biography: page.biography,
+        token: page.facebookAccount.long_lived_token,
+        profileDescription: page.userDescription,
+        goal: page.goal,
+        businessType: page.businessType,
+        tone: page.vibe,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      });
+       */
 
       await db.instagramPage.update({
         where: {

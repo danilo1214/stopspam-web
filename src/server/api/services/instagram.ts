@@ -14,6 +14,13 @@ export type IgComment = {
   like_count: number;
 };
 
+export type IgCommentInfo = IgComment & {
+  handle: string;
+  media_id: string;
+  instagram_page_id: string;
+  media_text: string;
+};
+
 export type IgPageResult = {
   id: string;
   profile_picture_url: string;
@@ -108,7 +115,7 @@ export class Instagram {
     account: FacebookAccount,
     page: InstagramPage,
     n = 50,
-  ): Promise<IgComment[]> {
+  ): Promise<IgCommentInfo[]> {
     const mediaRes = await axios.get(
       `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
       {
@@ -122,12 +129,20 @@ export class Instagram {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const posts = mediaRes.data.data.slice(0, 10);
 
-    let jointComments: IgComment[] = [];
+    let jointComments: IgCommentInfo[] = [];
 
     for (const post of posts) {
       const comments: IgComment[] = post?.comments?.data ?? [];
       const allowed = n - comments.length;
-      jointComments = jointComments.concat(comments.slice(0, allowed));
+      jointComments = jointComments.concat(
+        comments.slice(0, allowed).map((comment) => ({
+          ...comment,
+          handle: "",
+          instagram_page_id: page.id.toString(),
+          media_id: post.id as string,
+          media_text: post.caption,
+        })),
+      );
     }
 
     return jointComments;

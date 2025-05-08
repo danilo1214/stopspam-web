@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { ToastContainer } from "react-toastify";
 import { Footer } from "~/components/generic/Footer";
+import Loader from "~/components/generic/Loader";
 import Navbar from "~/components/navigation/NavBar";
 
 export const Main = ({
@@ -32,6 +33,7 @@ export const Main = ({
 
   return (
     <>
+      <Loader />
       <ToastContainer />
       {session.status === "authenticated" && (
         <Navbar className={GeistSans.className} />

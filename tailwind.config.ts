@@ -6,6 +6,15 @@ export default {
   darkMode: "selector",
   theme: {
     extend: {
+      keyframes: {
+        loader: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(400%)" },
+        },
+      },
+      animation: {
+        loader: "loader 1.2s linear infinite",
+      },
       fontFamily: {
         customFont: ['"Arial"', "sans-serif"],
         sans: ["var(--font-sans)", ...fontFamily.sans],
