@@ -118,8 +118,8 @@ model DemoReply {
     instagramPage   InstagramPage @relation(fields: [instagramPageId], references: [id], onDelete: Cascade)
     instagramPageId Int
     handle          String        @default("")
-    commentText     String
-    replyText       String
+    commentText     String        @db.VarChar(2200)
+    replyText       String        @db.VarChar(2200)
     mediaId         String
     mediaText       String
     createdAt       DateTime      @default(now())

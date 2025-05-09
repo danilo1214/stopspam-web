@@ -120,7 +120,7 @@ export class Instagram {
       `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
       {
         params: {
-          fields: "caption,comments{like_count,timestamp,text}",
+          fields: "caption,comments{like_count,timestamp,text},permalink",
           access_token: account.long_lived_token,
         },
       },
@@ -134,12 +134,16 @@ export class Instagram {
     for (const post of posts) {
       const comments: IgComment[] = post?.comments?.data ?? [];
       const allowed = n - comments.length;
+
+      const splitUrl = (post?.permalink as string)?.split("/");
+      const mediaId = splitUrl?.[splitUrl.length - 2];
+
       jointComments = jointComments.concat(
         comments.slice(0, allowed).map((comment) => ({
           ...comment,
           handle: "",
           instagram_page_id: page.id.toString(),
-          media_id: post.id as string,
+          media_id: mediaId!,
           media_text: post.caption,
         })),
       );
