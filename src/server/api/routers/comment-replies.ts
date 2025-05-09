@@ -35,6 +35,7 @@ export const commentRepliesRouter = createTRPCRouter({
         goal: page.goal,
         businessType: page.businessType,
         tone: page.vibe,
+        storeOnly: true,
       });
 
       await db.instagramPage.update({
