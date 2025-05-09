@@ -26,10 +26,7 @@ export const commentRepliesRouter = createTRPCRouter({
         page,
       );
 
-      console.log(JSON.stringify(comments));
-
-      /**
-       * await sendMessageToQueue({
+      await sendMessageToQueue({
         comments,
         instagramPageId: page.instagramId,
         biography: page.biography,
@@ -38,9 +35,7 @@ export const commentRepliesRouter = createTRPCRouter({
         goal: page.goal,
         businessType: page.businessType,
         tone: page.vibe,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       });
-       */
 
       await db.instagramPage.update({
         where: {
