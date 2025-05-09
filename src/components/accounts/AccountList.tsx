@@ -10,7 +10,11 @@ import { Nudge } from "~/components/generic/Nudge";
 import { useMeta } from "~/hooks/useMeta";
 import { api } from "~/utils/api";
 
-export const AccountList = () => {
+interface AccountListProps {
+  hasSubscription?: boolean;
+}
+
+export const AccountList = ({ hasSubscription }: AccountListProps) => {
   const utils = api.useUtils();
 
   /**
@@ -86,14 +90,16 @@ export const AccountList = () => {
             Your connected pages
           </div>
 
-          <Button
-            icon={
-              <PlusIcon className="size-5 font-light text-textPrimary-100" />
-            }
-            label="Add"
-            className="mb-4 rounded-lg bg-primary-600 px-4 py-2  text-white shadow-md transition duration-200 ease-in-out hover:scale-105 "
-            onClick={() => setOpen(true)}
-          ></Button>
+          {hasSubscription && (
+            <Button
+              icon={
+                <PlusIcon className="size-5 font-light text-textPrimary-100" />
+              }
+              label="Add"
+              className="mb-4 rounded-lg bg-primary-600 px-4 py-2  text-white shadow-md transition duration-200 ease-in-out hover:scale-105 "
+              onClick={() => setOpen(true)}
+            ></Button>
+          )}
         </div>
       </div>
 

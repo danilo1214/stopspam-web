@@ -29,10 +29,6 @@ export default function Home() {
     return <AccessDenied />;
   }
 
-  if (!subscription) {
-    return <CTABanner />;
-  }
-
   return (
     <>
       <Head>
@@ -66,7 +62,9 @@ export default function Home() {
 
         <Dashboard />
 
-        <AccountList />
+        <AccountList hasSubscription={!!subscription} />
+
+        {!subscription && <CTABanner />}
       </main>
     </>
   );
