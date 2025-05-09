@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import Button from "../generic/Button";
+import { signIn, useSession } from "next-auth/react";
+import { api } from "~/utils/api";
 
 export type TPricingCard = {
   type: string;
@@ -14,7 +17,6 @@ export interface PricingCardProps {
   name: string;
   productId: string;
   benefits: string[];
-  onClick: () => void;
 }
 
 export default function PricingCard({
@@ -22,8 +24,33 @@ export default function PricingCard({
   price,
   name,
   benefits,
-  onClick,
+  productId,
 }: PricingCardProps) {
+  const { data } = useSession();
+
+  const [url, setUrl] = useState("");
+  const paymentApi = api.payments.checkout.useMutation();
+
+  useEffect(() => {
+    const fetchUrl = async () => {
+      const url = await paymentApi.mutateAsync({ productId });
+      setUrl(url);
+    };
+
+    void fetchUrl();
+  }, [productId, paymentApi]);
+
+  const handlePaymentClick = async () => {
+    if (!data?.user) {
+      await signIn("facebook", {
+        callbackUrl: "http://localhost:3000/pricing",
+      });
+      return;
+    }
+
+    window.open(url);
+  };
+
   return (
     <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
       <div
@@ -46,7 +73,7 @@ export default function PricingCard({
       </div>
       <div className="flex w-full justify-center align-middle">
         <Button
-          onClick={onClick}
+          onClick={handlePaymentClick}
           label="Buy now"
           className="py- mx-10 flex w-[60%] items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 text-base font-medium text-white  shadow-lg transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
         ></Button>

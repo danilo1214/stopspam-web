@@ -1,26 +1,8 @@
-import { signIn, useSession } from "next-auth/react";
 import PricingCard, {
   type TPricingCard,
 } from "~/components/pricing/PricingCard";
-import { api } from "~/utils/api";
 
 export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
-  const { data } = useSession();
-  const paymentApi = api.payments.checkout.useMutation();
-
-  const buyProduct = async (productId: string) => {
-    if (!data?.user) {
-      await signIn("facebook", {
-        callbackUrl: "http://localhost:3000/pricing",
-      });
-      return;
-    }
-
-    const url = await paymentApi.mutateAsync({ productId });
-    // Open in a new tab/window immediately with the final URL
-    window.open(url, "_blank");
-  };
-
   return (
     <div>
       <h1 className="mb-6 mt-14 text-center text-3xl font-semibold text-textPrimary-900">
@@ -36,7 +18,6 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
             benefits={item.benefits}
             price={item.price}
             productId={item.productId}
-            onClick={() => buyProduct(item.productId)}
           />
         ))}
       </div>
