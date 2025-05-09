@@ -38,7 +38,7 @@ export default function PricingCard({
     };
 
     void fetchUrl();
-  }, [productId, paymentApi]);
+  }, []);
 
   const handlePaymentClick = async () => {
     if (!data?.user) {
