@@ -16,9 +16,9 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
       return;
     }
 
-    const newWindow = window.open("about:blank", "_blank")!;
     const url = await paymentApi.mutateAsync({ productId });
-    newWindow.location.href = url;
+    // Open in a new tab/window immediately with the final URL
+    window.open(url, "_blank");
   };
 
   return (
