@@ -61,12 +61,20 @@ export const authOptions: NextAuthOptions = {
             },
           );
 
-          await db.facebookAccount.create({
-            data: {
-              long_lived_token: res.data.access_token,
+          const existingAccount = await db.facebookAccount.findFirst({
+            where: {
               instagramId: account.providerAccountId,
             },
           });
+
+          if (!existingAccount) {
+            await db.facebookAccount.create({
+              data: {
+                long_lived_token: res.data.access_token,
+                instagramId: account.providerAccountId,
+              },
+            });
+          }
         } catch (err) {
           if (err instanceof Error) {
             console.error(err.message);
