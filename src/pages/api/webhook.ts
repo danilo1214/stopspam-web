@@ -110,7 +110,7 @@ export default async function handler(
             },
           });
 
-          console.log("update ok");
+          return res.status(200).end();
         }
         case "customer.subscription.resumed": {
           const sub = event.data.object;
@@ -133,7 +133,7 @@ export default async function handler(
             },
           });
 
-          break;
+          return res.status(200).end();
         }
         case "customer.subscription.updated":
           const updatedSubscription = event.data.object;
@@ -166,12 +166,11 @@ export default async function handler(
               expires: new Date(updatedSubscription.current_period_end * 1000),
             },
           });
-          res.status(200).end();
+          return res.status(200).end();
         default:
           console.log("Unexpected webhook type", JSON.stringify(event));
           return res.status(400).end();
       }
-      return res.status(200).end();
     }
   } catch (err) {
     console.log(err);
