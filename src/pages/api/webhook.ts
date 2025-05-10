@@ -86,6 +86,50 @@ export default async function handler(
             },
           });
           return res.status(200).end();
+        case "customer.subscription.deleted": {
+          const sub = event.data.object;
+          const existingSub = await db.subscription.findFirst({
+            where: {
+              subscriptionId: sub.id,
+            },
+          });
+
+          if (!existingSub) {
+            res.status(500).end();
+          }
+
+          await db.subscription.update({
+            where: {
+              id: existingSub?.id,
+            },
+            data: {
+              status: "cancelled",
+            },
+          });
+        }
+        case "customer.subscription.resumed": {
+          const sub = event.data.object;
+          const existingSub = await db.subscription.findFirst({
+            where: {
+              subscriptionId: sub.id,
+            },
+          });
+
+          if (!existingSub) {
+            res.status(500).end();
+          }
+
+          await db.subscription.update({
+            where: {
+              id: existingSub?.id,
+            },
+            data: {
+              status: "active",
+            },
+          });
+
+          break;
+        }
         case "customer.subscription.updated":
           const updatedSubscription = event.data.object;
 
