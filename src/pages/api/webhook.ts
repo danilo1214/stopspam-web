@@ -87,6 +87,7 @@ export default async function handler(
           });
           return res.status(200).end();
         case "customer.subscription.deleted": {
+          console.log("got here deleted");
           const sub = event.data.object;
           const existingSub = await db.subscription.findFirst({
             where: {
@@ -164,6 +165,7 @@ export default async function handler(
           res.status(200).end();
         default:
           console.log("Unexpected webhook type", JSON.stringify(event));
+          return res.status(400).end();
       }
       return res.status(200).end();
     }
