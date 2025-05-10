@@ -58,7 +58,9 @@ export const subscriptionRouter = createTRPCRouter({
     }
 
     try {
-      await stripe.subscriptions.update(sub.subscriptionId);
+      await stripe.subscriptions.update(sub.subscriptionId, {
+        cancel_at_period_end: false,
+      });
       return true;
     } catch (err) {
       console.log(err);
