@@ -102,6 +102,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.FACEBOOK_CLIENT_SECRET,
       authorization: {
         params: {
+          config_id: env.FACEBOOK_CONFIG_ID,
           scope:
             "instagram_basic,instagram_content_publish,instagram_manage_comments,instagram_manage_insights,pages_show_list,pages_read_engagement,business_management",
         },

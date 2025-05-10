@@ -31,6 +31,7 @@ export const env = createEnv({
     CRON_SECRET: z.string(),
     STRIPE_API_KEY: z.string(),
     STRIPE_WEBHOOK_SECRET: z.string(),
+    FACEBOOK_CONFIG_ID: z.string(),
   },
 
   /**
@@ -60,6 +61,7 @@ export const env = createEnv({
     CRON_SECRET: process.env.CRON_SECRET,
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    FACEBOOK_CONFIG_ID: process.env.FACEBOOK_CONFIG_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
