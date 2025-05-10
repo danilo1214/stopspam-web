@@ -155,6 +155,13 @@ export default async function handler(
             res.status(200).end();
           }
 
+          const overwriteStatus =
+            updatedSubscription.cancel_at_period_end === true
+              ? "cancelled"
+              : updatedSubscription.cancel_at_period_end === false
+                ? "active"
+                : undefined;
+
           await db.subscription.update({
             where: {
               id: existingSubscription?.id,
@@ -162,7 +169,7 @@ export default async function handler(
             data: {
               productId: productId,
               subscriptionId: updatedSubscription.id,
-              status: updatedSubscription.status as string,
+              status: overwriteStatus ?? (updatedSubscription.status as string),
               expires: new Date(updatedSubscription.current_period_end * 1000),
             },
           });

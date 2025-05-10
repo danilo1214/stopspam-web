@@ -58,7 +58,7 @@ export const subscriptionRouter = createTRPCRouter({
     }
 
     try {
-      await stripe.subscriptions.resume(sub.subscriptionId);
+      await stripe.subscriptions.update(sub.subscriptionId);
       return true;
     } catch (err) {
       console.log(err);
