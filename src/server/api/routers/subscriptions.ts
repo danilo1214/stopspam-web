@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 import { lemonSqueezyApi } from "~/server/lemonsqueezy";
+import { stripe } from "~/server/stripe";
 
 export const subscriptionRouter = createTRPCRouter({
   getCurrent: protectedProcedure.input(z.object({})).query(async ({ ctx }) => {
@@ -52,24 +53,12 @@ export const subscriptionRouter = createTRPCRouter({
         userId: user.id,
       },
     });
-    if (!sub) {
+    if (!sub?.subscriptionId) {
       throw Error("No subscription found");
     }
 
     try {
-      const response = await lemonSqueezyApi.patch(
-        `/subscriptions/${sub.subscriptionId}`,
-        {
-          data: {
-            type: "subscriptions",
-            id: `${sub.subscriptionId}`,
-            attributes: {
-              cancelled: false,
-            },
-          },
-        },
-      );
-
+      await stripe.subscriptions.resume(sub.subscriptionId);
       return true;
     } catch (err) {
       console.log(err);
@@ -87,12 +76,12 @@ export const subscriptionRouter = createTRPCRouter({
         userId: user.id,
       },
     });
-    if (!sub) {
+    if (!sub?.subscriptionId) {
       throw Error("No subscription found");
     }
 
     try {
-      await lemonSqueezyApi.delete(`/subscriptions/${sub.subscriptionId}`);
+      await stripe.subscriptions.cancel(sub.subscriptionId);
       return true;
     } catch (err) {
       console.log(err);
