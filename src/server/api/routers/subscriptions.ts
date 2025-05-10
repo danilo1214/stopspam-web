@@ -91,11 +91,13 @@ export const subscriptionRouter = createTRPCRouter({
       throw Error("No subscription found");
     }
 
-    const response = await lemonSqueezyApi.delete(
-      `/subscriptions/${sub.subscriptionId}`,
-    );
-
-    return true;
+    try {
+      await lemonSqueezyApi.delete(`/subscriptions/${sub.subscriptionId}`);
+      return true;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }),
 
   getSecretMessage: protectedProcedure.query(() => {
