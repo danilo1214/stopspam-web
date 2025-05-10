@@ -96,17 +96,21 @@ export default async function handler(
           });
 
           if (!existingSub) {
-            res.status(500).end();
+            return res.status(500).end();
           }
+
+          console.log("will update", existingSub.id);
 
           await db.subscription.update({
             where: {
-              id: existingSub?.id,
+              id: existingSub.id,
             },
             data: {
               status: "cancelled",
             },
           });
+
+          console.log("update ok");
         }
         case "customer.subscription.resumed": {
           const sub = event.data.object;
