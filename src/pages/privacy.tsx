@@ -7,9 +7,9 @@ const PrivacyPolicy = () => {
       <p>Effective Date: October 17, 2024</p>
 
       <p>
-        We at [Your Company Name] value your privacy. This Privacy Policy
-        outlines the information we collect, how we use it, and the steps we
-        take to protect it.
+        We at Reply Master value your privacy. This Privacy Policy outlines the
+        information we collect, how we use it, and the steps we take to protect
+        it.
       </p>
 
       <h2>1. Information We Collect</h2>
@@ -83,7 +83,7 @@ const PrivacyPolicy = () => {
       <h2>Contact Us</h2>
       <p>
         If you have any questions about this Privacy Policy, you can contact us
-        at: support@yourcompany.com
+        at: instareplymaster@gmail.com
       </p>
     </div>
   );
