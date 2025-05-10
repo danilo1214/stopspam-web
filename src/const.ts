@@ -8,6 +8,7 @@ export const cards = [
       "AI comments",
       "Guaranteed 1 hour response times",
       "Multi language support",
+      "Up to 7 000 replies per month",
     ],
   },
 
@@ -18,8 +19,9 @@ export const cards = [
     productId: "price_1QqDw11NldzrbHx5SeUzfFg6",
     benefits: [
       "AI comments",
-      "Guaranteed 4 hour response times",
+      "Guaranteed 1 hour response times",
       "Multi language support",
+      "Up to 10 000 replies per month",
     ],
   },
 ];
