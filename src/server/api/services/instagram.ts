@@ -12,6 +12,7 @@ export type IgComment = {
   text: string;
   id: string;
   like_count: number;
+  username: string;
 };
 
 export type IgCommentInfo = IgComment & {
@@ -120,7 +121,8 @@ export class Instagram {
       `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
       {
         params: {
-          fields: "caption,comments{like_count,timestamp,text},permalink",
+          fields:
+            "caption,comments{like_count,timestamp,text,username},permalink",
           access_token: account.long_lived_token,
         },
       },
@@ -141,7 +143,7 @@ export class Instagram {
       jointComments = jointComments.concat(
         comments.slice(0, allowed).map((comment) => ({
           ...comment,
-          handle: "",
+          handle: comment.username,
           instagram_page_id: page.id.toString(),
           media_id: mediaId!,
           media_text: post.caption,
