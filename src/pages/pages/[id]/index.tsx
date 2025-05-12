@@ -35,7 +35,7 @@ export default function Page() {
     api.instagram.deletePage.useMutation();
   const { data: user, status } = useSession();
 
-  const { mutateAsync: scheduleCron } =
+  const { mutateAsync: scheduleCron, isPending: isSchedulingReplies } =
     api.instagram.scheduleCron.useMutation();
   const { data: page, isError } = api.instagram.getSavedPage.useQuery(id);
 
@@ -137,7 +137,7 @@ export default function Page() {
               <Button
                 icon={<SparklesIcon className="size-5 font-light text-white" />}
                 label="Trigger Replies"
-                disabled={isTriggeringDemo}
+                disabled={isSchedulingReplies}
                 onClick={async () => {
                   await scheduleCron();
                   toast("Successfully scheduled replies");
