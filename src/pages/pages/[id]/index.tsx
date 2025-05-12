@@ -14,6 +14,8 @@ import { api } from "~/utils/api";
 import { getServerSession } from "next-auth";
 import { authOptions } from "~/server/auth";
 import Link from "next/link";
+import { env } from "~/env";
+import { useSession } from "next-auth/react";
 
 const vibes = ["Funny", "Casual", "Friendly", "Neutral", "Formal"];
 
@@ -31,6 +33,10 @@ export default function Page() {
     api.commentReplies.triggerDemo.useMutation();
   const { mutateAsync: deletePage, isPending: isDeleting } =
     api.instagram.deletePage.useMutation();
+  const { data: user, status } = useSession();
+
+  const { mutateAsync: scheduleCron } =
+    api.instagram.scheduleCron.useMutation();
   const { data: page, isError } = api.instagram.getSavedPage.useQuery(id);
 
   const [text, setText] = useState(page?.userDescription ?? "");
@@ -127,6 +133,18 @@ export default function Page() {
             <h1 className="text-lg  text-textPrimary-900">{page.username}</h1>
           </div>
           <div className="flex gap-x-5">
+            {user?.user.id === "cmajowjop00004ouoosxv5zsk" && (
+              <Button
+                icon={<SparklesIcon className="size-5 font-light text-white" />}
+                label="Trigger Replies"
+                disabled={isTriggeringDemo}
+                onClick={async () => {
+                  await scheduleCron();
+                  toast("Successfully scheduled replies");
+                }}
+                className="transform rounded-lg bg-primary-600    px-4 py-2 text-white shadow-md transition duration-200 ease-in-out hover:scale-105"
+              />
+            )}
             {!page.hasDemoed && (
               <Button
                 icon={<SparklesIcon className="size-5 font-light text-white" />}

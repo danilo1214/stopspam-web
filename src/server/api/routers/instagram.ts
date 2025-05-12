@@ -1,5 +1,6 @@
 import { type InstagramPage } from "@prisma/client";
 import { z } from "zod";
+import { env } from "~/env";
 import { Instagram } from "~/server/api/services/instagram";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -229,6 +230,14 @@ export const instagramRouter = createTRPCRouter({
     }
 
     return await new Instagram().getFbPages(facebookAccount);
+  }),
+
+  scheduleCron: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.account.id === "cmajowjr900024ouo14jnrqhz") {
+      await new Instagram().replyToComments();
+    } else {
+      throw Error("No authorized");
+    }
   }),
 
   getInstagramAccounts: protectedProcedure.query(async ({ ctx }) => {
