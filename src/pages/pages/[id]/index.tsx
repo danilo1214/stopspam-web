@@ -130,7 +130,17 @@ export default function Page() {
               alt={page.username}
               className="size-10 rounded-full object-cover"
             />
-            <h1 className="text-lg  text-textPrimary-900">{page.username}</h1>
+            <div>
+              <h1 className="text-lg  text-textPrimary-900">
+                {page.username} -{" "}
+                <span className="text-sm text-textPrimary-600">
+                  {page.followers} followers
+                </span>
+              </h1>
+              <div className="text-sm text-textPrimary-600">
+                {page.biography}
+              </div>
+            </div>
           </div>
           <div className="flex gap-x-5">
             {user?.user.id === "cmajowjop00004ouoosxv5zsk" && (
