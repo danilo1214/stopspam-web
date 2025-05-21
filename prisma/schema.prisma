@@ -122,5 +122,6 @@ model DemoReply {
     replyText       String        @db.VarChar(2200)
     mediaId         String
     mediaText       String
+    mediaUrl        String        @db.VarChar(2200)
     createdAt       DateTime      @default(now())
 }

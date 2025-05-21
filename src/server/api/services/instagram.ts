@@ -22,7 +22,8 @@ export type IgCommentInfo = IgComment & {
   handle: string;
   media_id: string;
   instagram_page_id: string;
-  media_text: string;
+  post_caption: string;
+  post_url: string;
 };
 
 export type IgPageResult = {
@@ -125,7 +126,7 @@ export class Instagram {
       {
         params: {
           fields:
-            "caption,comments{like_count,timestamp,text,username},permalink",
+            "caption,comments{like_count,timestamp,text,username},permalink,media_url,thumbnail_url",
           access_token: account.long_lived_token,
         },
       },
@@ -137,6 +138,7 @@ export class Instagram {
     let jointComments: IgCommentInfo[] = [];
 
     for (const post of posts) {
+      console.log(post);
       const comments: IgComment[] = post?.comments?.data ?? [];
       const allowed = n - comments.length;
 
@@ -149,7 +151,8 @@ export class Instagram {
           handle: comment.username,
           instagram_page_id: page.id.toString(),
           media_id: mediaId!,
-          media_text: post.caption,
+          post_url: post.media_url,
+          post_caption: post.caption,
         })),
       );
     }
@@ -287,6 +290,7 @@ export class Instagram {
           if (filteredComments && filteredComments.length > 0) {
             console.log("will post lambda");
             await sendMessageToQueue({
+              caption: post.caption,
               comments: filteredComments,
               instagramPageId: page.instagramId,
               biography: page.biography,

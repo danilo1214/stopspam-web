@@ -28,6 +28,12 @@ export function CommentReplyList({ commentReplies }: CommentReplyListProps) {
               Post {idx + 1}
             </a>
 
+            <img
+              src={replies[0]?.mediaUrl}
+              alt={replies[0]?.mediaText}
+              className="mr-2 h-52 w-52 object-cover"
+            />
+
             <div className="text-sm ">Caption: {replies[0]?.mediaText} </div>
             {/* You could render a post thumbnail here if available */}
           </div>
