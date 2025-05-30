@@ -1,4 +1,4 @@
-import { type InstagramPage } from "@prisma/client";
+import { InstagramPageType, type InstagramPage } from "@prisma/client";
 import { z } from "zod";
 import { env } from "~/env";
 import { Instagram } from "~/server/api/services/instagram";
@@ -49,9 +49,12 @@ export const instagramRouter = createTRPCRouter({
   updatePage: protectedProcedure
     .input(
       z.object({
+        type: z
+          .enum([InstagramPageType.BUSINESS, InstagramPageType.CREATOR])
+          .optional(),
         goal: z.string().optional(),
         id: z.string(),
-        businessType: z.string().optional(),
+        subType: z.string().optional(),
         description: z.string().optional(),
         vibe: z.string().optional(),
       }),
@@ -87,8 +90,12 @@ export const instagramRouter = createTRPCRouter({
         update.userDescription = input.description;
       }
 
-      if (input.businessType) {
-        update.businessType = input.businessType;
+      if (input.subType) {
+        update.subType = input.subType;
+      }
+
+      if (input.type) {
+        update.type = input.type;
       }
 
       await ctx.db.instagramPage.update({

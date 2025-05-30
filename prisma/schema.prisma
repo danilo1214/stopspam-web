@@ -45,22 +45,28 @@ model FacebookAccount {
     @@unique([instagramId])
 }
 
+enum InstagramPageType {
+    CREATOR
+    BUSINESS
+}
+
 model InstagramPage {
-    id                Int             @id @default(autoincrement())
-    instagramId       String          @default("")
-    profilePictureUrl String          @db.Text()
+    id                Int               @id @default(autoincrement())
+    instagramId       String            @default("")
+    profilePictureUrl String            @db.Text()
     followers         Int
-    biography         String          @db.Text()
-    userDescription   String?         @db.Text()
+    biography         String            @db.Text()
+    userDescription   String?           @db.Text()
     vibe              String?
     goal              String?
     hasDemoed         Boolean?
-    businessType      String?
+    type              InstagramPageType @default(BUSINESS)
+    subType           String?
     username          String
-    createdAt         DateTime        @default(now())
-    userId            String          @default("")
-    user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-    facebookAccount   FacebookAccount @relation(fields: [facebookAccountId], references: [id], onDelete: Cascade)
+    createdAt         DateTime          @default(now())
+    userId            String            @default("")
+    user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+    facebookAccount   FacebookAccount   @relation(fields: [facebookAccountId], references: [id], onDelete: Cascade)
     facebookAccountId Int
     demoReplies       DemoReply[]
 }

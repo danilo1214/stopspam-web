@@ -297,7 +297,7 @@ export class Instagram {
               token: account.long_lived_token,
               profileDescription: page.userDescription,
               goal: page.goal,
-              businessType: page.businessType,
+              businessType: page.subType,
               tone: page.vibe,
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               media: post,

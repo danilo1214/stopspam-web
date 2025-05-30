@@ -2,7 +2,7 @@ import { SparklesIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { type GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import SuperJSON from "superjson";
 import Button from "~/components/generic/Button";
@@ -16,6 +16,7 @@ import { authOptions } from "~/server/auth";
 import Link from "next/link";
 import { env } from "~/env";
 import { useSession } from "next-auth/react";
+import { InstagramPageType } from "@prisma/client";
 
 const vibes = ["Funny", "Casual", "Friendly", "Neutral", "Formal"];
 
@@ -45,9 +46,9 @@ export default function Page() {
   const [selectedGoal, setSelectedGoal] = useState<string | null>(
     page?.goal ?? null,
   );
-  const [selectedBusinessType, setSelectedBusinessType] = useState(
-    page?.businessType ?? null,
-  );
+  const [selectedSubType, setSelectedSubType] = useState(page?.subType ?? null);
+
+  const [selectedPageType, setSelectedPageType] = useState(page?.type ?? null);
 
   const { mutate: updatePage } = api.instagram.updatePage.useMutation();
 
@@ -72,13 +73,25 @@ export default function Page() {
     );
   };
 
-  const handleBusinessTypeChange = (option: string) => {
-    setSelectedBusinessType(option);
+  const handlePageTypeChange = (option: InstagramPageType) => {
+    setSelectedPageType(option);
     updatePage(
-      { id, businessType: option },
+      { id, type: option },
       {
         onSuccess: () => {
-          onPageSuccess("Successfully updated business type");
+          onPageSuccess("Successfully updated page type");
+        },
+      },
+    );
+  };
+
+  const handleSubTypeChange = (option: string) => {
+    setSelectedSubType(option);
+    updatePage(
+      { id, subType: option },
+      {
+        onSuccess: () => {
+          onPageSuccess("Successfully updated subtype");
         },
       },
     );
@@ -96,6 +109,45 @@ export default function Page() {
       },
     );
   };
+
+  const subTypeItem = useMemo(() => {
+    return page?.type === InstagramPageType.BUSINESS ? (
+      <div>
+        <div className="mb-2">
+          <label className="text-textPrimary-900">Business type</label>
+          <div className="text-sm text-textPrimary-600">
+            What type of business do you own?
+          </div>
+        </div>
+        <CustomSelect
+          options={[
+            { label: "Restaurant", value: "Restaurant" },
+            { label: "Clothing Store", value: "Clothing Store" },
+          ]}
+          value={selectedSubType ?? undefined}
+          onOptionChange={handleSubTypeChange}
+        />
+      </div>
+    ) : (
+      <div>
+        <div className="mb-2">
+          <label className="text-textPrimary-900">Niche</label>
+          <div className="text-sm text-textPrimary-600">
+            What niche best describes you?
+          </div>
+        </div>
+        <CustomSelect
+          options={[
+            { label: "Influencer", value: "Influencer" },
+            { label: "Creator", value: "Creator" },
+            { label: "Gamer", value: "Gamer" },
+          ]}
+          value={selectedSubType ?? undefined}
+          onOptionChange={handleSubTypeChange}
+        />
+      </div>
+    );
+  }, [page?.type, handleSubTypeChange, selectedSubType]);
 
   if (isError || !page) {
     return (
@@ -214,20 +266,24 @@ export default function Page() {
 
           <div>
             <div className="mb-2">
-              <label className="text-textPrimary-900">Business type</label>
+              <label className="text-textPrimary-900">Profile type</label>
               <div className="text-sm text-textPrimary-600">
-                What type of business do you own?
+                What is your use case?
               </div>
             </div>
             <CustomSelect
               options={[
-                { label: "Restaurant", value: "Restaurant" },
-                { label: "Clothing Store", value: "Clothing Store" },
+                { label: "Business", value: InstagramPageType.BUSINESS },
+                { label: "Creator", value: InstagramPageType.CREATOR },
               ]}
-              value={selectedBusinessType ?? undefined}
-              onOptionChange={handleBusinessTypeChange}
+              value={selectedPageType ?? undefined}
+              onOptionChange={(v) =>
+                handlePageTypeChange(v as InstagramPageType)
+              }
             />
           </div>
+
+          {subTypeItem}
         </div>
 
         <div className="my-8">

@@ -33,7 +33,7 @@ export const commentRepliesRouter = createTRPCRouter({
         token: page.facebookAccount.long_lived_token,
         profileDescription: page.userDescription,
         goal: page.goal,
-        businessType: page.businessType,
+        businessType: page.subType,
         tone: page.vibe,
         storeOnly: true,
       });
