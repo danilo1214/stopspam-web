@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
-import { lemonSqueezyApi } from "~/server/lemonsqueezy";
 import { stripe } from "~/server/stripe";
 
 export const subscriptionRouter = createTRPCRouter({
@@ -41,6 +40,63 @@ export const subscriptionRouter = createTRPCRouter({
     });
     return { message: "Account deleted successfully" };
   }),
+
+  changeSubscriptionProduct: protectedProcedure
+    .input(
+      z.object({
+        newPriceId: z.string(), // Price ID of the new product
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+      if (!user) {
+        throw new Error("No user");
+      }
+
+      const sub = await ctx.db.subscription.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      if (!sub?.subscriptionId) {
+        throw new Error("No active subscription found");
+      }
+
+      // Get the current subscription to find the item to replace
+      const stripeSub = await stripe.subscriptions.retrieve(sub.subscriptionId);
+      const currentItemId = stripeSub.items.data[0]?.id;
+
+      if (!currentItemId) {
+        throw new Error("Current subscription item not found");
+      }
+
+      // Replace the subscription item with the new price
+      try {
+        const updatedSub = await stripe.subscriptions.update(
+          sub.subscriptionId,
+          {
+            items: [
+              {
+                id: currentItemId,
+                price: input.newPriceId,
+              },
+            ],
+            billing_cycle_anchor: "now",
+            proration_behavior: "create_prorations", // You can change to "none" if needed
+          },
+        );
+
+        return {
+          success: true,
+          message: "Subscription updated to new product.",
+          updatedSubscription: updatedSub,
+        };
+      } catch (error) {
+        console.error("Failed to change subscription product:", error);
+        throw error;
+      }
+    }),
 
   resumeSubscription: protectedProcedure.mutation(async ({ ctx }) => {
     const user = ctx.session.user;

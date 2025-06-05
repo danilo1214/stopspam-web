@@ -13,6 +13,7 @@ export const PricingList = ({ cards }: { cards: TPricingCard[] }) => {
         {cards.map((item, key) => (
           <PricingCard
             key={key}
+            rank={item.rank}
             type={item.type}
             name={item.name}
             benefits={item.benefits}

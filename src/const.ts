@@ -2,6 +2,7 @@ export const cards = [
   {
     name: "Standard Plan",
     price: 7.99,
+    rank: 1,
     type: "month",
     productId: "price_1QqDvr1NldzrbHx5EALASX0Y",
     benefits: [
@@ -15,6 +16,7 @@ export const cards = [
   {
     name: "Pro Plan",
     price: 9.99,
+    rank: 2,
     type: "month",
     productId: "price_1QqDw11NldzrbHx5SeUzfFg6",
     benefits: [
