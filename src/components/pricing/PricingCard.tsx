@@ -126,10 +126,15 @@ export default function PricingCard({
     }
   };
 
-  const color =
-    buttonAction === BUTTON_ACTION.DOWNGRADE
-      ? "bg-secondary-600 hover:bg-secondary-400"
-      : "bg-tertiary-600 hover:bg-tertiary-400";
+  const color = useMemo(() => {
+    if (buttonAction === BUTTON_ACTION.DOWNGRADE) {
+      return "bg-secondary-600 hover:bg-secondary-400";
+    } else if (buttonAction === BUTTON_ACTION.UPGRADE) {
+      return "bg-tertiary-600 hover:bg-tertiary-400";
+    } else {
+      return "bg-primary-600 hover:bg-primary-400";
+    }
+  }, [buttonAction]);
 
   const isLoading =
     isSubscriptionLoading || updateSubscription.isPending || isProrationLoading;
