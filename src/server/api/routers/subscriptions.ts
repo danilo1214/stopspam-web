@@ -41,6 +41,55 @@ export const subscriptionRouter = createTRPCRouter({
     return { message: "Account deleted successfully" };
   }),
 
+  getProrationPreview: protectedProcedure
+    .input(
+      z.object({
+        newPriceId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+      if (!user) {
+        throw new Error("No user");
+      }
+
+      const sub = await ctx.db.subscription.findFirst({
+        where: { userId: user.id },
+      });
+
+      if (!sub?.subscriptionId) {
+        throw new Error("No active subscription");
+      }
+
+      const stripeSub = await stripe.subscriptions.retrieve(sub.subscriptionId);
+
+      const currentItem = stripeSub.items.data[0];
+      if (!currentItem) {
+        throw new Error("No subscription item found");
+      }
+
+      const upcomingInvoice = await stripe.invoices.retrieveUpcoming({
+        customer: stripeSub.customer as string,
+        subscription: sub.subscriptionId,
+        subscription_items: [
+          {
+            id: currentItem.id,
+            price: input.newPriceId, // new price
+          },
+        ],
+        subscription_billing_cycle_anchor: "now",
+        subscription_proration_behavior: "create_prorations",
+      });
+
+      return {
+        amountDue: upcomingInvoice.subtotal,
+        currency: upcomingInvoice.currency,
+        nextBillingDate: upcomingInvoice.next_payment_attempt
+          ? new Date(upcomingInvoice.next_payment_attempt * 1000).toISOString()
+          : null,
+      };
+    }),
+
   changeSubscriptionProduct: protectedProcedure
     .input(
       z.object({

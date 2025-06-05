@@ -3,6 +3,9 @@ import Button from "../generic/Button";
 import { signIn, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { cards } from "~/const";
+import { toast } from "react-toastify";
+import classNames from "classnames";
+import { Badge } from "~/components/generic/Badge";
 
 export type TPricingCard = {
   type: string;
@@ -26,9 +29,11 @@ enum BUTTON_ACTION {
   BUY = "BUY",
   DOWNGRADE = "DOWNGRADE",
   UPGRADE = "UPGRADE",
+  STAY = "STAY",
 }
 
 const buttonMap = {
+  [BUTTON_ACTION.STAY]: "",
   [BUTTON_ACTION.BUY]: "Buy Now",
   [BUTTON_ACTION.UPGRADE]: "Upgrade",
   [BUTTON_ACTION.DOWNGRADE]: "Downgrade",
@@ -48,7 +53,15 @@ export default function PricingCard({
 
   const utils = api.useUtils();
   const paymentApi = api.payments.checkout.useMutation();
-  const { data: subscription } = api.subscriptions.getCurrent.useQuery({});
+  const { data: subscription, isLoading: isSubscriptionLoading } =
+    api.subscriptions.getCurrent.useQuery({});
+  const { data: proration, isLoading: isProrationLoading } =
+    api.subscriptions.getProrationPreview.useQuery(
+      { newPriceId: productId },
+      {
+        enabled: !!subscription && subscription.productId !== productId,
+      },
+    );
 
   const matchingRank = subscription?.productId
     ? cards.find((c) => c.productId === subscription.productId)
@@ -61,6 +74,10 @@ export default function PricingCard({
 
     if (matchingRank.rank > rank) {
       return BUTTON_ACTION.DOWNGRADE;
+    }
+
+    if (matchingRank.rank === rank) {
+      return BUTTON_ACTION.STAY;
     }
 
     return BUTTON_ACTION.UPGRADE;
@@ -90,8 +107,15 @@ export default function PricingCard({
   };
 
   const handlePlanChange = async () => {
-    await updateSubscription.mutateAsync({ newPriceId: productId });
-    void utils.subscriptions.getCurrent.invalidate();
+    try {
+      await updateSubscription.mutateAsync({ newPriceId: productId });
+      setTimeout(() => {
+        void utils.subscriptions.getCurrent.invalidate();
+        toast("Successfully changed subscription plan");
+      }, 2000);
+    } catch (err) {
+      toast("Failed to change subscription");
+    }
   };
 
   const handleButtonClick = async () => {
@@ -101,6 +125,14 @@ export default function PricingCard({
       await handlePlanChange();
     }
   };
+
+  const color =
+    buttonAction === BUTTON_ACTION.DOWNGRADE
+      ? "bg-secondary-600 hover:bg-secondary-400"
+      : "bg-tertiary-600 hover:bg-tertiary-400";
+
+  const isLoading =
+    isSubscriptionLoading || updateSubscription.isPending || isProrationLoading;
 
   return (
     <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
@@ -122,15 +154,32 @@ export default function PricingCard({
           </span>
         </div>
       </div>
-      <div className="flex w-full justify-center align-middle">
-        {!subscription ||
-          (subscription.productId !== productId && (
-            <Button
-              onClick={handleButtonClick}
-              label={buttonMap[buttonAction]}
-              className="py- mx-10 flex w-[60%] items-center justify-center rounded-md border border-transparent bg-primary-600 px-5 text-base font-medium text-white  shadow-lg transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
-            ></Button>
-          ))}
+      <div className="flex w-full flex-col items-center justify-center align-middle">
+        {buttonAction === BUTTON_ACTION.STAY && (
+          <Badge className="bg-primary-600 px-4 py-2" label="Current Plan" />
+        )}
+
+        {(!subscription || subscription.productId !== productId) && (
+          <Button
+            disabled={isLoading}
+            onClick={handleButtonClick}
+            label={buttonMap[buttonAction]}
+            className={classNames(
+              "py- mx-10 flex w-[60%] items-center justify-center rounded-md border border-transparent  px-5 text-base font-medium text-white  shadow-lg transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none",
+              color,
+            )}
+          ></Button>
+        )}
+        {buttonAction === BUTTON_ACTION.UPGRADE && proration && (
+          <div className="mt-2 text-sm text-gray-600">
+            You’ll be charged{" "}
+            <span className="font-semibold">
+              ${(proration.amountDue / 100).toFixed(2)}{" "}
+              {proration.currency.toUpperCase()}
+            </span>{" "}
+            immediately.
+          </div>
+        )}
       </div>
       <div className="mt-3 bg-white px-6 pb-8 pt-6 sm:p-10 sm:pt-6 dark:bg-gray-800">
         <ul>
