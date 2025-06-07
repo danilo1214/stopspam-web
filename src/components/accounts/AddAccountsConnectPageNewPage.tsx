@@ -23,12 +23,16 @@ export const AddAccountsConnectPageNewPage = ({
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold text-textPrimary-800">
-          Connect Instagram @{connectingName} to a Facebook Page
+          Connect Instagram profile @{connectingName} to a Facebook Page
         </h1>
         <p className="mt-2 text-sm text-textPrimary-700">
-          To enable automation features on Instagram, it must be linked to a
-          Facebook Business Page. Just follow the steps below.
+          To enable automation features on an Instagram profile:
         </p>
+
+        <p className="pl-1">
+          - It must be either a Business or Creator account.
+        </p>
+        <p className="pl-1">- It must be linked to a Facebook Business Page.</p>
       </div>
 
       <div className="space-y-4 text-sm text-textPrimary-700">
@@ -67,7 +71,7 @@ export const AddAccountsConnectPageNewPage = ({
               className="text-primary-500 underline"
               href="https://www.facebook.com/settings/?tab=linked_profiles&setting_id=linked_profiles_instagram"
             >
-              Instagram connection link
+              link
             </a>
             .
           </div>
@@ -101,7 +105,7 @@ export const AddAccountsConnectPageNewPage = ({
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-medium text-textPrimary-900">
-              Facebook Pages we found
+              Facebook Business Pages we found
             </h2>
             <p className="text-sm text-textPrimary-700">
               If your page isn’t listed, try refreshing or{" "}
@@ -136,7 +140,9 @@ export const AddAccountsConnectPageNewPage = ({
 
         <div className="mt-4 space-y-4">
           {facebookAccounts.length === 0 ? (
-            <p className="text-sm text-gray-500">No pages found.</p>
+            <p className="text-sm text-gray-500">
+              No pages found. Please create a new page.
+            </p>
           ) : (
             facebookAccounts.map((fb) => (
               <div
