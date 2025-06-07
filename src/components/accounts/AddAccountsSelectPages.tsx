@@ -24,7 +24,7 @@ export const AddAccountsSelectPages = ({
   return (
     <div>
       <p className="mb-5 text-textPrimary-900">
-        We found {instagramAccounts.length ?? 0} Instagram profiles linked with
+        We found {instagramAccounts.length ?? 0} Instagram accounts linked with
         Facebook pages managed by you.
       </p>
 

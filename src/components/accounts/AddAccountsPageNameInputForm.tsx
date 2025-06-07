@@ -18,7 +18,7 @@ export const AddAccountsPageNameInputForm = ({
       }}
     >
       <div className=" text-textPrimary-900">
-        What is the Instagram profile name?
+        What is the Instagram account name?
       </div>
       <input
         value={connectingName}
