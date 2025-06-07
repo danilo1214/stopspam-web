@@ -63,7 +63,7 @@ export const AccountList = ({ hasSubscription }: AccountListProps) => {
       <Modal
         showActionButtons={showModalButtons}
         title="Add Accounts"
-        description="Connect your Instagram profiles to Reply Master."
+        description="Connect your Instagram accounts to Reply Master."
         open={open}
         onConfirm={() => savePages()}
         onClose={() => setOpen(false)}

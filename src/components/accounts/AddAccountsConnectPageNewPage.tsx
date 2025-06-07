@@ -26,19 +26,19 @@ export const AddAccountsConnectPageNewPage = ({
           Connect Instagram profile @{connectingName} to a Facebook Page
         </h1>
         <p className="mt-2">
-          To enable automation features on an Instagram profile:
+          To enable automation features on an Instagram account:
         </p>
 
         <p className="pl-1">
           - It must be either a Business or Creator account.
         </p>
-        <p className="pl-1">- It must be linked to a Facebook Business Page.</p>
+        <p className="pl-1">- It must be linked to a Facebook Page.</p>
       </div>
 
       <div className="space-y-4 text-sm text-textPrimary-700">
         <AccountStepItem index="1">
           <>
-            Choose an existing Facebook Business Page from the list below, or{" "}
+            Choose an existing Facebook Page from the list below, or{" "}
             <a
               target="_blank"
               className="text-primary-500 underline"
@@ -64,7 +64,7 @@ export const AddAccountsConnectPageNewPage = ({
 
         <AccountStepItem index="3">
           <div>
-            Connect your Instagram profile to the Facebook Page. You can do this
+            Connect your Instagram account to the Facebook Page. You can do this
             directly through this{" "}
             <a
               target="_blank"
@@ -81,7 +81,7 @@ export const AddAccountsConnectPageNewPage = ({
           <>
             After linking, click the{" "}
             <span className="font-medium text-textPrimary-900">Done</span>{" "}
-            button below. We&apos;ll recheck your Instagram profile.
+            button below. We&apos;ll recheck your Instagram account.
           </>
         </AccountStepItem>
 
