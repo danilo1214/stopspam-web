@@ -73,12 +73,13 @@ export default async function handler(
             typeof subscription === "string" ? subscription : subscription.id;
 
           const stripeSub = await stripe.subscriptions.retrieve(subscriptionId);
+
           const createdProductId = stripeSub.items.data[0]?.plan.id;
 
           await db.subscription.create({
             data: {
-              status: "active",
-              expires: new Date(),
+              status: stripeSub.status,
+              expires: new Date(stripeSub.current_period_end * 1000),
               userId: metadata.user_id!,
               customerId: createdCustomerId,
               subscriptionId,

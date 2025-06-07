@@ -88,7 +88,7 @@ export default function PricingCard({
 
   useEffect(() => {
     const fetchUrl = async () => {
-      const url = await paymentApi.mutateAsync({ productId });
+      const url = await paymentApi.mutateAsync({ productId, trialDays: 7 });
       setUrl(url);
     };
 
@@ -148,13 +148,19 @@ export default function PricingCard({
 
       <div className=" px-6 py-8 sm:p-10 sm:pb-6 dark:bg-gray-800">
         <div className="flex justify-center">
-          <span className="inline-flex rounded-full px-4 py-1 text-sm font-semibold uppercase leading-5 tracking-wide text-textPrimary-800 dark:text-white">
+          <span className="inline-flex rounded-full px-4  text-sm font-semibold uppercase leading-5 tracking-wide text-textPrimary-800 dark:text-white">
             {name}
           </span>
         </div>
-        <div className="mt-4 flex justify-center text-3xl  leading-none text-textPrimary-900 dark:text-white">
-          ${price}
-          <span className="ml-1  pt-0.5 text-sm  leading-8 text-textPrimary-800 ">
+
+        {buttonAction === BUTTON_ACTION.BUY && (
+          <div className="ml-1 mt-4 text-center  text-lg font-semibold    text-textPrimary-900 ">
+            7-day free trial
+          </div>
+        )}
+        <div className="mt-4 flex justify-center text-2xl leading-none text-textPrimary-800 dark:text-white">
+          <span>${price}</span>
+          <span className="ml-1  pt-0.5 text-sm  leading-5 text-textPrimary-700 ">
             per {type}
           </span>
         </div>

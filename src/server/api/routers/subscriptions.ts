@@ -35,9 +35,20 @@ export const subscriptionRouter = createTRPCRouter({
       },
     });
 
+    const sub = await ctx.db.subscription.findFirst({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    if (sub) {
+      await stripe.subscriptions.cancel(sub.subscriptionId!);
+    }
+
     await db.user.delete({
       where: { id: user.id },
     });
+
     return { message: "Account deleted successfully" };
   }),
 
@@ -77,6 +88,7 @@ export const subscriptionRouter = createTRPCRouter({
             price: input.newPriceId, // new price
           },
         ],
+        subscription_trial_end: "now",
         subscription_billing_cycle_anchor: "now",
         subscription_proration_behavior: "create_prorations",
       });
