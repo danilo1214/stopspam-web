@@ -6,7 +6,6 @@ import { ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
 import AddAccounts from "~/components/accounts/AddAccounts";
 import Button from "~/components/generic/Button";
 import { Modal } from "~/components/generic/Modal";
-import { Nudge } from "~/components/generic/Nudge";
 import { useMeta } from "~/hooks/useMeta";
 import { api } from "~/utils/api";
 
@@ -25,8 +24,7 @@ export const AccountList = ({ hasSubscription }: AccountListProps) => {
   /**
    * Queries
    */
-  const { instagramPages, facebookPages, savedPages, savedPagesIds } =
-    useMeta();
+  const { instagramPages, savedPages, savedPagesIds } = useMeta();
 
   /**
    * States
@@ -78,7 +76,6 @@ export const AccountList = ({ hasSubscription }: AccountListProps) => {
             }
           }}
           instagramAccounts={instagramPages ?? []}
-          facebookAccounts={facebookPages ?? []}
           selectedAccounts={selectedAccounts}
           setSelectedAccounts={(v) => setSelectedAccounts(v)}
         />

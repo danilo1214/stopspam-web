@@ -4,20 +4,15 @@ import { AddAccountsConnectPageCreatePage } from "~/components/accounts/AddAccou
 import { AddAccountsConnectPageNewPage } from "~/components/accounts/AddAccountsConnectPageNewPage";
 import { AddAccountsPageNameInputForm } from "~/components/accounts/AddAccountsPageNameInputForm";
 import { AddAccountsSelectPages } from "~/components/accounts/AddAccountsSelectPages";
-import {
-  type FbPageResult,
-  type IgPageResult,
-} from "~/server/api/services/instagram";
+import { type IgPageResult } from "~/server/api/services/instagram";
 
 export default function AddAccounts({
   instagramAccounts,
   selectedAccounts,
   setSelectedAccounts,
-  facebookAccounts,
   onStepChange,
 }: {
   instagramAccounts: IgPageResult[];
-  facebookAccounts: FbPageResult[];
   selectedAccounts: string[];
   setSelectedAccounts: (selected: string[]) => void;
   onStepChange: (step: ADD_ACCOUNTS_STEPS) => void;
@@ -56,7 +51,6 @@ export default function AddAccounts({
         <AddAccountsConnectPageNewPage
           connectingName={connectingName}
           setCurrentStep={handleChangeStep}
-          facebookAccounts={facebookAccounts}
         />
       )}
 
