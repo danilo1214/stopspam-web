@@ -33,15 +33,7 @@ export const AddAccountsConnectPageNewPage = ({
       </div>
 
       <div className="space-y-4 text-sm text-textPrimary-700">
-        <AccountStepItem index="1">
-          <a
-            target="_blank"
-            className="text-primary-500 underline"
-            href="https://www.facebook.com/pages/creation"
-          >
-            Create a new Facebook Page
-          </a>
-        </AccountStepItem>
+        <AccountStepItem index="1">Create a new Facebook Page</AccountStepItem>
 
         <AccountStepItem index="2">
           <div>
