@@ -21,11 +21,11 @@ export const AddAccountsConnectPageNewPage = ({
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="text-sm text-textPrimary-700">
         <h1 className="text-xl font-semibold text-textPrimary-800">
           Connect Instagram profile @{connectingName} to a Facebook Page
         </h1>
-        <p className="mt-2 text-sm text-textPrimary-700">
+        <p className="mt-2">
           To enable automation features on an Instagram profile:
         </p>
 
