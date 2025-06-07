@@ -20,99 +20,143 @@ export const AddAccountsConnectPageNewPage = ({
   const utils = api.useUtils();
 
   return (
-    <div>
-      <h1 className=" text-textPrimary-800">
-        Let&apos;s connect{" "}
-        <span className="text-textPrimary-900">@{connectingName}</span> to a
-        Facebook Page.
-      </h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-xl font-semibold text-textPrimary-800">
+          Connect Instagram @{connectingName} to a Facebook Page
+        </h1>
+        <p className="mt-2 text-sm text-textPrimary-700">
+          To enable automation features on Instagram, it must be linked to a
+          Facebook Business Page. Just follow the steps below.
+        </p>
+      </div>
 
-      <div className="my-4 flex flex-col gap-y-3 text-sm text-textPrimary-700">
+      <div className="space-y-4 text-sm text-textPrimary-700">
         <AccountStepItem index="1">
-          Pick a page from the list below, or create a new page.
+          <>
+            Choose an existing Facebook Business Page from the list below, or{" "}
+            <a
+              target="_blank"
+              className="text-primary-500 underline"
+              href="https://www.facebook.com/pages/creation"
+            >
+              create a new one
+            </a>{" "}
+            if needed.
+          </>
         </AccountStepItem>
 
         <AccountStepItem index="2">
-          Go to the page Settings, search for &quot;Instagram&quot;.
+          <>
+            Go to that Page’s{" "}
+            <span className="font-medium text-textPrimary-900">Settings</span>{" "}
+            and search for{" "}
+            <span className="font-medium text-textPrimary-900">
+              &quot;Instagram&quot;
+            </span>
+            .
+          </>
         </AccountStepItem>
 
         <AccountStepItem index="3">
           <div>
-            Connect your Instagram profile to the facebook page.
+            Connect your Instagram profile to the Facebook Page. You can do this
+            directly through this{" "}
             <a
               target="_blank"
-              className="text-primary-500"
+              className="text-primary-500 underline"
               href="https://www.facebook.com/settings/?tab=linked_profiles&setting_id=linked_profiles_instagram"
             >
-              {" "}
-              Connect Instagram
+              Instagram connection link
             </a>
+            .
           </div>
         </AccountStepItem>
 
         <AccountStepItem index="4">
-          <div>
-            Once you are done click Done, your instagram profile should now
-            appear.
-          </div>
+          <>
+            After linking, click the{" "}
+            <span className="font-medium text-textPrimary-900">Done</span>{" "}
+            button below. We&apos;ll recheck your Instagram profile.
+          </>
         </AccountStepItem>
 
-        <Button
-          onClick={async () => {
-            setIsRefreshing(true);
-            await utils.instagram.getInstagramAccounts.invalidate();
-            setIsRefreshing(false);
-            setCurrentStep(ADD_ACCOUNTS_STEPS.SELECT_PAGES);
-          }}
-          disabled={isRefreshing}
-          className="mx-auto w-64 bg-primary-500 px-0  text-white shadow"
-          icon={<CheckIcon width={20} height={20} />}
-          label="Done"
-        />
+        <div className="text-center">
+          <Button
+            onClick={async () => {
+              setIsRefreshing(true);
+              await utils.instagram.getInstagramAccounts.invalidate();
+              setIsRefreshing(false);
+              setCurrentStep(ADD_ACCOUNTS_STEPS.SELECT_PAGES);
+            }}
+            disabled={isRefreshing}
+            className="mx-auto w-64 bg-primary-500 px-0 text-white shadow"
+            icon={<CheckIcon width={20} height={20} />}
+            label={isRefreshing ? "Checking..." : "Done"}
+          />
+        </div>
       </div>
 
-      <div className="mt-6">
-        <div className="flex items-center justify-between align-middle">
+      <div className="pt-6">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-lg text-textPrimary-900">Pages we found</h1>
+            <h2 className="text-lg font-medium text-textPrimary-900">
+              Facebook Pages we found
+            </h2>
             <p className="text-sm text-textPrimary-700">
-              You can also{" "}
+              If your page isn’t listed, try refreshing or{" "}
               <a
-                className="   text-primary-500 "
+                className="text-primary-500 underline"
                 target="_blank"
                 href="https://www.facebook.com/pages/creation"
               >
-                create a new page.
+                create a new page
               </a>
+              .
             </p>
           </div>
 
-          <div>
-            <Button
-              onClick={async () => {
-                setIsRefreshing(true);
-                await utils.instagram.getFacebookUnconnectedPages.invalidate();
-                setIsRefreshing(false);
-              }}
-              disabled={isRefreshing}
-              className=" rounded-full text-primary-600  shadow-sm"
-              icon={<ArrowPathIcon width={14} height={14} />}
-            />
-          </div>
+          <Button
+            onClick={async () => {
+              setIsRefreshing(true);
+              await utils.instagram.getFacebookUnconnectedPages.invalidate();
+              setIsRefreshing(false);
+            }}
+            disabled={isRefreshing}
+            className="rounded-full text-primary-600 shadow-sm"
+            icon={
+              <ArrowPathIcon
+                width={16}
+                height={16}
+                className={isRefreshing ? "animate-spin" : ""}
+              />
+            }
+          />
         </div>
 
-        {facebookAccounts.map((fb) => (
-          <div key={fb.name} className="my-5 flex items-center justify-between">
-            <div className="h-full font-semibold">{fb.name}</div>
-            <a
-              target="_blank"
-              className=" bg-white px-5 py-2 shadow "
-              href={`https://facebook.com/profile.php?id=${fb.id}`}
-            >
-              <ArrowsRightLeftIcon className="size-4 font-light text-primary-600" />
-            </a>
-          </div>
-        ))}
+        <div className="mt-4 space-y-4">
+          {facebookAccounts.length === 0 ? (
+            <p className="text-sm text-gray-500">No pages found.</p>
+          ) : (
+            facebookAccounts.map((fb) => (
+              <div
+                key={fb.name}
+                className="flex items-center justify-between rounded border border-gray-200 bg-white px-4 py-3 shadow-sm"
+              >
+                <div className="font-semibold text-textPrimary-900">
+                  {fb.name}
+                </div>
+                <a
+                  target="_blank"
+                  className="rounded bg-white px-3 py-2 shadow hover:bg-gray-50"
+                  href={`https://facebook.com/profile.php?id=${fb.id}`}
+                >
+                  <ArrowsRightLeftIcon className="size-4 text-primary-600" />
+                </a>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
