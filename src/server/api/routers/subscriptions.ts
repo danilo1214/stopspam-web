@@ -145,6 +145,7 @@ export const subscriptionRouter = createTRPCRouter({
             ],
             billing_cycle_anchor: "now",
             proration_behavior: "create_prorations", // You can change to "none" if needed
+            trial_end: "now",
           },
         );
 
