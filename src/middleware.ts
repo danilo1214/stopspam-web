@@ -36,5 +36,7 @@ export default withAuth({
 
 // This matcher applies the middleware to all routes except for /get-started and /api/auth (if you use NextAuth API routes).
 export const config = {
-  matcher: ["/((?!get-started|api/auth|api/webhook|privacy|api/cron).*)"],
+  matcher: [
+    "/((?!get-started|api/auth|api/webhook|terms-and-conditions|privacy|api/cron).*)",
+  ],
 };

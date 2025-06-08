@@ -2,6 +2,7 @@ import { type GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import Button from "~/components/generic/Button";
 import { authOptions } from "~/server/auth";
 
@@ -37,7 +38,10 @@ export const GetStarted = () => {
             />
           </div>
 
-          <p>By signing up you agree to our terms of service.</p>
+          <p>
+            By signing up you agree to our{" "}
+            <Link href="/terms-and-conditions">terms and conditions </Link>
+          </p>
         </div>
       </div>
     </div>
