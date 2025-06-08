@@ -40,7 +40,9 @@ export const GetStarted = () => {
 
           <p>
             By signing up you agree to our{" "}
-            <Link href="/terms-and-conditions">terms and conditions </Link>
+            <Link href="/terms-and-conditions" className="text-primary-600">
+              terms and conditions{" "}
+            </Link>
           </p>
         </div>
       </div>
