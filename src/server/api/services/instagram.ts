@@ -53,6 +53,8 @@ export class Instagram {
       const res = await this.instance.get(
         `/me/accounts?access_token=${account.long_lived_token}`,
       );
+
+      console.log(res.data);
       const pages = res.data.data as any[];
 
       console.log(pages);
