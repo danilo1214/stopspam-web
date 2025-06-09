@@ -55,6 +55,8 @@ export class Instagram {
       );
       const pages = res.data.data as any[];
 
+      console.log(pages);
+
       for (const page of pages) {
         const businessAccountRes = await this.instance.get(`/${page.id}`, {
           params: {
@@ -62,6 +64,8 @@ export class Instagram {
             access_token: account.long_lived_token,
           },
         });
+
+        console.log(businessAccountRes);
         const pageData = businessAccountRes.data;
 
         if (!pageData.instagram_business_account?.id) {
