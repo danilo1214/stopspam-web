@@ -4,9 +4,11 @@ export function DashboardBox({
   title,
   amount,
   icon,
+  amountCap,
 }: {
   icon: ReactElement;
   amount: number;
+  amountCap?: number;
   title: string;
 }) {
   return (
@@ -14,7 +16,7 @@ export function DashboardBox({
       <div className="text-sm text-textPrimary-800">{title}</div>
       <div className="flex items-center gap-x-2">
         {icon}
-        {amount}
+        {amount} {amountCap && ` / ${amountCap}`}
       </div>
     </div>
   );
