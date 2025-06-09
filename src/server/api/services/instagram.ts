@@ -5,6 +5,8 @@
 import { type InstagramPage, type FacebookAccount } from "@prisma/client";
 import axios, { type AxiosError, type AxiosInstance } from "axios";
 import moment from "moment";
+import { cards } from "~/const";
+import { getCommentsForMonth } from "~/server/api/services/subscription";
 import { sendMessageToQueue } from "~/server/aws";
 import { db } from "~/server/db";
 
@@ -196,6 +198,19 @@ export class Instagram {
       if (!subscription) {
         console.log("no subscription found for " + account.instagramId);
         continue;
+      }
+
+      const matchingSubscription = cards.find(
+        (c) => c.productId === subscription.productId,
+      );
+      const monthlyReplies = await getCommentsForMonth(subscription.userId);
+      if (
+        matchingSubscription &&
+        matchingSubscription.replies >= monthlyReplies
+      ) {
+        console.log(
+          "Skipping user, because their monthly replies exceed the monthly limit",
+        );
       }
 
       // Standard only get once per 4h

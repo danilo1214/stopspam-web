@@ -101,6 +101,7 @@ model User {
     subscription  Subscription[]
     InstagramPage InstagramPage[]
     CommentReply  CommentReply[]
+    createdAt     DateTime        @default(now())
 }
 
 model VerificationToken {
@@ -112,11 +113,12 @@ model VerificationToken {
 }
 
 model CommentReply {
-    id          String @id @default(cuid())
+    id          String   @id @default(cuid())
     instagramId String
     text        String
     userId      String
-    user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt   DateTime @default(now())
 }
 
 model DemoReply {

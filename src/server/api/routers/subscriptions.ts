@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getCommentsForMonth } from "~/server/api/services/subscription";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
@@ -160,6 +161,9 @@ export const subscriptionRouter = createTRPCRouter({
       }
     }),
 
+  getMonthlyReplies: protectedProcedure.query(async ({ ctx }) => {
+    return getCommentsForMonth(ctx.session.user.id);
+  }),
   resumeSubscription: protectedProcedure.mutation(async ({ ctx }) => {
     const user = ctx.session.user;
     if (!user) {
