@@ -167,6 +167,7 @@ export default function Page() {
           </div>
         </div>
         <CustomSelect
+          canSelectSearch
           options={businesses}
           value={selectedSubType ?? undefined}
           onOptionChange={handleSubTypeChange}
@@ -181,6 +182,7 @@ export default function Page() {
           </div>
         </div>
         <CustomSelect
+          canSelectSearch
           options={niches}
           value={selectedSubType ?? undefined}
           onOptionChange={handleSubTypeChange}

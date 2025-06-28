@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 interface Option {
   value: string;
@@ -9,19 +9,21 @@ interface CustomSelectProps {
   options: Option[];
   value?: string;
   onOptionChange: (value: string) => void;
+  canSelectSearch?: boolean;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   value,
   onOptionChange,
+  canSelectSearch = false,
 }) => {
-  // Local state for the search query and to handle dropdown visibility
   const [filter, setFilter] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<string>("");
+
   const selectRef = useRef<HTMLDivElement>(null);
 
-  // Filter options based on search query
   const filteredOptions = options.filter((option) =>
     option.label.toLowerCase().includes(filter.toLowerCase()),
   );
@@ -31,40 +33,47 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       selectRef.current &&
       !selectRef.current.contains(event.target as Node)
     ) {
-      setIsOpen(false); // Close dropdown if click happens outside
+      setIsOpen(false);
     }
   };
 
-  // Add event listener to detect outside clicks
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const placeholder = options.find((o) => o.value === value)?.label ?? "";
+  // Update selected label on value change
+  useEffect(() => {
+    const matched = options.find((o) => o.value === value);
+    if (matched) {
+      setSelectedLabel(matched.label);
+    } else if (value) {
+      setSelectedLabel(value); // for custom values
+    } else {
+      setSelectedLabel("");
+    }
+  }, [value, options]);
 
-  // Handle selection of an option
   const handleSelect = (selectedValue: string) => {
     onOptionChange(selectedValue);
     setFilter("");
-    setIsOpen(false); // Close the dropdown after selecting an option
+    setIsOpen(false);
   };
+
+  const shouldShowSearchValue =
+    canSelectSearch && filter && filteredOptions.length === 0;
 
   return (
     <div className="relative w-64" ref={selectRef}>
-      {/* Input field that also serves as the dropdown trigger */}
       <input
         type="text"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        onClick={() => setIsOpen(!isOpen)} // Toggle dropdown on click
-        placeholder={placeholder}
+        onClick={() => setIsOpen(!isOpen)}
+        placeholder={selectedLabel || "Select..."}
         className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm placeholder:text-textPrimary-900 focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
       />
 
-      {/* Dropdown options */}
       {isOpen && (
         <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
           {filteredOptions.length > 0 ? (
@@ -79,6 +88,13 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
                 {option.label}
               </li>
             ))
+          ) : shouldShowSearchValue ? (
+            <li
+              onClick={() => handleSelect(filter)}
+              className="cursor-pointer px-3 py-2 hover:bg-primary-500 hover:text-white"
+            >
+              Select {filter}
+            </li>
           ) : (
             <li className="px-3 py-2 text-gray-500">No options found</li>
           )}

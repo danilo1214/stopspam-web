@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { env } from "~/env";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { lemonSqueezyApi } from "~/server/lemonsqueezy";
 import { stripe } from "~/server/stripe";
 
 interface AxiosErr {
@@ -16,6 +15,19 @@ export const paymentRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }): Promise<string> => {
+      const user = ctx.session.user;
+      if (!user) {
+        throw Error("No user found");
+      }
+
+      const sub = await ctx.db.subscription.findFirst({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      const shouldDiscount = !sub;
+
       try {
         const successUrl =
           env.NODE_ENV === "development"
@@ -27,11 +39,19 @@ export const paymentRouter = createTRPCRouter({
           metadata: {
             user_id: ctx.account.userId,
           },
+          ...(shouldDiscount
+            ? {
+                discounts: [
+                  {
+                    promotion_code: "promo_1Reuv81NldzrbHx54CUrKdXU",
+                  },
+                ],
+              }
+            : {}),
           payment_method_types: ["card"],
           mode: "subscription",
           success_url: successUrl,
           cancel_url: successUrl,
-          allow_promotion_codes: true,
           ...(input.trialDays
             ? {
                 subscription_data: {

@@ -139,6 +139,8 @@ export default function PricingCard({
   const isLoading =
     isSubscriptionLoading || updateSubscription.isPending || isProrationLoading;
 
+  const showDiscount = buttonAction === BUTTON_ACTION.BUY;
+
   return (
     <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
       <div
@@ -158,11 +160,34 @@ export default function PricingCard({
             7-day free trial
           </div>
         )}
-        <div className="mt-4 flex justify-center text-2xl leading-none text-textPrimary-800 dark:text-white">
-          <span>${price}</span>
-          <span className="ml-1  pt-0.5 text-sm  leading-5 text-textPrimary-700 ">
-            per {type}
-          </span>
+        <div className="mt-4 flex flex-col items-center text-textPrimary-800 dark:text-white">
+          {/* Discount badge */}
+          {showDiscount && (
+            <div className="mb-1 rounded-full bg-secondary-500 px-3 py-1 text-xs font-semibold text-white shadow">
+              50% OFF for 3 months
+            </div>
+          )}
+
+          {/* Price with strikethrough original */}
+          <div className="flex items-end text-2xl font-bold leading-none">
+            {showDiscount && (
+              <span className="mr-2 text-textPrimary-500 line-through">
+                ${price}
+              </span>
+            )}
+            <span className="text-textPrimary-800">
+              ${showDiscount ? Math.ceil(price * 0.5) : price}
+            </span>
+            <span className="ml-1 text-sm font-normal text-textPrimary-700 dark:text-textPrimary-300">
+              / {type}
+            </span>
+          </div>
+
+          {showDiscount && (
+            <div className="mt-1 text-sm text-textPrimary-500 dark:text-textPrimary-400">
+              First 3 months
+            </div>
+          )}
         </div>
       </div>
       <div className="flex w-full flex-col items-center justify-center align-middle">
