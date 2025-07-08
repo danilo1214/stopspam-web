@@ -54,7 +54,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col gap-y-10 px-10">
+      <main className="flex flex-col gap-y-10 px-4 lg:px-10">
         <HomeHeader
           pages={savedPages?.length ?? 0}
           name={sessionData?.user.name ?? ""}
