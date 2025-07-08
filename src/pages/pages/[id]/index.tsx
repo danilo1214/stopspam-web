@@ -217,7 +217,7 @@ export default function Page() {
 
       <div className="m-2 rounded-lg  bg-white px-4 py-5 shadow lg:m-10">
         <div className="my-8 flex flex-col justify-between md:flex-row">
-          <div className=" flex items-center gap-x-4">
+          <div className=" flex items-center gap-x-4 lg:w-64">
             <img
               referrerPolicy="no-referrer"
               src={page.profilePictureUrl}
@@ -236,7 +236,7 @@ export default function Page() {
               </div>
             </div>
           </div>
-          <div className="flex gap-x-5">
+          <div className="flex gap-x-5 py-2 lg:py-3">
             {user?.user.id === "cmajowjop00004ouoosxv5zsk" && (
               <Button
                 icon={<SparklesIcon className="size-5 font-light text-white" />}
@@ -356,7 +356,7 @@ export default function Page() {
                 }}
                 rows={5}
                 id="comment"
-                className="focus:ring-none w-full border-0 bg-white px-2 pt-1 text-sm text-gray-900 focus:outline-1 focus:outline-indigo-300"
+                className="focus:ring-none w-full border-0 bg-white px-2 pt-1 text-gray-900 focus:outline-1 focus:outline-indigo-300"
                 placeholder="Enter a prompt..."
                 required
               />
@@ -374,7 +374,7 @@ export default function Page() {
                   );
                 }}
                 label="Update description"
-                className="focus:shadow-outline rounded-md bg-primary-600 p-3   text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none"
+                className="focus:shadow-outline w-full rounded-md bg-primary-600   p-3 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none lg:w-64"
               ></Button>
             </div>
           </div>

@@ -64,7 +64,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     canSelectSearch && filter && filteredOptions.length === 0;
 
   return (
-    <div className="relative w-64" ref={selectRef}>
+    <div className="relative " ref={selectRef}>
       <input
         type="text"
         value={filter}
