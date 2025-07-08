@@ -47,7 +47,7 @@ export default function Navbar({ ...props }) {
         isDark && "dark",
       )}
     >
-      <nav className="container relative mx-auto flex flex-wrap items-center justify-between  px-8 py-6 lg:justify-between xl:px-0 ">
+      <nav className="container relative mx-auto flex flex-wrap items-center justify-between  px-4 py-6 lg:justify-between lg:px-8 xl:px-0 ">
         {/* Logo  */}
         <Disclosure>
           {({ open }) => (
