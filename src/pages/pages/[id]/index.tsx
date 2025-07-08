@@ -291,7 +291,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="my-8 flex w-full flex-col content-between gap-x-6 lg:flex-row">
+        <div className="my-8 flex w-full flex-col content-between gap-x-6 gap-y-4 lg:flex-row">
           <div>
             <div className="mb-2">
               <label className="text-textPrimary-900">Goal</label>
