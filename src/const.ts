@@ -5,7 +5,7 @@ export const cards = [
     rank: 1,
     replies: 500,
     type: "month",
-    productId: "prod_SioGWhy3eXQuCu",
+    productId: "price_1RnMe1P1qQfXIcAbqToCT9Hw",
     benefits: [
       "Up to 500 AI-powered replies/month",
       "Guaranteed under 1 hour response time",
@@ -20,7 +20,7 @@ export const cards = [
     rank: 2,
     replies: 5000,
     type: "month",
-    productId: "prod_SioGwaS7uZOmPS",
+    productId: "price_1RnMeOP1qQfXIcAb2R74QMcu",
     benefits: [
       "Up to 5,000 AI-powered replies/month",
       "Guaranteed under 1 hour response time",
