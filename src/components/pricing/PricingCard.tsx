@@ -139,7 +139,7 @@ export default function PricingCard({
   const isLoading =
     isSubscriptionLoading || updateSubscription.isPending || isProrationLoading;
 
-  const showDiscount = buttonAction === BUTTON_ACTION.BUY;
+  const showDiscount = false;
 
   return (
     <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
