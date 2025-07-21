@@ -26,7 +26,7 @@ export const paymentRouter = createTRPCRouter({
         },
       });
 
-      const shouldDiscount = !sub;
+      const shouldDiscount = !sub && false;
 
       try {
         const successUrl =
