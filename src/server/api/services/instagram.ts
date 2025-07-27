@@ -281,7 +281,6 @@ export class Instagram {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             post?.comments?.data ?? [];
 
-          console.log(comments);
 
           const filteredComments = comments
             .filter((comment) => {
@@ -290,7 +289,7 @@ export class Instagram {
               );
             })
             .sort((a, b) => (a.like_count > b.like_count ? -1 : 1))
-            .slice(0, 5);
+            .slice(0, 20);
 
           console.log(filteredComments);
 
