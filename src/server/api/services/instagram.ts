@@ -256,7 +256,7 @@ export class Instagram {
           `https://graph.facebook.com/v20.0/${page.instagramId}/media`,
           {
             params: {
-              fields: "caption,comments{like_count,timestamp,text}",
+              fields: "caption,comments{like_count,timestamp,text,username}",
               access_token: account.long_lived_token,
             },
           },
@@ -272,12 +272,7 @@ export class Instagram {
 
         for (const post of posts) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          const comments: {
-            timestamp: string;
-            text: string;
-            id: string;
-            like_count: number;
-          }[] =
+          const comments: IgComment[] =
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             post?.comments?.data ?? [];
 
