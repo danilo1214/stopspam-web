@@ -6,6 +6,7 @@ import { cards } from "~/const";
 import { toast } from "react-toastify";
 import classNames from "classnames";
 import { Badge } from "~/components/generic/Badge";
+import { Modal } from "../generic/Modal";
 
 export type TPricingCard = {
   type: string;
@@ -122,8 +123,12 @@ export default function PricingCard({
     if (buttonAction === BUTTON_ACTION.BUY) {
       await handlePaymentClick();
     } else {
-      await handlePlanChange();
+      setIsDeleteModalOpen(true);
     }
+  };
+
+  const handlePricingCardAction = async () => {
+    await handlePlanChange();
   };
 
   const color = useMemo(() => {
@@ -136,6 +141,8 @@ export default function PricingCard({
     }
   }, [buttonAction]);
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const isLoading =
     isSubscriptionLoading || updateSubscription.isPending || isProrationLoading;
 
@@ -143,6 +150,13 @@ export default function PricingCard({
 
   return (
     <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
+      <Modal
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handlePricingCardAction}
+        open={isDeleteModalOpen}
+        title={buttonMap[buttonAction]}
+        description={`This will ${buttonMap[buttonAction].toLocaleLowerCase()} your plan`}
+      />
       <div
         className=" bg-[radial-gradient(169.40% 89.55% at 94.76% 6.29%, rgba(128,0,128,0.80) 0%, rgba(75,0,160,0.60) 50%, rgba(72,61,139,0.40) 100%)]
  pointer-events-none absolute h-full w-full"
