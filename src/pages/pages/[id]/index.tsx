@@ -73,6 +73,88 @@ const businesses = [
   { label: "Event Planning Service", value: "Event Planning Service" },
 ];
 
+const placeholderDescriptions: Record<string, string> = {
+  Influencer:
+    "Reply in a fun, casual tone. Thank people for compliments and encourage engagement.",
+  Creator:
+    "Reply in a friendly, engaging way. Appreciate compliments and invite followers to check your content.",
+  Gamer:
+    "Reply with excitement and gaming slang. Hype up wins, thank fans, and joke around with the community.",
+  Vlogger:
+    "Reply like a behind-the-scenes friend. Thank people for watching and invite them to your next vlog.",
+  "Beauty Guru":
+    "Reply in a warm, upbeat tone. Thank followers for love and recommend products if asked.",
+  "Fitness Coach":
+    "Reply in a motivational tone. Encourage progress, answer basic fitness questions, and guide to programs.",
+  "Lifestyle Blogger":
+    "Reply in a friendly, conversational tone. Share tips lightly and thank followers for support.",
+  "Travel Blogger":
+    "Reply with wanderlust vibes. Thank for comments and share fun travel tips if asked.",
+  "Tech Reviewer":
+    "Reply in an informative but approachable tone. Answer product questions and share quick insights.",
+  "DIY Creator":
+    "Reply in a helpful, upbeat tone. Thank for love and encourage followers to try the projects.",
+  Photographer:
+    "Reply warmly. Thank people for compliments and discuss gear or locations if asked.",
+  Artist:
+    "Reply creatively and warmly. Thank for compliments and briefly mention inspiration or technique if asked.",
+  Model:
+    "Reply in a fun, flirty, confident tone. Thank for love and keep engagement light.",
+  Musician:
+    "Reply with enthusiasm and gratitude. Thank fans and guide to streaming links if they ask.",
+  Podcaster:
+    "Reply conversationally and engaging. Thank listeners and point them to episodes if asked.",
+  "Food Blogger":
+    "Reply warmly and deliciously. Thank for comments and share recipe or restaurant hints if asked.",
+  "Parenting Blogger":
+    "Reply in a supportive, empathetic tone. Thank for engagement and share small tips if relevant.",
+  "Finance Educator":
+    "Reply in a trustworthy, friendly tone. Thank for comments and clarify simple finance questions.",
+  "Comedy Creator":
+    "Reply playfully and humorously. Thank for laughs and keep the tone fun and light.",
+  Educator:
+    "Reply helpfully and encouragingly. Thank for engagement and point to resources if relevant.",
+  Streamer:
+    "Reply with energy and gamer slang. Thank for support and hype the next stream.",
+  Restaurant:
+    "Reply politely and friendly. Thank people for compliments and invite them to visit or book a table.",
+  "Clothing Store":
+    "Reply warmly. Thank for comments and mention where to shop if they ask.",
+  Café: "Reply in a cozy, friendly tone. Thank guests and share popular menu items if asked.",
+  "Barber Shop":
+    "Reply casually and friendly. Thank for love and encourage bookings or walk-ins.",
+  "Beauty Salon":
+    "Reply in a glam and welcoming tone. Thank for compliments and guide to booking if asked.",
+  Gym: "Reply motivationally. Thank for engagement and invite to join or check membership info.",
+  "Fitness Studio":
+    "Reply with energy and encouragement. Thank for support and share how to join classes.",
+  Spa: "Reply calmly and warmly. Thank for kind words and invite to book a session if asked.",
+  "Tattoo Parlor":
+    "Reply in a cool, casual tone. Thank for compliments and share booking info if asked.",
+  Bookstore:
+    "Reply warmly and bookish. Thank for love and recommend titles if they ask.",
+  "Pet Store":
+    "Reply cheerfully. Thank for comments and answer simple pet or product questions.",
+  Bakery:
+    "Reply in a sweet, friendly tone. Thank for love and mention popular pastries if asked.",
+  "Photography Studio":
+    "Reply warmly and professionally. Thank for compliments and invite for bookings.",
+  Florist:
+    "Reply in a warm, cheerful tone. Thank for kind words and suggest bouquets if asked.",
+  "Car Wash":
+    "Reply casually and helpful. Thank for love and encourage visits or bookings.",
+  "Real Estate Agency":
+    "Reply professionally but friendly. Thank for engagement and guide to contact for listings.",
+  "Marketing Agency":
+    "Reply in a smart, professional tone. Thank for comments and invite inquiries if asked.",
+  "Tech Startup":
+    "Reply friendly and innovative. Thank for support and briefly hint at features if asked.",
+  "E-commerce Store":
+    "Reply in a helpful and warm tone. Thank for comments and guide to the website for purchases.",
+  "Event Planning Service":
+    "Reply enthusiastically and professional. Thank for interest and invite to book or inquire.",
+};
+
 export default function Page() {
   const utils = api.useUtils();
   const { query, replace } = useRouter();
@@ -142,6 +224,22 @@ export default function Page() {
         },
       },
     );
+  };
+
+  const handleDescriptionCtaClick = async () => {
+    if (text) {
+      updatePage(
+        { id, description: text },
+        {
+          onSuccess: () => {
+            toast("Successfully updated description");
+            invalidatePageCache();
+          },
+        },
+      );
+    } else if (selectedSubType) {
+      setText(placeholderDescriptions[selectedSubType] ?? "");
+    }
   };
 
   const onChangeVibe = (v: number) => {
@@ -328,22 +426,14 @@ export default function Page() {
           {subTypeItem}
         </div>
 
-        <div className="my-8">
-          <div className="mb-2">
-            <label className="text-textPrimary-900">Comment tone</label>
-            <div className="text-sm text-textPrimary-600">
-              Select the tone of your comments.
-            </div>
-          </div>
-          <Slider value={vibe} onChange={onChangeVibe} labels={vibes} />
-        </div>
-
         <div>
           <div className="mb-2">
-            <label className="text-textPrimary-900">Brief description</label>
+            <label className="text-textPrimary-900">
+              What should we say in your comments?
+            </label>
             <div className="text-sm text-textPrimary-600">
-              Describe your business in a few sentences. Any additional requests
-              should go here.
+              ✨ Tell us about your business, and how you would like us to
+              reply.
             </div>
           </div>
 
@@ -357,27 +447,27 @@ export default function Page() {
                 rows={5}
                 id="comment"
                 className="focus:ring-none w-full border-0 bg-white px-2 pt-1 text-gray-900 focus:outline-1 focus:outline-indigo-300"
-                placeholder="Enter a prompt..."
+                placeholder="Example: I am a fashion influencer sharing daily outfits and style tips. Reply in a fun, upbeat tone. If someone compliments my look, thank them warmly. If they ask where to buy, tell them to DM me."
                 required
               />
 
               <Button
-                onClick={async () => {
-                  updatePage(
-                    { id, description: text },
-                    {
-                      onSuccess: () => {
-                        toast("Successfully updated description");
-                        invalidatePageCache();
-                      },
-                    },
-                  );
-                }}
-                label="Update description"
-                className="focus:shadow-outline w-full rounded-md bg-primary-600   p-3 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none lg:w-64"
+                onClick={handleDescriptionCtaClick}
+                label={text ? "Update description" : "💡 Auto-Fill Example"}
+                className="focus:shadow-outline  rounded-md bg-primary-600   p-3 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none lg:w-64"
               ></Button>
             </div>
           </div>
+        </div>
+
+        <div className="my-8">
+          <div className="mb-2">
+            <label className="text-textPrimary-900">Comment tone</label>
+            <div className="text-sm text-textPrimary-600">
+              Select the tone of your comments.
+            </div>
+          </div>
+          <Slider value={vibe} onChange={onChangeVibe} labels={vibes} />
         </div>
       </div>
     </main>

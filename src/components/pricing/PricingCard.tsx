@@ -64,6 +64,8 @@ export default function PricingCard({
       },
     );
 
+  console.log(subscription);
+
   const matchingRank = subscription?.productId
     ? cards.find((c) => c.productId === subscription.productId)
     : null;
@@ -83,6 +85,8 @@ export default function PricingCard({
 
     return BUTTON_ACTION.UPGRADE;
   }, [matchingRank, rank]);
+
+  console.log(buttonAction);
 
   const updateSubscription =
     api.subscriptions.changeSubscriptionProduct.useMutation();
