@@ -300,6 +300,7 @@ export default function Page() {
           </div>
         </div>
         <CustomSelect
+          disabled={paused}
           canSelectSearch
           options={niches}
           value={selectedSubType ?? undefined}
