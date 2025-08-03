@@ -49,6 +49,7 @@ export const instagramRouter = createTRPCRouter({
   updatePage: protectedProcedure
     .input(
       z.object({
+        paused: z.boolean().optional(),
         type: z
           .enum([InstagramPageType.BUSINESS, InstagramPageType.CREATOR])
           .optional(),
@@ -86,6 +87,10 @@ export const instagramRouter = createTRPCRouter({
         update.goal = input.goal;
       }
 
+      if (input.paused !== undefined) {
+        update.paused = input.paused;
+      }
+
       if (input.description) {
         update.userDescription = input.description;
       }
@@ -97,6 +102,8 @@ export const instagramRouter = createTRPCRouter({
       if (input.type) {
         update.type = input.type;
       }
+
+      console.log(update);
 
       await ctx.db.instagramPage.update({
         where: {

@@ -8,12 +8,14 @@ interface Option {
 interface CustomSelectProps {
   options: Option[];
   value?: string;
+  disabled?: boolean;
   onOptionChange: (value: string) => void;
   canSelectSearch?: boolean;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
+  disabled = false,
   value,
   onOptionChange,
   canSelectSearch = false,
@@ -66,6 +68,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   return (
     <div className="relative " ref={selectRef}>
       <input
+        disabled={disabled}
         type="text"
         value={filter}
         onChange={(e) => setFilter(e.target.value)}

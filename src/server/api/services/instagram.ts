@@ -228,6 +228,7 @@ export class Instagram {
       const pages = await db.instagramPage.findMany({
         where: {
           facebookAccountId: account.id,
+          paused: false,
         },
       });
 
@@ -275,7 +276,6 @@ export class Instagram {
           const comments: IgComment[] =
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             post?.comments?.data ?? [];
-
 
           const filteredComments = comments
             .filter((comment) => {

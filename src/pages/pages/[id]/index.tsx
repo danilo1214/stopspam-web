@@ -17,6 +17,9 @@ import Link from "next/link";
 import { env } from "~/env";
 import { useSession } from "next-auth/react";
 import { InstagramPageType } from "@prisma/client";
+import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
+import { Switch } from "@headlessui/react";
+import classNames from "classnames";
 
 const vibes = ["Funny", "Casual", "Friendly", "Neutral", "Formal"];
 
@@ -171,6 +174,8 @@ export default function Page() {
 
   const [text, setText] = useState(page?.userDescription ?? "");
 
+  const [paused, setPaused] = useState(page?.paused);
+
   const [vibe, setVibe] = useState(page?.vibe ? vibes.indexOf(page.vibe) : 0);
   const [selectedGoal, setSelectedGoal] = useState<string | null>(
     page?.goal ?? null,
@@ -188,6 +193,20 @@ export default function Page() {
   const onPageSuccess = (msg: string) => {
     toast(msg);
     invalidatePageCache();
+  };
+
+  const handlePauseToggle = () => {
+    setPaused(!paused);
+    updatePage(
+      { id, paused: !paused },
+      {
+        onSuccess: () => {
+          onPageSuccess(
+            paused ? "Successfully unpaused page" : "Successfully paused page",
+          );
+        },
+      },
+    );
   };
 
   const handleOptionChange = (option: string) => {
@@ -266,6 +285,7 @@ export default function Page() {
         </div>
         <CustomSelect
           canSelectSearch
+          disabled={paused}
           options={businesses}
           value={selectedSubType ?? undefined}
           onOptionChange={handleSubTypeChange}
@@ -312,8 +332,24 @@ export default function Page() {
           </div>
         </Link>{" "}
       </div>
-
       <div className="m-2 rounded-lg  bg-white px-4 py-5 shadow lg:m-10">
+        <Switch
+          checked={!paused}
+          onChange={handlePauseToggle}
+          className={`${
+            !paused ? "bg-primary-600" : "bg-textSecondary-500"
+          } relative inline-flex h-6 w-11 items-center rounded-full transition`}
+        >
+          <span
+            className={`${
+              !paused ? "translate-x-6" : "translate-x-1"
+            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+          />
+        </Switch>
+        <span className="ml-2 text-sm text-textPrimary-600">
+          {paused ? "Paused" : "Active"}
+        </span>
+
         <div className="my-8 flex flex-col justify-between md:flex-row">
           <div className=" flex items-center gap-x-4 lg:w-64">
             <img
@@ -323,13 +359,28 @@ export default function Page() {
               className="size-10 rounded-full object-cover"
             />
             <div>
-              <h1 className="text-lg  text-textPrimary-900">
+              <h1
+                className={classNames(
+                  "text-lg  ",
+                  paused ? "text-textPrimary-400" : " text-textPrimary-900",
+                )}
+              >
                 {page.username} -{" "}
-                <span className="text-sm text-textPrimary-600">
+                <span
+                  className={classNames(
+                    "text-sm text-textPrimary-600",
+                    paused ? "text-textPrimary-600" : "",
+                  )}
+                >
                   {page.followers} followers
                 </span>
               </h1>
-              <div className="text-sm text-textPrimary-600">
+              <div
+                className={classNames(
+                  "text-sm text-textPrimary-600",
+                  paused ? "text-textPrimary-600" : "",
+                )}
+              >
                 {page.biography}
               </div>
             </div>
@@ -388,7 +439,6 @@ export default function Page() {
             />
           </div>
         </div>
-
         <div className="my-8 flex w-full flex-col content-between gap-x-6 gap-y-4 lg:flex-row">
           <div>
             <div className="mb-2">
@@ -398,6 +448,7 @@ export default function Page() {
               </div>
             </div>
             <CustomSelect
+              disabled={paused}
               onOptionChange={handleOptionChange}
               options={goals}
               value={selectedGoal ?? undefined}
@@ -412,6 +463,7 @@ export default function Page() {
               </div>
             </div>
             <CustomSelect
+              disabled={paused}
               options={[
                 { label: "Business", value: InstagramPageType.BUSINESS },
                 { label: "Creator", value: InstagramPageType.CREATOR },
@@ -425,7 +477,6 @@ export default function Page() {
 
           {subTypeItem}
         </div>
-
         <div>
           <div className="mb-2">
             <label className="text-textPrimary-900">
@@ -440,6 +491,7 @@ export default function Page() {
           <div className="mb-4 w-full rounded-lg border border-gray-200 bg-gray-50 ">
             <div className="rounded-t-lg bg-white p-2 dark:bg-gray-800">
               <textarea
+                disabled={paused}
                 value={text}
                 onChange={(e) => {
                   setText(e.target.value);
@@ -453,13 +505,13 @@ export default function Page() {
 
               <Button
                 onClick={handleDescriptionCtaClick}
+                disabled={paused}
                 label={text ? "Update description" : "💡 Auto-Fill Example"}
                 className="focus:shadow-outline  rounded-md bg-primary-600   p-3 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none lg:w-64"
               ></Button>
             </div>
           </div>
         </div>
-
         <div className="my-8">
           <div className="mb-2">
             <label className="text-textPrimary-900">Comment tone</label>

@@ -59,6 +59,7 @@ model InstagramPage {
     userDescription   String?           @db.Text()
     vibe              String?
     goal              String?
+    paused            Boolean           @default(false)
     hasDemoed         Boolean?
     type              InstagramPageType @default(BUSINESS)
     subType           String?
