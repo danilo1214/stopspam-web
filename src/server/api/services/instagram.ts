@@ -9,6 +9,7 @@ import { cards } from "~/const";
 import { getCommentsForMonth } from "~/server/api/services/subscription";
 import { sendMessageToQueue } from "~/server/aws";
 import { db } from "~/server/db";
+import { chunkArray } from "~/utils/chunk";
 
 const n = 50;
 
@@ -302,11 +303,14 @@ export class Instagram {
 
           console.log("ok get");
 
-          if (filteredComments && filteredComments.length > 0) {
-            console.log("will post lambda");
+          const commentChunks = chunkArray(filteredComments, 5);
+
+          for (const commentChunk of commentChunks) {
+            if (commentChunk.length === 0) continue;
+
             await sendMessageToQueue({
               caption: post.caption,
-              comments: filteredComments,
+              comments: commentChunk,
               instagramPageId: page.instagramId,
               biography: page.biography,
               token: account.long_lived_token,
@@ -315,7 +319,6 @@ export class Instagram {
               pageType: page.type,
               businessType: page.subType,
               tone: page.vibe,
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               media: post,
             });
           }
