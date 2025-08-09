@@ -116,7 +116,7 @@ model VerificationToken {
 model CommentReply {
     id          String   @id @default(cuid())
     instagramId String
-    seen        Boolean  @default(true)
+    seen        Boolean  @default(false)
     text        String
     userId      String
     user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
