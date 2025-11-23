@@ -1,16 +1,26 @@
 import Button from "~/components/generic/Button";
+import { placeholderDescriptions } from "~/const";
 
 interface AccountOnboardingDescriptionSelectProps {
   description: string;
+  selectedSubType?: string;
   onChangeDescription: (t: string) => void;
-  onSave?: () => void; // optional (if you want a button inside)
 }
 
 export const AccountOnboardingDescriptionSelect = ({
   description,
   onChangeDescription,
-  onSave,
+  selectedSubType,
 }: AccountOnboardingDescriptionSelectProps) => {
+  const handleDescriptionCtaClick = async () => {
+    const value =
+      selectedSubType && placeholderDescriptions[selectedSubType]
+        ? placeholderDescriptions[selectedSubType]
+        : "";
+
+    onChangeDescription(value);
+  };
+
   return (
     <div>
       <div className="mb-2">
@@ -30,13 +40,11 @@ export const AccountOnboardingDescriptionSelect = ({
             placeholder="Enter a description..."
           />
 
-          {onSave && (
-            <Button
-              onClick={onSave}
-              label="Save"
-              className="mt-2 w-full rounded-md bg-primary-600 p-3 text-white hover:bg-primary-500"
-            />
-          )}
+          <Button
+            onClick={handleDescriptionCtaClick}
+            label={"💡 Auto-Fill Example"}
+            className="focus:shadow-outline  rounded-md bg-primary-600   p-3 text-white transition duration-150 ease-in-out hover:bg-primary-500 focus:outline-none lg:w-64"
+          ></Button>
         </div>
       </div>
     </div>

@@ -178,7 +178,7 @@ export const AccountOnboardingForm = () => {
       <AccountOnboardingNavigation
         totalSteps={TOTAL_STEPS}
         setStep={onChangeStep}
-        disabledNext={isPending}
+        disabledNext={isPending || !setSelectedAccount}
         step={step}
       />
     </div>
