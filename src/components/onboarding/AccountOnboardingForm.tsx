@@ -155,6 +155,7 @@ export const AccountOnboardingForm = () => {
         return (
           <div className="rounded-xl bg-white p-8 shadow">
             <AccountOnboardingDescriptionSelect
+              selectedSubType={accountonboardingData.subType}
               description={accountonboardingData.description}
               onChangeDescription={setDescription}
             />
@@ -178,7 +179,7 @@ export const AccountOnboardingForm = () => {
       <AccountOnboardingNavigation
         totalSteps={TOTAL_STEPS}
         setStep={onChangeStep}
-        disabledNext={isPending || !setSelectedAccount}
+        disabledNext={isPending || !accountonboardingData.selectedAccount}
         step={step}
       />
     </div>
