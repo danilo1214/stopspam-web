@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import SuperJSON from "superjson";
 import { AccountList } from "~/components/accounts/AccountList";
+import { AccountOnboardingForm } from "~/components/onboarding/AccountOnboardingForm";
 import { Dashboard } from "~/components/dashboard/Dashboard";
 import { AccessDenied } from "~/components/generic/AccessDenied";
 import { HomeHeader } from "~/components/generic/HomeHeader";
@@ -55,16 +56,22 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-col gap-y-10 px-4 lg:px-10">
-        <HomeHeader
-          pages={savedPages?.length ?? 0}
-          name={sessionData?.user.name ?? ""}
-        />
+        {!savedPages || savedPages.length === 0 ? (
+          <AccountOnboardingForm />
+        ) : (
+          <>
+            <HomeHeader
+              pages={savedPages?.length ?? 0}
+              name={sessionData?.user.name ?? ""}
+            />
 
-        <Dashboard />
+            <Dashboard />
 
-        <AccountList hasSubscription={!!subscription} />
+            <AccountList hasSubscription={!!subscription} />
 
-        {!subscription && <CTABanner />}
+            {!subscription && <CTABanner />}
+          </>
+        )}
       </main>
     </>
   );

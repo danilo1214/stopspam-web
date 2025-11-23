@@ -2,6 +2,7 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AccountItem } from "~/components/accounts/AccountItem";
+import { AccountOnboardingForm } from "~/components/onboarding/AccountOnboardingForm";
 import { ADD_ACCOUNTS_STEPS } from "~/components/accounts/accounts.types";
 import AddAccounts from "~/components/accounts/AddAccounts";
 import Button from "~/components/generic/Button";
@@ -100,11 +101,6 @@ export const AccountList = ({ hasSubscription }: AccountListProps) => {
         </div>
       </div>
 
-      {(!savedPages || savedPages.length === 0) && (
-        <div className="text-md my-8 text-center text-textPrimary-700">
-          You don&apos;t have any connected pages
-        </div>
-      )}
       {savedPages?.map((p, idx) => <AccountItem key={idx} instagramPage={p} />)}
     </div>
   );

@@ -113,6 +113,63 @@ export const instagramRouter = createTRPCRouter({
       });
     }),
 
+  createPage: protectedProcedure
+    .input(
+      z.object({
+        selectedAccount: z.object({
+          id: z.string(),
+          profile_picture_url: z.string(),
+          followers_count: z.number(),
+          biography: z.string(),
+          username: z.string(),
+        }),
+        goal: z.string(),
+        vibe: z.string(),
+        type: z.enum([InstagramPageType.BUSINESS, InstagramPageType.CREATOR]),
+        subType: z.string(),
+        description: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+
+      const facebookAccount = await ctx.db.facebookAccount.findFirst({
+        where: {
+          instagramId: ctx.account.providerAccountId,
+        },
+      });
+
+      if (!facebookAccount) {
+        throw Error("No account connected");
+      }
+
+      const {
+        selectedAccount: page,
+        vibe,
+        type,
+        subType,
+        goal,
+        description,
+      } = input;
+
+      await ctx.db.instagramPage.create({
+        data: {
+          facebookAccountId: facebookAccount.id,
+          instagramId: page.id,
+          followers: page.followers_count,
+          biography: page.biography,
+          username: page.username,
+          userId: user.id,
+          profilePictureUrl: page.profile_picture_url,
+          vibe,
+          type,
+          subType,
+          goal,
+          userDescription: description,
+        },
+      });
+    }),
+
   syncPages: protectedProcedure
     .input(
       z.object({
